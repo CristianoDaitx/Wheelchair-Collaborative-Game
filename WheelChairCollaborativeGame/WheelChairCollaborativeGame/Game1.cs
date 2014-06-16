@@ -26,15 +26,15 @@ namespace WheelChairCollaborativeGame
         SpriteBatch spriteBatch;
 
 
-        KinectSensor kinectSensor;
+        //KinectSensor kinectSensor;
 
         //TODO
-        string connectedStatus = "Not connected";
+        //string connectedStatus = "Not connected";
         Texture2D kinectRGBVideo;
         Texture2D hand;
         Vector2 headPositionPixels = new Vector2();
 
-
+        //Skeleton aSkeleton;
 
 
         // Constants //
@@ -58,7 +58,7 @@ namespace WheelChairCollaborativeGame
         readonly LinearNudgeListener linearNudgeGesture;
         readonly AngularNudgeListener angularNudgeGesture;
 
-        readonly ThresholdListener menuLeftListener;
+       /* readonly ThresholdListener menuLeftListener;
         readonly ThresholdListener menuRightListener;
         readonly ThresholdListener menuEnterListener;
 
@@ -70,7 +70,12 @@ namespace WheelChairCollaborativeGame
         int binNum;
 
         float distance;
-        float angle;
+        float angle;*/
+
+
+
+
+        WheelchairSkeletonFrame wheelchairSkeletonFrame;
 
         public Game1()
         {
@@ -85,7 +90,9 @@ namespace WheelChairCollaborativeGame
 
             // Create wheelchair detector
             wheelchairDetector = new WheelchairDetector();
-            wheelchairDetector.SkeletonFrameReady += new EventHandler<KinectForWheelchair.SkeletonFrameReadyEventArgs>(wheelchairDetector_SkeletonFrameReady);
+            //wheelchairDetector.SkeletonFrameReady += new EventHandler<KinectForWheelchair.SkeletonFrameReadyEventArgs>(wheelchairDetector_SkeletonFrameReady);
+            wheelchairSkeletonFrame = new WheelchairSkeletonFrame();
+            wheelchairDetector.SkeletonFrameReady += wheelchairSkeletonFrame.wheelchairDetector_SkeletonFrameReady;
 
             // Create linear nudge gesture
             linearNudgeGesture = new LinearNudgeListener(wheelchairDetector, skeletonId);
@@ -95,7 +102,10 @@ namespace WheelChairCollaborativeGame
             angularNudgeGesture = new AngularNudgeListener(wheelchairDetector, skeletonId);
             //!!angularNudgeGesture.Triggered += new DCEventHandler(angularNudgeGesture_Triggered);
 
-            skeletons = new EnhancedSkeletonCollection();
+            wheelchairSkeletonFrame.skeletons = new EnhancedSkeletonCollection();
+
+            graphics.PreferredBackBufferWidth = 640;
+            graphics.PreferredBackBufferHeight = 480;
 
 
         }
@@ -108,8 +118,8 @@ namespace WheelChairCollaborativeGame
         /// </summary>
         protected override void Initialize()
         {
-            KinectSensor.KinectSensors.StatusChanged += new EventHandler<StatusChangedEventArgs>(KinectSensors_StatusChanged);
-            DiscoverKinectSensor();
+            //KinectSensor.KinectSensors.StatusChanged += new EventHandler<StatusChangedEventArgs>(KinectSensors_StatusChanged);
+            //DiscoverKinectSensor();
 
             base.Initialize();
         }
@@ -167,6 +177,23 @@ namespace WheelChairCollaborativeGame
             spriteBatch.Begin();
             spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
             spriteBatch.Draw(hand, headPositionPixels, null, Color.White, 0, new Vector2(hand.Width / 2, hand.Height / 2), 1, SpriteEffects.None, 0);
+
+
+
+
+            foreach (EnhancedSkeleton enhancedSkeleton in wheelchairSkeletonFrame.skeletons)
+            {
+                if (enhancedSkeleton.Skeleton != null)
+                {
+                    foreach (Joint joint in enhancedSkeleton.Skeleton.Joints)
+                    {
+                        Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (640)), (((-0.5f * joint.Position.Y) + 0.5f) * (480)));
+                        spriteBatch.Draw(hand, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Red);
+                    }
+                }
+            }
+
+
             spriteBatch.End();
 
 
@@ -180,7 +207,7 @@ namespace WheelChairCollaborativeGame
 
 
 
-        void KinectSensors_StatusChanged(object sender, StatusChangedEventArgs e)
+       /* void KinectSensors_StatusChanged(object sender, StatusChangedEventArgs e)
         {
             if (this.kinectSensor == e.Sensor)
             {
@@ -191,9 +218,9 @@ namespace WheelChairCollaborativeGame
                     this.DiscoverKinectSensor();
                 }
             }
-        }
+        }*/
 
-        private bool InitializeKinect()
+        /*private bool InitializeKinect()
         {
             // Color stream
             kinectSensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
@@ -208,7 +235,7 @@ namespace WheelChairCollaborativeGame
                 JitterRadius = 0.05f,
                 MaxDeviationRadius = 0.04f
             });
-            kinectSensor.SkeletonFrameReady += new EventHandler<Microsoft.Kinect.SkeletonFrameReadyEventArgs>(kinectSensor_SkeletonFrameReady);
+            //kinectSensor.SkeletonFrameReady += new EventHandler<Microsoft.Kinect.SkeletonFrameReadyEventArgs>(kinectSensor_SkeletonFrameReady);
 
             try
             {
@@ -220,9 +247,9 @@ namespace WheelChairCollaborativeGame
                 return false;
             }
             return true;
-        }
+        }*/
 
-        void kinectSensor_SkeletonFrameReady(object sender, Microsoft.Kinect.SkeletonFrameReadyEventArgs  e)
+        /*void kinectSensor_SkeletonFrameReady(object sender, Microsoft.Kinect.SkeletonFrameReadyEventArgs  e)
         {
             using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
             {
@@ -239,14 +266,18 @@ namespace WheelChairCollaborativeGame
                         headPositionPixels = new Vector2((((0.5f * head.Position.X) + 0.5f) * (640)), (((-0.5f * head.Position.Y) + 0.5f) * (480)));
                     }
 
+                    
+
+
+
 
 
                 }
 
             }
-        }
+        }*/
 
-        private void DiscoverKinectSensor()
+        /*private void DiscoverKinectSensor()
         {
             foreach (KinectSensor sensor in KinectSensor.KinectSensors)
             {
@@ -295,12 +326,12 @@ namespace WheelChairCollaborativeGame
             {
                 InitializeKinect();
             }
-        }
+        }*/
         public float Scale(float value, int max)
         {
             return MathHelper.Clamp((max >> 1) + (value * (max >> 1)), 0, max);
         }
-        void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+        /*void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
             using (ColorImageFrame colorImageFrame = e.OpenColorImageFrame())
             {
@@ -329,7 +360,7 @@ namespace WheelChairCollaborativeGame
                     kinectRGBVideo.SetData(color);
                 }
             }
-        }
+        }*/
 
 
 
@@ -352,11 +383,7 @@ namespace WheelChairCollaborativeGame
 
 
 
-
-
-
-
-        void wheelchairDetector_SkeletonFrameReady(object sender, KinectForWheelchair.SkeletonFrameReadyEventArgs e)
+        /*void wheelchairDetector_SkeletonFrameReady(object sender, KinectForWheelchair.SkeletonFrameReadyEventArgs e)
         {
             using (EnhancedSkeletonFrame frame = e.OpenSkeletonFrame())
             {
@@ -367,7 +394,6 @@ namespace WheelChairCollaborativeGame
 
                 // Get skeletons
                 frame.CopySkeletonDataTo(skeletons);
-
 
                 // Track closest skeleton to Kinect
                 IEnumerable<EnhancedSkeleton> trackedSkeletons = skeletons.Where(x => x.Skeleton.TrackingState == SkeletonTrackingState.Tracked);
@@ -447,6 +473,20 @@ namespace WheelChairCollaborativeGame
                 }
 
 
+
+                //testing to draw
+                //if (skeletonData != null)
+                //{
+                //    foreach (Skeleton skel in skeletonData)
+                //    {
+                //        if (skel.TrackingState == SkeletonTrackingState.Tracked)
+                //        {
+                            aSkeleton = skeleton.Skeleton;
+                //        }
+                //    }
+                //}
+
+
                 /*
                 // Normalize
                 const float maxValue = 0.008f;
@@ -498,10 +538,10 @@ namespace WheelChairCollaborativeGame
 
                     binNum = newBinNum;
                 }
-                */
+                /
 
             }
-        }
+        }*/
 
 
     }
