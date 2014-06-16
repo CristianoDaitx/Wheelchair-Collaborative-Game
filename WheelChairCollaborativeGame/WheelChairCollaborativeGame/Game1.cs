@@ -11,6 +11,10 @@ using Microsoft.Xna.Framework.Media;
 
 using Microsoft.Kinect;
 
+using KinectForWheelchair;
+using KinectForWheelchair.Listeners;
+using KeyMessaging;
+
 namespace WheelChairCollaborativeGame
 {
     /// <summary>
@@ -27,11 +31,73 @@ namespace WheelChairCollaborativeGame
         //TODO
         string connectedStatus = "Not connected";
         Texture2D kinectRGBVideo;
+        Texture2D hand;
+        Vector2 headPositionPixels = new Vector2();
+
+
+
+
+        // Constants //
+
+        const int skeletonId = -1;
+
+        const int pwmForwardPeriod = 1000;
+        const int pwmTurningPeriod = 200;
+
+        const float handThreshold = 0.5f;
+        const float handThresholdError = 0.1f;
+
+        const float handDistanceThreshold = 0.7f;
+        const float handDistanceThresholdError = 0.1f;
+
+        // Readonly //
+
+        readonly WheelchairDetector wheelchairDetector;
+
+        // Listeners
+        readonly LinearNudgeListener linearNudgeGesture;
+        readonly AngularNudgeListener angularNudgeGesture;
+
+        readonly ThresholdListener menuLeftListener;
+        readonly ThresholdListener menuRightListener;
+        readonly ThresholdListener menuEnterListener;
+
+
+        // Mutable //
+
+        EnhancedSkeletonCollection skeletons;
+
+        int binNum;
+
+        float distance;
+        float angle;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+
+
+
+
+
+
+            // Create wheelchair detector
+            wheelchairDetector = new WheelchairDetector();
+            wheelchairDetector.SkeletonFrameReady += new EventHandler<KinectForWheelchair.SkeletonFrameReadyEventArgs>(wheelchairDetector_SkeletonFrameReady);
+
+            // Create linear nudge gesture
+            linearNudgeGesture = new LinearNudgeListener(wheelchairDetector, skeletonId);
+            //!!linearNudgeGesture.Triggered += new DCEventHandler(linearNudgeGesture_Triggered);
+
+            // Create angular nudge gesture
+            angularNudgeGesture = new AngularNudgeListener(wheelchairDetector, skeletonId);
+            //!!angularNudgeGesture.Triggered += new DCEventHandler(angularNudgeGesture_Triggered);
+
+            skeletons = new EnhancedSkeletonCollection();
+
+
         }
 
         /// <summary>
@@ -58,6 +124,9 @@ namespace WheelChairCollaborativeGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             kinectRGBVideo = new Texture2D(GraphicsDevice, 1337, 1337);
+
+            hand = Content.Load<Texture2D>("Space_Invader");
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -97,6 +166,7 @@ namespace WheelChairCollaborativeGame
 
             spriteBatch.Begin();
             spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
+            spriteBatch.Draw(hand, headPositionPixels, null, Color.White, 0, new Vector2(hand.Width / 2, hand.Height / 2), 1, SpriteEffects.None, 0);
             spriteBatch.End();
 
 
@@ -138,7 +208,7 @@ namespace WheelChairCollaborativeGame
                 JitterRadius = 0.05f,
                 MaxDeviationRadius = 0.04f
             });
-            kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(kinectSensor_SkeletonFrameReady);
+            kinectSensor.SkeletonFrameReady += new EventHandler<Microsoft.Kinect.SkeletonFrameReadyEventArgs>(kinectSensor_SkeletonFrameReady);
 
             try
             {
@@ -152,7 +222,7 @@ namespace WheelChairCollaborativeGame
             return true;
         }
 
-        void kinectSensor_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+        void kinectSensor_SkeletonFrameReady(object sender, Microsoft.Kinect.SkeletonFrameReadyEventArgs  e)
         {
             using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
             {
@@ -166,7 +236,7 @@ namespace WheelChairCollaborativeGame
                     {
                         Joint head = playerSkeleton.Joints[JointType.Head];
                         Console.Write("head position: " + head.Position.X + ", " + head.Position.Y + "\n");
-                        //headPositionPixels = new Vector2((((0.5f * head.Position.X) + 0.5f) * (640)), (((-0.5f * head.Position.Y) + 0.5f) * (480)));
+                        headPositionPixels = new Vector2((((0.5f * head.Position.X) + 0.5f) * (640)), (((-0.5f * head.Position.Y) + 0.5f) * (480)));
                     }
 
 
@@ -260,5 +330,179 @@ namespace WheelChairCollaborativeGame
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        void wheelchairDetector_SkeletonFrameReady(object sender, KinectForWheelchair.SkeletonFrameReadyEventArgs e)
+        {
+            using (EnhancedSkeletonFrame frame = e.OpenSkeletonFrame())
+            {
+
+                // Sometimes the frame can be null
+                if (frame == null)
+                    return;
+
+                // Get skeletons
+                frame.CopySkeletonDataTo(skeletons);
+
+
+                // Track closest skeleton to Kinect
+                IEnumerable<EnhancedSkeleton> trackedSkeletons = skeletons.Where(x => x.Skeleton.TrackingState == SkeletonTrackingState.Tracked);
+                if (trackedSkeletons.Count() == 0)
+                    return;
+
+                EnhancedSkeleton skeleton = trackedSkeletons.Aggregate((x, y) => (x.Skeleton.Position.Z < y.Skeleton.Position.Z) ? x : y);
+
+
+                // Make sure skeleton has valid info for listening
+                if (skeleton == null || skeleton.Mode != Mode.Seated)
+                    return;
+
+
+                // Position
+                {
+                    // Get distance from Kinect
+                    distance = skeleton.SeatedInfo.Features.Position.Length();
+
+                    // Normalize distance between 0 and 1
+                    const float minDistance = 2;
+                    const float maxDistance = 2.5f;
+                    distance = (distance - minDistance) / (maxDistance - minDistance);
+
+                    // Invert distance
+                    distance = 1 - distance;
+
+                    // Clamp values
+                    distance = MathHelper.Clamp(distance, 0, 1);
+
+                    // Calculate duty cycle
+                    //int newDuty = (int)(Math.Abs(distance) * forward.Period);
+                    //if (newDuty < 0)
+                    //    newDuty = 0;
+                    //if (newDuty > forward.Period)
+                    //    newDuty = forward.Period;
+
+                    // Set duty cycle
+                    //forward.Duty = newDuty;
+
+                }
+
+
+                // Angle
+                {
+
+                    // Get angle
+                    angle = skeleton.SeatedInfo.Features.Angle;
+
+                    // Normalize angle between -1 and 1
+                    const float maxValue = 0.008f;
+                    angle /= maxValue;
+
+                    // Clamp values
+                    angle = MathHelper.Clamp(angle, -1, 1);
+
+                    // Use a quadratic relationship
+                    angle = Math.Sign(angle) * angle * angle;
+
+                    // Set dead zone
+                    if (Math.Abs(angle) < 0.05)
+                        angle = 0;
+
+                    // Calculate duty cycle
+                    int newDuty = (int)(Math.Abs(angle) * pwmTurningPeriod);
+                    if (newDuty < 0)
+                        newDuty = 0;
+                    if (newDuty > pwmTurningPeriod)
+                        newDuty = pwmTurningPeriod;
+
+                    // Set duty cycle
+                    //turning.Duty = newDuty;
+
+                    //labelKey.Text = newDuty.ToString();
+                    Console.WriteLine("Turn: " + newDuty.ToString());
+
+                }
+
+
+                /*
+                // Normalize
+                const float maxValue = 0.008f;
+                angle = (angle + maxValue) / (2 * maxValue);
+
+
+                // Clamp to between zero and one
+                if (angle < 0)
+                    angle = 0;
+                if (angle > 1)
+                    angle = 1;
+
+                // Place in bin
+                const int numBins = 3;
+                int newBinNum = (int)Math.Floor(angle * numBins);
+                if (newBinNum == 3)
+                    newBinNum = 2;
+
+
+                // Set timer
+                if (newBinNum != binNum)
+                {
+
+                    // Unpress key
+                    switch (binNum)
+                    {
+                        case 0: KeyMessaging.KeySender.SendKey(Keys.Right, false); break;
+                        case 1: KeyMessaging.KeySender.SendKey(Keys.Up, false); break;
+                        case 2: KeyMessaging.KeySender.SendKey(Keys.Left, false); break;
+                    }
+
+                    // Press key
+                    switch (newBinNum)
+                    {
+                        case 0:
+                            KeyMessaging.KeySender.SendKey(Keys.Right, true);
+                            labelKey.Text = "Right";
+                            break;
+
+                        case 1:
+                            KeyMessaging.KeySender.SendKey(Keys.Up, true);
+                            labelKey.Text = "Straight"; break;
+
+                        case 2:
+                            KeyMessaging.KeySender.SendKey(Keys.Left, true);
+                            labelKey.Text = "Left";
+                            break;
+                    }
+
+                    binNum = newBinNum;
+                }
+                */
+
+            }
+        }
+
+
     }
 }
