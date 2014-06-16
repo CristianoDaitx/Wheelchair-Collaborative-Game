@@ -97,7 +97,9 @@ namespace WheelChairCollaborativeGame
 
             spriteBatch.Begin();
             spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
+            GUImessage.MessageDraw(spriteBatch, Content);
             spriteBatch.End();
+
 
 
             base.Draw(gameTime);
