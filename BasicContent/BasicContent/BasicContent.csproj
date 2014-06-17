@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{F69EA3D0-7CBF-4BC9-BFAA-685CDFA06B64}</ProjectGuid>
+    <ProjectGuid>{FF0851B5-83D0-446F-884C-51A7BE182C77}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WheelChairCollaborativeGame</RootNamespace>
-    <AssemblyName>WheelChairCollaborativeGame</AssemblyName>
+    <RootNamespace>BasicContent</RootNamespace>
+    <AssemblyName>BasicContent</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>HiDef</XnaProfile>
-    <XnaCrossPlatformGroupID>54d53bfb-acd3-48ff-88bc-dd7eb478da1c</XnaCrossPlatformGroupID>
+    <XnaCrossPlatformGroupID>b5df7d5a-4e9f-4d67-b86c-16735433ce7e</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
@@ -59,18 +59,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KeyMessaging">
-      <HintPath>..\..\dll\KeyMessaging.dll</HintPath>
-    </Reference>
-    <Reference Include="KinectForWheelchair">
-      <HintPath>..\..\dll\KinectForWheelchair.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Kinect, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -118,23 +107,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GUImessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="SplashScreen.cs" />
-    <Compile Include="WheelchairSkeletonFrame.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Game1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WheelChairGameLibrary\WheelChairGameLibrary.csproj">
-      <Project>{AEC2754E-9C38-42EE-B7AC-72FC33BD7EAC}</Project>
-      <Name>WheelChairGameLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WheelChairCollaborativeGameContent\WheelChairCollaborativeGameContent.contentproj">
-      <Name>WheelChairCollaborativeGameContent</Name>
+    <ProjectReference Include="..\BasicContentContent\BasicContentContent.contentproj">
+      <Name>BasicContentContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>

@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using WheelChairGameLibrary.Screens;
+
 using Microsoft.Kinect;
 
 using KinectForWheelchair;
@@ -17,99 +19,93 @@ using KeyMessaging;
 
 namespace WheelChairCollaborativeGame
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+
+    #region Entry Point
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        static void Main(string[] args)
+        {
+            using (Game game = new Game())
+            {
+                game.Run();
+            }
+        }
+    }
+    #endregion
+
+    public class Game : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        ScreenManager screenManager;
+
+        /*AudioEngine engine;
+        SoundBank soundBank;
+        WaveBank waveBank;*/
+
+        
 
 
-        //KinectSensor kinectSensor;
+        
 
-        //TODO
-        //string connectedStatus = "Not connected";
-        Texture2D kinectRGBVideo;
-        Texture2D hand;
-        Vector2 headPositionPixels = new Vector2();
-
-        //Skeleton aSkeleton;
-
-
-        // Constants //
-
-        const int skeletonId = -1;
-
-        const int pwmForwardPeriod = 1000;
-        const int pwmTurningPeriod = 200;
-
-        const float handThreshold = 0.5f;
-        const float handThresholdError = 0.1f;
-
-        const float handDistanceThreshold = 0.7f;
-        const float handDistanceThresholdError = 0.1f;
-
-        // Readonly //
-
-        readonly WheelchairDetector wheelchairDetector;
-
-        // Listeners
-        readonly LinearNudgeListener linearNudgeGesture;
-        readonly AngularNudgeListener angularNudgeGesture;
-
-        /* readonly ThresholdListener menuLeftListener;
-         readonly ThresholdListener menuRightListener;
-         readonly ThresholdListener menuEnterListener;
-
-
-         // Mutable //
-
-         EnhancedSkeletonCollection skeletons;
-
-         int binNum;
-
-         float distance;
-         float angle;*/
-
-
-
-
-        WheelchairSkeletonFrame wheelchairSkeletonFrame;
-
-        public Game1()
+        public Game()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
 
-
-
-
-
-
-            // Create wheelchair detector
-            wheelchairDetector = new WheelchairDetector();
-            //wheelchairDetector.SkeletonFrameReady += new EventHandler<KinectForWheelchair.SkeletonFrameReadyEventArgs>(wheelchairDetector_SkeletonFrameReady);
-            wheelchairSkeletonFrame = new WheelchairSkeletonFrame();
-            wheelchairDetector.SkeletonFrameReady += wheelchairSkeletonFrame.wheelchairDetector_SkeletonFrameReady;
-
-            // Create linear nudge gesture
-            linearNudgeGesture = new LinearNudgeListener(wheelchairDetector, skeletonId);
-            //!!linearNudgeGesture.Triggered += new DCEventHandler(linearNudgeGesture_Triggered);
-
-            // Create angular nudge gesture
-            angularNudgeGesture = new AngularNudgeListener(wheelchairDetector, skeletonId);
-            //!!angularNudgeGesture.Triggered += new DCEventHandler(angularNudgeGesture_Triggered);
-
-            wheelchairSkeletonFrame.skeletons = new EnhancedSkeletonCollection();
-
             graphics.PreferredBackBufferWidth = 640;
             graphics.PreferredBackBufferHeight = 480;
 
 
+            // Create the screen manager component.
+            screenManager = new ScreenManager(this);
+
+            Components.Add(screenManager); 
+
+            
+            
+
+
         }
 
+        /*public SoundBank getSoundBank()
+        {
+            return soundBank;
+        }
+
+        public WaveBank getWaveBank()
+        {
+            return waveBank;
+        }*/
+
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
+        protected override void LoadContent()
+        {
+
+            /*engine = new AudioEngine("Content\\sound\\Win\\sounds.xgs");
+            soundBank = new SoundBank(engine, "Content\\sound\\Win\\SoundBank.xsb");
+            waveBank = new WaveBank(engine, "Content\\sound\\Win\\WaveBank.xwb");*/
+
+            screenManager.AddScreen(new SplashScreen(), null);
+
+            /*// Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            kinectRGBVideo = new Texture2D(GraphicsDevice, 1337, 1337);
+
+            hand = Content.Load<Texture2D>("Space_Invader");
+
+
+            // TODO: use this.Content to load your game content here*/
+        }
+
+/*
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -124,22 +120,7 @@ namespace WheelChairCollaborativeGame
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        protected override void LoadContent()
-        {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            kinectRGBVideo = new Texture2D(GraphicsDevice, 1337, 1337);
-
-            hand = Content.Load<Texture2D>("Space_Invader");
-
-
-            // TODO: use this.Content to load your game content here
-        }
+        
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -204,8 +185,9 @@ namespace WheelChairCollaborativeGame
 
 
 
+*/
 
-
+        #region oldComents
 
 
         /* void KinectSensors_StatusChanged(object sender, StatusChangedEventArgs e)
@@ -328,10 +310,10 @@ namespace WheelChairCollaborativeGame
                 InitializeKinect();
             }
         }*/
-        public float Scale(float value, int max)
+        /*public float Scale(float value, int max)
         {
             return MathHelper.Clamp((max >> 1) + (value * (max >> 1)), 0, max);
-        }
+        }*/
         /*void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
             using (ColorImageFrame colorImageFrame = e.OpenColorImageFrame())
@@ -543,6 +525,8 @@ namespace WheelChairCollaborativeGame
 
             }
         }*/
+
+        #endregion
 
 
     }

@@ -1,6 +1,6 @@
 using System;
 
-namespace WheelChairCollaborativeGame
+namespace BasicContent
 {
 #if WINDOWS || XBOX
     static class Program

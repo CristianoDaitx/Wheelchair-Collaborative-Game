@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+
+namespace WheelChairGameLibrary.Sprites
+{
+    public class SpriteAnimationData
+    {
+        public Rectangle sourceRectangle { get; set; }
+        public int offsetX { get; set; }
+        public int offsetY { get; set; }
+        public bool isStrike { get; set; }
+
+        public SpriteAnimationData(Rectangle sourceRectangle, int offsetX, int offsetY)
+        {
+            this.sourceRectangle = sourceRectangle;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.isStrike = false;
+        }
+
+        public SpriteAnimationData(Rectangle sourceRectangle, int offsetX, int offsetY, bool isStrike)
+        {
+            this.sourceRectangle = sourceRectangle;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.isStrike = isStrike;
+        }
+
+        public SpriteAnimationData(int x, int y, int width, int height, int offsetX, int offsetY)
+        {
+            this.sourceRectangle = new Rectangle(x, y, width, height);
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.isStrike = false;
+        }
+        public SpriteAnimationData(int x, int y, int width, int height, int offsetX, int offsetY, bool isStrike)
+        {
+            this.sourceRectangle = new Rectangle(x, y, width, height);
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.isStrike = isStrike;
+        }
+
+    }
+}
