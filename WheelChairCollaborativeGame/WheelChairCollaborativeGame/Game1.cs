@@ -193,7 +193,9 @@ namespace WheelChairCollaborativeGame
                 }
             }
 
-            GUImessage.MessageDraw(spriteBatch, Content);
+            string message = ("This is it");
+            Vector2 textPosition = new Vector2(300.0f, 35.0f);
+            GUImessage.MessageDraw(spriteBatch, Content, message, textPosition);
 
             spriteBatch.End();
 

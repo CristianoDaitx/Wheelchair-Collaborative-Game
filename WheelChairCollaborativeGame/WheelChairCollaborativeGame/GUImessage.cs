@@ -15,20 +15,19 @@ namespace WheelChairCollaborativeGame
     {
 
         private static SpriteFont spriteFont;
-        
-       
-        public static void MessageDraw(SpriteBatch spriteBatch, ContentManager Content)
+
+
+        public static void MessageDraw(SpriteBatch spriteBatch, ContentManager Content, string message, Vector2 textPosition)
         {
             if (spriteFont == null)
             {
                 spriteFont = Content.Load<SpriteFont>(@"SpriteFont1");
             }
-            Vector2 textPosition = new Vector2(300.0f, 35.0f);
-            
             // TODO: Add your drawing code here
             //Message goes here
             Vector2 textSize = spriteFont.MeasureString("0000");
-            spriteBatch.DrawString(spriteFont, ("this"), textPosition - textSize / 2, Color.White);
+            //spriteBatch.DrawString(spriteFont, ("this"), textPosition - textSize / 2, Color.White);
+            spriteBatch.DrawString(spriteFont, message, textPosition, Color.White);
         }
     }
 }
