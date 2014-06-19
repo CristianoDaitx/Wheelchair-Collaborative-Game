@@ -26,6 +26,7 @@ namespace WheelChairCollaborativeGame
 
 
         private readonly int ATTACK_STANCE_Y = 20;
+        private readonly int DEFENCE_STANCE_Y = 40;
 
         private bool isAttackStance = false;
 
@@ -53,7 +54,7 @@ namespace WheelChairCollaborativeGame
             if (TimeSpan.FromMilliseconds(time).TotalSeconds > 2) //more than two seconds
             {
                 //if (Sprite.position.Y > 160)
-                setAttackStance();
+                setDefenceStance();
                 time = 0;
             }
         }
@@ -65,6 +66,11 @@ namespace WheelChairCollaborativeGame
             isAttackStance = true;
         }
 
+        public void setDefenceStance()
+        {
+            Sprite.position.Y = DEFENCE_STANCE_Y;
+            isAttackStance = false;
+        }
 
         public void slideToRight()
         {

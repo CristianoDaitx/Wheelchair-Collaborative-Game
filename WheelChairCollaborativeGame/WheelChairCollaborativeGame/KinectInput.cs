@@ -216,9 +216,9 @@ namespace WheelChairCollaborativeGame
                         angle = 0;
 
                     // Calculate duty cycle
-                    int newDuty = (int)(Math.Abs(angle) * pwmTurningPeriod);
+                    int newDuty = (int)angle * pwmTurningPeriod;
                     if (newDuty < 0)
-                        newDuty = 0;
+                        newDuty = -pwmTurningPeriod;
                     if (newDuty > pwmTurningPeriod)
                         newDuty = pwmTurningPeriod;
 
@@ -231,11 +231,16 @@ namespace WheelChairCollaborativeGame
 
                     TankGameObject playerTank = (TankGameObject)GameObjectManager.getGameObject("playerTank");
 
-                    if (newDuty > 100)
+                    if (newDuty < 0)
                     {
-                        playerTank.setAttackStance();
+                        playerTank.slideToRight();
                     }
 
+                    if (newDuty > 0)
+                    {
+                        playerTank.slideToLeft();
+
+                    }
 
 
                 }
