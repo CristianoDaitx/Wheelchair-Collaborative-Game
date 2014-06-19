@@ -122,6 +122,10 @@ namespace WheelChairCollaborativeGame
             kinectRGBVideo = new Texture2D(ScreenManager.GraphicsDevice, 1337, 1337);
 
             hand = ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
+
+            TankGameObject playerTank = new TankGameObject(GameObjectManager, "playerTank");
+            GameObjectManager.addGameObject(playerTank);
+
             //backgroundTexture = ScreenManager.Game.Content.Load<Texture2D>("tiles/splash");
         }
 

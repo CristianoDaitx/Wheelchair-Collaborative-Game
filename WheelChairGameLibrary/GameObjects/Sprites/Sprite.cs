@@ -64,7 +64,7 @@ namespace WheelChairGameLibrary.Sprites
             velocity = new Vector2();
             size = new Vector2(texture.Width * scale, texture.Height * scale);
 
-            font = GameObject.GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<SpriteFont>("menufont");
+            //font = GameObject.GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<SpriteFont>("menufont");
         }
 
         public void setActiveSpriteAnimation(SpriteAnimation spriteAnimation){            
@@ -134,8 +134,8 @@ namespace WheelChairGameLibrary.Sprites
             spriteBatch.Draw(texture, position, Color.White);
 
             Vector2 origin = new Vector2(0, font.LineSpacing / 2);
-            spriteBatch.DrawString(font, life.ToString(), position, Color.White, 0,
-                                   origin, 1, SpriteEffects.None, 0);
+            //spriteBatch.DrawString(font, life.ToString(), position, Color.White, 0,
+            //                       origin, 1, SpriteEffects.None, 0);
 
         }
 
@@ -143,7 +143,7 @@ namespace WheelChairGameLibrary.Sprites
         {
             spriteBatch.Draw(texture, position, Color.White);
 
-            Vector2 origin = new Vector2(0, font.LineSpacing / 2);
+            //Vector2 origin = new Vector2(0, font.LineSpacing / 2);
             //spriteBatch.DrawString(font, life.ToString(), position, Color.White, 0,
             //                       origin, 1, SpriteEffects.None, 0);
         }
