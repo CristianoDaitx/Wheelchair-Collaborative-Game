@@ -67,6 +67,11 @@ namespace WheelChairCollaborativeGame
             TankGameObject playerTank = new TankGameObject(GameObjectManager, "playerTank");
             GameObjectManager.addGameObject(playerTank);
 
+
+            EnemyGameObject enemy = new EnemyGameObject(GameObjectManager, "enemy");
+            GameObjectManager.addGameObject(enemy);
+
+
             KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
             GameObjectManager.addGameObject(kinectInput);
 

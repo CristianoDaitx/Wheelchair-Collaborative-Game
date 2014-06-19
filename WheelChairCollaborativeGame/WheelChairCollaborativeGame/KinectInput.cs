@@ -172,12 +172,12 @@ namespace WheelChairCollaborativeGame
                     distance = skeleton.SeatedInfo.Features.Position.Length();
 
                     // Normalize distance between 0 and 1
-                    const float minDistance = 2;
+                    const float minDistance = 1;
                     const float maxDistance = 2.5f;
                     distance = (distance - minDistance) / (maxDistance - minDistance);
 
                     // Invert distance
-                    distance = 1 - distance;
+                    //distance = 1 - distance;
 
                     // Clamp values
                     distance = MathHelper.Clamp(distance, 0, 1);
@@ -190,7 +190,17 @@ namespace WheelChairCollaborativeGame
                     //    newDuty = forward.Period;
 
                     // Set duty cycle
+                    TankGameObject playerTank = (TankGameObject)GameObjectManager.getGameObject("playerTank");
                     //forward.Duty = newDuty;
+                    Console.WriteLine("Distance: " + distance);
+                    if (distance < 0.5f)
+                    {
+                        playerTank.setAttackStance();
+                    }
+                    else
+                    {
+                        playerTank.setDefenceStance();
+                    }
 
                 }
 
