@@ -1,26 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using Statements
+using System;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
-using Microsoft.Kinect;
+using WheelChairGameLibrary.Helpers;
+using WheelChairGameLibrary.Screens;
+using WheelChairGameLibrary.GameObjects;
+using WheelChairGameLibrary.Sprites;
 
 using KinectForWheelchair;
 using KinectForWheelchair.Listeners;
-using KeyMessaging;
+
+using Microsoft.Kinect;
+
+#endregion
 
 namespace WheelChairCollaborativeGame
 {
-    class WheelchairSkeletonFrame
+    class KinectInput : GameObject
     {
 
-         // Constants //
+
+        Texture2D hand;
+        Vector2 headPositionPixels = new Vector2();
+
+        //Skeleton aSkeleton;
+
+
+        // Constants //
 
         const int skeletonId = -1;
 
@@ -35,7 +47,7 @@ namespace WheelChairCollaborativeGame
 
         // Readonly //
 
-        /*readonly WheelchairDetector wheelchairDetector;
+        readonly WheelchairDetector wheelchairDetector;
 
         // Listeners
         readonly LinearNudgeListener linearNudgeGesture;
@@ -43,17 +55,92 @@ namespace WheelChairCollaborativeGame
 
         readonly ThresholdListener menuLeftListener;
         readonly ThresholdListener menuRightListener;
-        readonly ThresholdListener menuEnterListener;*/
+        readonly ThresholdListener menuEnterListener;
 
 
-        // Mutable //
+        int binNum;
+
+        float distance;
+        float angle;
+
+
 
         public EnhancedSkeletonCollection skeletons;
 
         //int binNum;
 
-        float distance;
-        float angle;
+
+
+
+        public KinectInput(GameObjectManager gameObjectManager, String tag)
+            : base(gameObjectManager, tag)        
+        {
+            // Create wheelchair detector
+            wheelchairDetector = new WheelchairDetector();
+            //wheelchairDetector.SkeletonFrameReady += new EventHandler<KinectForWheelchair.SkeletonFrameReadyEventArgs>(wheelchairDetector_SkeletonFrameReady);
+            //wheelchairSkeletonFrame = new KinectInput();
+            wheelchairDetector.SkeletonFrameReady += wheelchairDetector_SkeletonFrameReady;
+
+            // Create linear nudge gesture
+            linearNudgeGesture = new LinearNudgeListener(wheelchairDetector, skeletonId);
+            //!!linearNudgeGesture.Triggered += new DCEventHandler(linearNudgeGesture_Triggered);
+
+            // Create angular nudge gesture
+            angularNudgeGesture = new AngularNudgeListener(wheelchairDetector, skeletonId);
+            //!!angularNudgeGesture.Triggered += new DCEventHandler(angularNudgeGesture_Triggered);
+
+            skeletons = new EnhancedSkeletonCollection();
+
+            hand = GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
+        }
+
+
+        public override void  Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+ 	         base.Draw(spriteBatch, gameTime);
+
+            /*Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
+            Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
+            ScreenManager.SpriteBatch.Begin();
+            //ScreenManager.SpriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
+            ScreenManager.SpriteBatch.End();
+            */
+
+
+            GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
+            //ScreenManager.SpriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
+            //ScreenManager.SpriteBatch.Draw(hand, headPositionPixels, null, Color.White, 0, new Vector2(hand.Width / 2, hand.Height / 2), 1, SpriteEffects.None, 0);
+
+
+            //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
+
+            foreach (EnhancedSkeleton enhancedSkeleton in skeletons)
+            {
+                if (enhancedSkeleton.Skeleton != null)
+                {
+                    foreach (Joint joint in enhancedSkeleton.Skeleton.Joints)
+                    {
+                        Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (640)), (((-0.5f * joint.Position.Y) + 0.5f) * (480)));
+                        GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Draw(hand, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Red);
+                    }
+                }
+            }
+
+            string message = ("This is it");
+            Vector2 textPosition = new Vector2(100.0f, 35.0f);
+            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content, message, textPosition);
+
+            //ScreenManager.SpriteBatch.End();
+            //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
+
+
+        }
+
+
+
+
         public void wheelchairDetector_SkeletonFrameReady(object sender, KinectForWheelchair.SkeletonFrameReadyEventArgs e)
         {
             using (EnhancedSkeletonFrame frame = e.OpenSkeletonFrame())
@@ -140,6 +227,16 @@ namespace WheelChairCollaborativeGame
 
                     //labelKey.Text = newDuty.ToString();
                     Console.WriteLine("Turn: " + newDuty.ToString());
+
+
+                    TankGameObject playerTank = (TankGameObject)GameObjectManager.getGameObject("playerTank");
+
+                    if (newDuty > 100)
+                    {
+                        playerTank.setAttackStance();
+                    }
+
+
 
                 }
 

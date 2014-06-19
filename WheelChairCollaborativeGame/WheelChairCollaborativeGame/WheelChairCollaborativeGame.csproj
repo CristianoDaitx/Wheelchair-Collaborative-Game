@@ -123,7 +123,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TankGameObject.cs" />
-    <Compile Include="WheelchairSkeletonFrame.cs" />
+    <Compile Include="KinectInput.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
