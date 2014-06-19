@@ -56,8 +56,8 @@ namespace WheelChairCollaborativeGame
             Content.RootDirectory = "Content";
 
 
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferWidth = (int)Config.resolution.Y;
+            graphics.PreferredBackBufferHeight = (int)Config.resolution.X;
 
 
             // Create the screen manager component.

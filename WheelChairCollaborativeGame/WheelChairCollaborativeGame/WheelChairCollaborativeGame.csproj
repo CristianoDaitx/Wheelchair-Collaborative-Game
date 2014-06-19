@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="EnemyGameObject.cs" />
     <Compile Include="GUImessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
