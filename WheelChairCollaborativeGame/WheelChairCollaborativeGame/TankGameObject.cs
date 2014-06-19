@@ -47,7 +47,7 @@ namespace WheelChairCollaborativeGame
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
 
-            Sprite.position.Y += 1;
+            Sprite.position.Y += 0.0001f;
 
 
             if (TimeSpan.FromMilliseconds(time).TotalSeconds > 2) //more than two seconds
@@ -64,6 +64,18 @@ namespace WheelChairCollaborativeGame
 
             isAttackStance = true;
         }
+
+
+        public void slideToRight()
+        {
+            Sprite.position.X += 3; 
+        }
+
+        public void slideToLeft()
+        {
+            Sprite.position.X -= 3;
+        }
+
 
     }
 }
