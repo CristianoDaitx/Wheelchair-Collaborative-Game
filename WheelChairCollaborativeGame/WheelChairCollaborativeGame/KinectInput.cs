@@ -26,6 +26,16 @@ namespace WheelChairCollaborativeGame
     {
 
 
+
+
+        EnhancedSkeleton skeletonPlayerTank;
+        EnhancedSkeleton skeletonPlayerSoldier;
+
+
+        Texture2D kinectRGBVideo;
+
+
+
         Texture2D hand;
         Vector2 headPositionPixels = new Vector2();
 
@@ -81,6 +91,11 @@ namespace WheelChairCollaborativeGame
             //wheelchairSkeletonFrame = new KinectInput();
             wheelchairDetector.SkeletonFrameReady += wheelchairDetector_SkeletonFrameReady;
 
+            kinectRGBVideo = new Texture2D(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 480, 640);
+            wheelchairDetector.KinectSensor.ColorStream.Enable();
+            wheelchairDetector.KinectSensor.ColorFrameReady += new EventHandler<ColorImageFrameReadyEventArgs>(kinectSensor_ColorFrameReady);
+            //wheelchairDetector.AllFramesReady += new EventHandler<KinectForWheelchair.AllFramesReadyEventArgs>(wheelchairDetector_AllFramesReady);
+
             // Create linear nudge gesture
             linearNudgeGesture = new LinearNudgeListener(wheelchairDetector, skeletonId);
             //!!linearNudgeGesture.Triggered += new DCEventHandler(linearNudgeGesture_Triggered);
@@ -93,6 +108,12 @@ namespace WheelChairCollaborativeGame
 
             hand = GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
         }
+
+        
+
+        
+
+        
 
 
         public override void  Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -116,7 +137,7 @@ namespace WheelChairCollaborativeGame
 
             //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
 
-            foreach (EnhancedSkeleton enhancedSkeleton in skeletons)
+            /*foreach (EnhancedSkeleton enhancedSkeleton in skeletons)
             {
                 if (enhancedSkeleton.Skeleton != null)
                 {
@@ -126,15 +147,51 @@ namespace WheelChairCollaborativeGame
                         GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Draw(hand, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Red);
                     }
                 }
+            }*/
+
+            spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
+
+            if (skeletonPlayerTank != null)
+            {
+                DrawSkeleton(skeletonPlayerTank.Skeleton, Color.Yellow);
             }
+
+            if (skeletonPlayerSoldier != null)
+            {
+                DrawSkeleton(skeletonPlayerSoldier.Skeleton, Color.Red);
+            }
+
+
+
 
             string message = ("This is it");
             Vector2 textPosition = new Vector2(100.0f, 35.0f);
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content, message, textPosition);
 
+            
+
             //ScreenManager.SpriteBatch.End();
             //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
 
+
+        }
+
+        private void DrawSkeleton(Skeleton skeleton, Color color)
+        {
+            foreach (Joint joint in skeleton.Joints)
+            {
+                Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (640)), (((-0.5f * joint.Position.Y) + 0.5f) * (480)));
+
+                PrimitiveDrawing.DrawCircle(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, position, 4.0f, color, 4, 8);
+
+            }
+
+            //skeleton.JointsJoints[JointType.HandRight].position
+            Vector2 position1 = new Vector2((((0.5f * skeleton.Joints[JointType.HandRight].Position.X) + 0.5f) * (640)), (((-0.5f * skeleton.Joints[JointType.HandRight].Position.Y) + 0.5f) * (480)));
+            Vector2 position2 = new Vector2((((0.5f * skeleton.Joints[JointType.ElbowRight].Position.X) + 0.5f) * (640)), (((-0.5f * skeleton.Joints[JointType.ElbowRight].Position.Y) + 0.5f) * (480)));
+
+            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, position1, position2, color, 1);
+            
 
         }
 
@@ -156,20 +213,95 @@ namespace WheelChairCollaborativeGame
                 // Track closest skeleton to Kinect
                 IEnumerable<EnhancedSkeleton> trackedSkeletons = skeletons.Where(x => x.Skeleton.TrackingState == SkeletonTrackingState.Tracked);
                 if (trackedSkeletons.Count() == 0)
+                {
+                    skeletonPlayerSoldier = null;
+                    skeletonPlayerTank = null;
                     return;
+                }
 
-                EnhancedSkeleton skeleton = trackedSkeletons.Aggregate((x, y) => (x.Skeleton.Position.Z < y.Skeleton.Position.Z) ? x : y);
+                IEnumerable<EnhancedSkeleton> trackedSkeletonTankPlayers = new EnhancedSkeletonCollection();
+                if (skeletonPlayerTank != null){
+                    trackedSkeletonTankPlayers = trackedSkeletons.Where(x => x.Skeleton.TrackingId == skeletonPlayerTank.Skeleton.TrackingId);
+                }
+
+                IEnumerable<EnhancedSkeleton> trackedSkeletonSoldierPlayers = new EnhancedSkeletonCollection();
+                if (skeletonPlayerSoldier != null)
+                {
+                    trackedSkeletonSoldierPlayers = trackedSkeletons.Where(x => x.Skeleton.TrackingId == skeletonPlayerSoldier.Skeleton.TrackingId);
+                }
+
+                if (trackedSkeletonTankPlayers.Count() == 1 && trackedSkeletonSoldierPlayers.Count() == 1)
+                {
+                    //matching skeletons
+                }
+                else if (trackedSkeletonTankPlayers.Count() == 0 && trackedSkeletonSoldierPlayers.Count() == 0)
+                {
+                    // no matching skeletons
+                    skeletonPlayerSoldier = null;
+                    skeletonPlayerTank = null;
+
+
+                    if (trackedSkeletons.Count() > 0)
+                    {
+                        skeletonPlayerTank = trackedSkeletons.FirstOrDefault(x => x.Skeleton.TrackingState == SkeletonTrackingState.Tracked && x.Mode == Mode.Seated);
+                        if (skeletonPlayerTank != null)
+                        {
+                            // found tank skeleton
+                        }
+
+                        skeletonPlayerSoldier = trackedSkeletons.FirstOrDefault(x => x.Skeleton.TrackingState == SkeletonTrackingState.Tracked && x.Mode == Mode.Standing);
+                        if (skeletonPlayerSoldier != null)
+                        {
+                            // found soldier skeleton
+                        }
+
+                    }
+
+                }
+                else if (trackedSkeletonTankPlayers.Count() == 1)
+                {
+                    // only tank skeleton match
+                    skeletonPlayerSoldier = null;
+                    if (trackedSkeletons.Count() == 2)
+                    {
+                        
+                        skeletonPlayerSoldier = trackedSkeletons.FirstOrDefault(x => x.Skeleton.TrackingId != skeletonPlayerTank.Skeleton.TrackingId && x.Mode == Mode.Standing);
+                        if (skeletonPlayerSoldier != null)
+                        {
+                            // found soldier skeleton
+                        }
+                    }
+                }
+                else if (trackedSkeletonSoldierPlayers.Count() == 1)
+                {
+                    // only soldier skeleton match
+                    skeletonPlayerTank = null;
+                    if (trackedSkeletons.Count() == 2)
+                    {
+                        // found tank skeleton
+                        skeletonPlayerTank = trackedSkeletons.FirstOrDefault(x => x.Skeleton.TrackingId != skeletonPlayerSoldier.Skeleton.TrackingId && x.Mode == Mode.Seated);
+                        if (skeletonPlayerTank != null)
+                        {
+                            // found tank skeleton
+                        }
+                    }
+                }
+                
+
+
+                /*EnhancedSkeleton skeleton = trackedSkeletons.Aggregate((x, y) => (x.Skeleton.Position.Z < y.Skeleton.Position.Z) ? x : y);
 
 
                 // Make sure skeleton has valid info for listening
                 if (skeleton == null || skeleton.Mode != Mode.Seated)
+                    return;*/
+
+                if (skeletonPlayerTank == null)
                     return;
-
-
                 // Position
                 {
                     // Get distance from Kinect
-                    distance = skeleton.SeatedInfo.Features.Position.Length();
+                    distance = skeletonPlayerTank.SeatedInfo.Features.Position.Length();
 
                     // Normalize distance between 0 and 1
                     const float minDistance = 1;
@@ -209,7 +341,7 @@ namespace WheelChairCollaborativeGame
                 {
 
                     // Get angle
-                    angle = skeleton.SeatedInfo.Features.Angle;
+                    angle = skeletonPlayerTank.SeatedInfo.Features.Angle;
 
                     // Normalize angle between -1 and 1
                     const float maxValue = 0.008f;
@@ -325,5 +457,39 @@ namespace WheelChairCollaborativeGame
 
             }
         }
+
+
+
+       void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+        {
+            using (ColorImageFrame colorImageFrame = e.OpenColorImageFrame())
+            {
+                if (colorImageFrame != null)
+                {
+
+                    byte[] pixelsFromFrame = new byte[colorImageFrame.PixelDataLength];
+
+                    colorImageFrame.CopyPixelDataTo(pixelsFromFrame);
+
+                    Color[] color = new Color[colorImageFrame.Height * colorImageFrame.Width];
+                    kinectRGBVideo = new Texture2D(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, colorImageFrame.Width, colorImageFrame.Height);
+
+                    // Go through each pixel and set the bytes correctly
+                    // Remember, each pixel got a Rad, Green and Blue
+                    int index = 0;
+                    for (int y = 0; y < colorImageFrame.Height; y++)
+                    {
+                        for (int x = 0; x < colorImageFrame.Width; x++, index += 4)
+                        {
+                            color[y * colorImageFrame.Width + x] = new Color(pixelsFromFrame[index + 2], pixelsFromFrame[index + 1], pixelsFromFrame[index + 0]);
+                        }
+                    }
+
+                    // Set pixeldata from the ColorImageFrame to a Texture2D
+                    kinectRGBVideo.SetData(color);
+                }
+            }
+        }
+    
     }
 }

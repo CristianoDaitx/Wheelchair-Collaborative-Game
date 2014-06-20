@@ -35,7 +35,7 @@ namespace WheelChairCollaborativeGame
 
         //TODO
         //string connectedStatus = "Not connected";
-        Texture2D kinectRGBVideo;
+        
 
 
 
@@ -61,7 +61,6 @@ namespace WheelChairCollaborativeGame
 
             time = 0;
 
-            kinectRGBVideo = new Texture2D(ScreenManager.GraphicsDevice, 1337, 1337);
 
 
             TankGameObject playerTank = new TankGameObject(GameObjectManager, "playerTank");
