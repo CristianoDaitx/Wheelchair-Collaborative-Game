@@ -285,7 +285,8 @@ namespace WheelChairCollaborativeGame
                 }
 
                 IEnumerable<EnhancedSkeleton> trackedSkeletonTankPlayers = new EnhancedSkeletonCollection();
-                if (skeletonPlayerTank != null){
+                if (skeletonPlayerTank != null)
+                {
                     trackedSkeletonTankPlayers = trackedSkeletons.Where(x => x.Skeleton.TrackingId == skeletonPlayerTank.Skeleton.TrackingId);
                 }
 
@@ -329,7 +330,7 @@ namespace WheelChairCollaborativeGame
                     skeletonPlayerSoldier = null;
                     if (trackedSkeletons.Count() == 2)
                     {
-                        
+
                         skeletonPlayerSoldier = trackedSkeletons.FirstOrDefault(x => x.Skeleton.TrackingId != skeletonPlayerTank.Skeleton.TrackingId && x.Mode == Mode.Standing);
                         if (skeletonPlayerSoldier != null)
                         {
@@ -351,7 +352,7 @@ namespace WheelChairCollaborativeGame
                         }
                     }
                 }
-                
+
 
 
                 /*EnhancedSkeleton skeleton = trackedSkeletons.Aggregate((x, y) => (x.Skeleton.Position.Z < y.Skeleton.Position.Z) ? x : y);
@@ -363,6 +364,40 @@ namespace WheelChairCollaborativeGame
 
                 if (skeletonPlayerTank == null)
                     return;
+
+
+                //Get arms position
+                {
+                    Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
+                    Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
+                    float Hposition = Hand.Position.Z - Head.Position.Z;
+
+                    if (Hposition > 0.88)
+                    {
+                        Console.WriteLine("what?! " + Hposition);
+
+                    }
+
+                    if (Hposition < 0.88)
+                    {
+                        Console.WriteLine("UHULL " + Hposition);
+                    }
+                        
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 // Position
                 {
                     // Get distance from Kinect
@@ -461,7 +496,7 @@ namespace WheelChairCollaborativeGame
                 //    {
                 //        if (skel.TrackingState == SkeletonTrackingState.Tracked)
                 //        {
-                            //aSkeleton = skeleton.Skeleton;
+                //aSkeleton = skeleton.Skeleton;
                 //        }
                 //    }
                 //}
