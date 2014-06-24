@@ -369,15 +369,16 @@ namespace WheelChairCollaborativeGame
                 //Get arms position
                 {
                     Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
-                    float Hposition = Hand.Position.Z;
+                    Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
+                    float Hposition = Hand.Position.Z - Head.Position.Z;
 
-                    if (Hposition > 1)
+                    if (Hposition > 0.88)
                     {
                         Console.WriteLine("what?! " + Hposition);
 
                     }
 
-                    if (Hposition < 1)
+                    if (Hposition < 0.88)
                     {
                         Console.WriteLine("UHULL " + Hposition);
                     }
