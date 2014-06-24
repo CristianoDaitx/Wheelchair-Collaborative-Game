@@ -62,17 +62,21 @@ namespace WheelChairCollaborativeGame
             time = 0;
 
 
+            KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
+            GameObjectManager.addGameObject(kinectInput);
 
             TankGameObject playerTank = new TankGameObject(GameObjectManager, "playerTank");
             GameObjectManager.addGameObject(playerTank);
 
 
-            EnemyGameObject enemy = new EnemyGameObject(GameObjectManager, "enemy");
-            GameObjectManager.addGameObject(enemy);
+            /*EnemyGameObject enemy = new EnemyGameObject(GameObjectManager, "enemy");
+            GameObjectManager.addGameObject(enemy);*/
 
+            GraphGameObject graph = new GraphGameObject(GameObjectManager, "graph");
+            GameObjectManager.addGameObject(graph);
+            //graph.IsPressed = true;
 
-            KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
-            GameObjectManager.addGameObject(kinectInput);
+            
 
             //backgroundTexture = ScreenManager.Game.Content.Load<Texture2D>("tiles/splash");
         }
