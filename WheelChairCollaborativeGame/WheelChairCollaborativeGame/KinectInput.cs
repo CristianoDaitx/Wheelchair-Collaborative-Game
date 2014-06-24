@@ -25,8 +25,6 @@ namespace WheelChairCollaborativeGame
     class KinectInput : GameObject
     {
 
-        float wirstRotation;
-
 
         EnhancedSkeleton skeletonPlayerTank;
         EnhancedSkeleton skeletonPlayerSoldier;
@@ -633,7 +631,7 @@ namespace WheelChairCollaborativeGame
                 */
 
             }
-        }
+        
 
 
 
