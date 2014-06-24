@@ -368,21 +368,30 @@ namespace WheelChairCollaborativeGame
                 GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                 //Get arms position
                 {
+                    
                     Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
                     Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
-                    float Hposition = Hand.Position.Z - Head.Position.Z;
+                    Joint Sholder = skeletonPlayerTank.Skeleton.Joints[JointType.ShoulderCenter];
+                    float HpositionZ = Hand.Position.Z - Head.Position.Z;
+                    float HpositionY = Hand.Position.Y - Head.Position.Y;
+                    float HpositionX = Hand.Position.X - Head.Position.X;
+                    float Sposition = Hand.Position.Y - Sholder.Position.Y;
 
-                    if (Hposition > 0)
+                    if (HpositionZ > -0.40 && HpositionZ < 0)
                     {
-                        Console.WriteLine("what?! " + Hposition);
+                        
+                        Console.WriteLine("what?! " + Sposition);
                         graph.IsPressed = false;
 
-                    } else
-                    
-                    //if (Hposition < 0.88)
+                    }
+                    else
                     {
-                        Console.WriteLine("UHULL " + Hposition);
-                        graph.IsPressed = true;
+                        if (Sposition > 0)
+                        {
+                            Console.WriteLine("UHULL " + Sposition);
+                            graph.IsPressed = true;
+                        }
+                        
                     }
                         
                 }
