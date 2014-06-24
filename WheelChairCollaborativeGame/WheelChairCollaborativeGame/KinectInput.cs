@@ -25,7 +25,7 @@ namespace WheelChairCollaborativeGame
     class KinectInput : GameObject
     {
 
-
+        float wirstRotation;
 
 
         EnhancedSkeleton skeletonPlayerTank;
@@ -83,7 +83,7 @@ namespace WheelChairCollaborativeGame
 
 
         public KinectInput(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)        
+            : base(gameObjectManager, tag)
         {
             // Create wheelchair detector
             wheelchairDetector = new WheelchairDetector();
@@ -117,16 +117,16 @@ namespace WheelChairCollaborativeGame
             hand = GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
         }
 
-        
-
-        
-
-        
 
 
-        public override void  Draw(SpriteBatch spriteBatch, GameTime gameTime)
+
+
+
+
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
- 	         base.Draw(spriteBatch, gameTime);
+            base.Draw(spriteBatch, gameTime);
 
             /*Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
@@ -176,7 +176,11 @@ namespace WheelChairCollaborativeGame
             Vector2 textPosition = new Vector2(100.0f, 35.0f);
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content, message, textPosition);
 
-            
+
+            if (wirstRotation != null)
+                GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+                        wirstRotation.ToString(), new Vector2(600, 400));
+
 
             //ScreenManager.SpriteBatch.End();
             //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
@@ -255,8 +259,8 @@ namespace WheelChairCollaborativeGame
 
         private Vector2 screenPosition(SkeletonPoint position)
         {
-            return new Vector2( 
-                (0.5f * position.X + 0.5f) * Config.cameraResolution.Y, 
+            return new Vector2(
+                (0.5f * position.X + 0.5f) * Config.cameraResolution.Y,
                 (-0.5f * position.Y + 0.5f) * Config.cameraResolution.X);
         }
 
@@ -377,21 +381,84 @@ namespace WheelChairCollaborativeGame
                         Console.WriteLine("what?! " + Hposition);
                         graph.IsPressed = false;
 
-                    } else
-                    
+                    }
+                    else
+
                     //if (Hposition < 0.88)
                     {
                         Console.WriteLine("UHULL " + Hposition);
                         graph.IsPressed = true;
                     }
-                        
+
                 }
 
 
 
+                /*
+                // high five
+                {
+
+                    float TRESHOLD_DEPTH = 0.05f;
+                    float TRESHOLD_WIDTH = 0.1f;
+                    float TRESHOLD_HEIGHT = 0.1f;
+                    float MIN_DEPTH = -0.2f;
+                    float MAX_DEPTH = 0.1f;
+                    float START_WIDTH = 0.4f;
+                    float START_HEIGHT = 0.1f;
+
+                    Joint Shoulder = skeletonPlayerTank.Skeleton.Joints[JointType.ShoulderRight];
+                    Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
+                    Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
+
+                    bool isAction = graph.IsPressed;
+
+
+                    float xPosition = Hand.Position.X - Head.Position.X;
+                    float zPosition = Hand.Position.Z - Head.Position.Z;
+                    float yPosition = Hand.Position.Y - Shoulder.Position.Y;
+
+                    //coming from not action
+                    if (!graph.IsPressed)
+                    {
+                        if (xPosition > START_WIDTH + TRESHOLD_WIDTH)
+                        {
+                            if (MIN_DEPTH < zPosition && zPosition < MAX_DEPTH)
+                            {
+                                if (yPosition > START_HEIGHT + TRESHOLD_HEIGHT)
+                                {
+                                    isAction = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (xPosition < START_WIDTH)
+                        {
+                            isAction = false;
+                        }
+                        if (zPosition < MIN_DEPTH - TRESHOLD_DEPTH || MAX_DEPTH + TRESHOLD_DEPTH < zPosition )
+                        {
+                            isAction = false;
+                        }
+                        if (yPosition < START_HEIGHT)
+                        {
+                            isAction = false;
+                        }
 
 
 
+                    }
+
+                    Console.WriteLine("Distance " + zPosition);
+
+
+                    graph.IsPressed = isAction;
+
+                    wirstRotation = MathHelper.ToDegrees(skeletonPlayerTank.Skeleton.BoneOrientations[JointType.ShoulderRight].AbsoluteRotation.Quaternion.Z);
+                */
+
+                }
 
 
 
@@ -562,7 +629,7 @@ namespace WheelChairCollaborativeGame
 
 
 
-       void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+        void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
             using (ColorImageFrame colorImageFrame = e.OpenColorImageFrame())
             {
@@ -592,6 +659,6 @@ namespace WheelChairCollaborativeGame
                 }
             }
         }
-    
+
     }
 }
