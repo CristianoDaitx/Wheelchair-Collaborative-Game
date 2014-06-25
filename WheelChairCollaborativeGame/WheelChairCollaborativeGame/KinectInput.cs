@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
-
 using WheelChairGameLibrary.Helpers;
 using WheelChairGameLibrary.Screens;
 using WheelChairGameLibrary.GameObjects;
@@ -120,7 +119,41 @@ namespace WheelChairCollaborativeGame
 
 
 
+        public override void Update(GameTime gameTime, InputState inputState)
+        {
+            base.Update(gameTime, inputState);
+            GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+            PlayerIndex playerIndex = PlayerIndex.One;
+            bool isAction = graph.IsPressed;
 
+            //if (!isAction)
+            //{
+            if (inputState.IsButtonPressed(Buttons.A, playerIndex, out playerIndex))
+            {
+                action_count++;
+                isAction = true;
+                /*if (inputState.IsButtonPressed(Buttons.A, null, out playerIndex))
+                {
+                    isAction = true;
+                }*/
+                //}
+
+            }
+            //else
+                //isAction = false;
+            
+            //if (isAction)
+            //{
+            if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
+                {
+
+                    isAction = false;
+                }
+            //}
+  
+
+            graph.IsPressed = isAction;
+        }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
@@ -189,6 +222,7 @@ namespace WheelChairCollaborativeGame
 
         }
         
+
         private void DrawSkeleton(Skeleton skeleton, Color color)
         {
             foreach (Joint joint in skeleton.Joints)
