@@ -65,7 +65,7 @@ namespace WheelChairCollaborativeGame
         readonly ThresholdListener menuRightListener;
         readonly ThresholdListener menuEnterListener;
 
-
+        private int action_count = 0;
         int binNum;
 
         float distance;
@@ -167,6 +167,9 @@ namespace WheelChairCollaborativeGame
                 DrawSkeleton(skeletonPlayerSoldier.Skeleton, Color.Red);
             }
 
+            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+                         action_count.ToString(), new Vector2(60, 40)); 
+
 
 
 
@@ -185,7 +188,7 @@ namespace WheelChairCollaborativeGame
 
 
         }
-
+        
         private void DrawSkeleton(Skeleton skeleton, Color color)
         {
             foreach (Joint joint in skeleton.Joints)
@@ -368,6 +371,7 @@ namespace WheelChairCollaborativeGame
                     return;
 
                 GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+                 
                 //Get arms position
                 {
 
@@ -398,6 +402,7 @@ namespace WheelChairCollaborativeGame
                                 if (HpositionY > START_HEIGHT + TRESHOLD_HEIGHT)
                                 {
                                     isAction = true;
+                                    action_count++;
                                 }
                             }
                         }
@@ -483,6 +488,7 @@ namespace WheelChairCollaborativeGame
                                 if (yPosition > START_HEIGHT + TRESHOLD_HEIGHT)
                                 {
                                     isAction = true;
+                 *                  action_count ++;
                                 }
                             }
                         }
