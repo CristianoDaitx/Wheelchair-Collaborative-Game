@@ -120,8 +120,17 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="EnemyGameObject.cs" />
+    <Compile Include="GeometricPrimitives\BezierPrimitive.cs" />
+    <Compile Include="GeometricPrimitives\CubePrimitive.cs" />
+    <Compile Include="GeometricPrimitives\CylinderPrimitive.cs" />
+    <Compile Include="GeometricPrimitives\GeometricPrimitive.cs" />
+    <Compile Include="GeometricPrimitives\SpherePrimitive.cs" />
+    <Compile Include="GeometricPrimitives\TeapotPrimitive.cs" />
+    <Compile Include="GeometricPrimitives\TorusPrimitive.cs" />
+    <Compile Include="GeometricPrimitives\VertexPositionNormal.cs" />
     <Compile Include="GraphGameObject.cs" />
     <Compile Include="GUImessage.cs" />
+    <Compile Include="KinectTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="SplashScreen.cs" />

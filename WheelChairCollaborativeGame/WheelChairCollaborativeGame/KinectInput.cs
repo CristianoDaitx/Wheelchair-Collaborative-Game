@@ -29,6 +29,11 @@ namespace WheelChairCollaborativeGame
         EnhancedSkeleton skeletonPlayerTank;
         EnhancedSkeleton skeletonPlayerSoldier;
 
+        bool isWireframe = true;
+        RasterizerState wireFrameState;
+        GeometricPrimitive currentPrimitive;
+        KinectTrigger triggerOne;
+
 
         Texture2D kinectRGBVideo;
 
@@ -78,10 +83,19 @@ namespace WheelChairCollaborativeGame
         //int binNum;
 
 
+        enum MoveState
+        {
+            active,
+            startPosition,
+            outside
+        };
+        MoveState moveState = MoveState.outside;
+
+
 
 
         public KinectInput(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)        
+            : base(gameObjectManager, tag)
         {
             // Create wheelchair detector
             wheelchairDetector = new WheelchairDetector();
@@ -113,6 +127,14 @@ namespace WheelChairCollaborativeGame
             skeletons = new EnhancedSkeletonCollection();
 
             hand = GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
+
+
+            currentPrimitive = new CubePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 1f);
+            wireFrameState = new RasterizerState()
+            {
+                FillMode = FillMode.WireFrame,
+                CullMode = CullMode.None,
+            };
         }
 
 
@@ -132,8 +154,8 @@ namespace WheelChairCollaborativeGame
             //ScreenManager.SpriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
             ScreenManager.SpriteBatch.End();
             */
-
-
+            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
+            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
             GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
@@ -179,11 +201,144 @@ namespace WheelChairCollaborativeGame
                 GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                         wirstRotation.ToString(), new Vector2(600, 400));
 
-
+            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
+            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
             //ScreenManager.SpriteBatch.End();
             //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
 
+            if (isWireframe)
+            {
+                GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.RasterizerState = wireFrameState;
+            }
+            else
+            {
+                GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            }
 
+            
+
+            //Viewport colorViewPort = new Viewport(0, 0, (int)Config.cameraResolution.X, (int)Config.cameraResolution.Y);
+            //Matrix Scale = Matrix.CreateScale(new Vector3(Config.cameraResolution.X / Config.resolution.X, Config.cameraResolution.Y / Config.resolution.Y, 1));
+
+            Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 0), new Vector3(0, 0, 100), Vector3.Up);
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
+                                                        //colorViewPort.AspectRatio,
+                                                        GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Viewport.AspectRatio,
+                                                        1.0f,
+                                                        100);
+            //projection *= Scale;
+
+            // Draw the current primitive.
+            Color color = Color.White;
+
+            DrawPrimitveSkeleton(currentPrimitive, view, projection, color);
+
+            //draw trigger
+            if (skeletonPlayerTank == null)
+            {
+                //defines fixed positions:
+                Vector3 head = new Vector3(0f, 0f, 2f);
+                Vector3 hand = new Vector3(-0.1f, 0f, 2f);
+                Vector3 difference = new Vector3(-0.3f, 0f, 0f);
+                
+
+
+                GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+
+                /*SkeletonPoint skeletonPoint = new SkeletonPoint();
+                skeletonPoint.X = -0.2f; // positive goes right
+                skeletonPoint.Y = 0.0f; // positive goes up
+                skeletonPoint.Z = -0.3f; //negative goes forward*/
+
+                triggerOne = new KinectTrigger(head, difference);
+                //var position = ConvertRealWorldPoint(triggerOne.getPosition());
+                
+                
+                Vector3 trigerPosition = ConvertRealWorldPoint(triggerOne.getPosition());
+                Vector3 headPosition = ConvertRealWorldPoint(head);
+                Vector3 handPosition = ConvertRealWorldPoint(hand);
+
+                //draw
+                GeometricPrimitive spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 4.000000f, 8); //diameter is double from trigger radius, same scale
+                Matrix world = new Matrix();
+                world = Matrix.CreateTranslation(trigerPosition);
+                spherePrimitive.Draw(world, view, projection, Color.Yellow);
+
+                world = new Matrix();
+                world = Matrix.CreateTranslation(handPosition);
+                currentPrimitive.Draw(world, view, projection, Color.Blue);
+
+                world = new Matrix();
+                world = Matrix.CreateTranslation(headPosition);
+                currentPrimitive.Draw(world, view, projection, Color.Red);
+
+
+                BoundingSphere sphere = new BoundingSphere(trigerPosition, 2.001f); //radius of 0.1f e.g 0.1f * 10; -0.1f == 10 cm
+
+                if (sphere.Contains(handPosition) == ContainmentType.Contains)
+                {
+                    graph.IsPressed = true;
+                }
+                else
+                {
+                    graph.IsPressed = false;
+                }
+
+
+                
+
+
+            }
+
+
+            // Reset the fill mode renderstate.
+            GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+
+
+        }
+
+        private void DrawPrimitveSkeleton(GeometricPrimitive primitive, Matrix view, Matrix projection, Color color)
+        {
+            try
+            {
+                if (skeletonPlayerTank != null)
+                {
+                    if (skeletonPlayerTank.Skeleton.TrackingState == SkeletonTrackingState.Tracked)
+                    {
+                        foreach (Joint joint in skeletonPlayerTank.Skeleton.Joints)
+                        {
+                            var position = ConvertRealWorldPoint(joint.Position);
+                            Matrix world = new Matrix();
+                            world = Matrix.CreateTranslation(position);
+                            primitive.Draw(world, view, projection, color);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public static Vector3 ConvertRealWorldPoint(Vector3 position)
+        {
+            var returnVector = new Vector3();
+
+            returnVector.X = position.X * -10f;
+            returnVector.Y = position.Y * 10f;
+            returnVector.Z = position.Z * 10f;
+            return returnVector;
+        }
+
+        public static Vector3 ConvertRealWorldPoint(SkeletonPoint position)
+        {
+            var returnVector = new Vector3();
+
+            returnVector.X = position.X * -10f;
+            returnVector.Y = position.Y * 10f;
+            returnVector.Z = position.Z * 10f;
+            return returnVector;
         }
 
         private void DrawSkeleton(Skeleton skeleton, Color color)
@@ -371,7 +526,7 @@ namespace WheelChairCollaborativeGame
                 //Get arms position
                 {
 
-                    
+
                     float TRESHOLD_DEPTH = 0.05f;
                     float TRESHOLD_WIDTH = 0.1f;
                     float TRESHOLD_HEIGHT = 0.1f;
@@ -379,8 +534,11 @@ namespace WheelChairCollaborativeGame
                     float MAX_WIDTH = 0.3f;
                     float START_DEPTH = -0.2f;
                     float START_HEIGHT = -0.1f;
-                    
-                    bool isAction = graph.IsPressed;
+
+                    float MIN_DEPTH = -0.3f;
+                    float MAX_DEPTH = 0.1f;
+
+                    //bool isAction = graph.IsPressed;
 
                     Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
                     Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
@@ -389,42 +547,71 @@ namespace WheelChairCollaborativeGame
                     float HpositionX = Hand.Position.X - Head.Position.X;
                     float HpositionY = Hand.Position.Y - Head.Position.Y;
 
-                    if (!isAction)
+
+                    switch (moveState)
                     {
-                        if (HpositionZ < START_DEPTH + TRESHOLD_DEPTH)
-                        {
-                            if (MIN_WIDTH < HpositionX && HpositionX < MAX_WIDTH)
+                        case MoveState.startPosition:
+                            if (HpositionZ < START_DEPTH + TRESHOLD_DEPTH)
                             {
-                                if (HpositionY > START_HEIGHT + TRESHOLD_HEIGHT)
+                                if (MIN_WIDTH < HpositionX && HpositionX < MAX_WIDTH)
                                 {
-                                    isAction = true;
+                                    if (HpositionY > START_HEIGHT + TRESHOLD_HEIGHT)
+                                    {
+                                        moveState = MoveState.active;
+                                    }
                                 }
                             }
-                        }
+
+                            if (HpositionZ > START_DEPTH)
+                            {
+                                moveState = MoveState.outside;
+                            }
+                            if (HpositionX < MIN_WIDTH - TRESHOLD_WIDTH || MAX_WIDTH + TRESHOLD_WIDTH < HpositionX)
+                            {
+                                moveState = MoveState.outside;
+                            }
+                            if (HpositionY < START_HEIGHT)
+                            {
+                                moveState = MoveState.outside;
+                            }
+                            break;
+
+                        case MoveState.active:
+                            if (HpositionZ > START_DEPTH)
+                            {
+                                moveState = MoveState.outside;
+                            }
+                            if (HpositionX < MIN_WIDTH - TRESHOLD_WIDTH || MAX_WIDTH + TRESHOLD_WIDTH < HpositionX)
+                            {
+                                moveState = MoveState.outside;
+                            }
+                            if (HpositionY < START_HEIGHT)
+                            {
+                                moveState = MoveState.outside;
+                            }
+                            break;
+
+                        case MoveState.outside:
+                            if (MIN_DEPTH < HpositionZ && HpositionZ < MAX_DEPTH + TRESHOLD_DEPTH) // (HpositionZ < START_DEPTH + TRESHOLD_DEPTH )
+                            {
+                                if (MIN_WIDTH < HpositionX && HpositionX < MAX_WIDTH)
+                                {
+                                    if (HpositionY > START_HEIGHT/* + TRESHOLD_HEIGHT*/)
+                                    {
+                                        moveState = MoveState.startPosition;
+                                    }
+                                }
+                            }
+                            break;
                     }
+
+                    Console.WriteLine("Distance " + HpositionZ);
+                    Console.WriteLine("State " + moveState);
+
+                    /*if (moveState == MoveState.active)
+                        graph.IsPressed = true;
                     else
-                    {
-                        if (HpositionZ > START_DEPTH)
-                        {
-                            isAction = false;
-                        }
-                        if (HpositionX < MIN_WIDTH - TRESHOLD_WIDTH || MAX_WIDTH + TRESHOLD_WIDTH < HpositionX)
-                        {
-                            isAction = false;
-                        }
-                        if (HpositionY < START_HEIGHT)
-                        {
-                            isAction = false;
-                        }
-
-
-
-
-                    }
-
-                    Console.WriteLine("Distance " + HpositionY);
-
-                    graph.IsPressed = isAction;
+                        graph.IsPressed = false;*/
 
 
 
@@ -445,7 +632,7 @@ namespace WheelChairCollaborativeGame
                         }
 
                     }*/
-                    
+
                 }
 
 
@@ -682,11 +869,11 @@ namespace WheelChairCollaborativeGame
 
             }
         }
-        
 
 
 
-       void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+
+        void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
             using (ColorImageFrame colorImageFrame = e.OpenColorImageFrame())
             {
@@ -716,6 +903,6 @@ namespace WheelChairCollaborativeGame
                 }
             }
         }
-    
+
     }
 }
