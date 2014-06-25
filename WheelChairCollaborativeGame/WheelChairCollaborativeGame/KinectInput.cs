@@ -370,32 +370,82 @@ namespace WheelChairCollaborativeGame
                 GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                 //Get arms position
                 {
+
                     
+                    float TRESHOLD_DEPTH = 0.05f;
+                    float TRESHOLD_WIDTH = 0.1f;
+                    float TRESHOLD_HEIGHT = 0.1f;
+                    float MIN_WIDTH = -0.0f;
+                    float MAX_WIDTH = 0.3f;
+                    float START_DEPTH = -0.2f;
+                    float START_HEIGHT = -0.1f;
+                    
+                    bool isAction = graph.IsPressed;
+
                     Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
                     Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
                     Joint Sholder = skeletonPlayerTank.Skeleton.Joints[JointType.ShoulderCenter];
                     float HpositionZ = Hand.Position.Z - Head.Position.Z;
-                    float HpositionY = Hand.Position.Y - Head.Position.Y;
                     float HpositionX = Hand.Position.X - Head.Position.X;
-                    float Sposition = Hand.Position.Y - Sholder.Position.Y;
+                    float HpositionY = Hand.Position.Y - Head.Position.Y;
 
+                    if (!isAction)
+                    {
+                        if (HpositionZ < START_DEPTH + TRESHOLD_DEPTH)
+                        {
+                            if (MIN_WIDTH < HpositionX && HpositionX < MAX_WIDTH)
+                            {
+                                if (HpositionY > START_HEIGHT + TRESHOLD_HEIGHT)
+                                {
+                                    isAction = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (HpositionZ > START_DEPTH)
+                        {
+                            isAction = false;
+                        }
+                        if (HpositionX < MIN_WIDTH - TRESHOLD_WIDTH || MAX_WIDTH + TRESHOLD_WIDTH < HpositionX)
+                        {
+                            isAction = false;
+                        }
+                        if (HpositionY < START_HEIGHT)
+                        {
+                            isAction = false;
+                        }
+
+
+
+
+                    }
+
+                    Console.WriteLine("Distance " + HpositionY);
+
+                    graph.IsPressed = isAction;
+
+
+
+                    /*
                     if (HpositionZ > -0.40 && HpositionZ < 0)
                     {
-                        
-                        Console.WriteLine("what?! " + Sposition);
+
+                        Console.WriteLine("HpositionZ" + HpositionZ);
                         graph.IsPressed = false;
 
                     }
                     else
                     {
-                        if (Sposition > 0)
+                        if (HpositionY > 0)
                         {
-                            Console.WriteLine("UHULL " + Sposition);
+                            Console.WriteLine("HpositionY" + HpositionY);
                             graph.IsPressed = true;
                         }
-                        
-                    }
 
+                    }*/
+                    
                 }
 
 
@@ -443,7 +493,7 @@ namespace WheelChairCollaborativeGame
                         {
                             isAction = false;
                         }
-                        if (zPosition < MIN_DEPTH - TRESHOLD_DEPTH || MAX_DEPTH + TRESHOLD_DEPTH < zPosition )
+                        if (zPosition < MIN_DEPTH - TRESHOLD_DEPTH || MAX_DEPTH + TRESHOLD_DEPTH < zPosition)
                         {
                             isAction = false;
                         }
@@ -462,10 +512,10 @@ namespace WheelChairCollaborativeGame
                     graph.IsPressed = isAction;
 
                     wirstRotation = MathHelper.ToDegrees(skeletonPlayerTank.Skeleton.BoneOrientations[JointType.ShoulderRight].AbsoluteRotation.Quaternion.Z);
-                */
+
 
                 }
-
+                */
 
 
 
@@ -631,6 +681,7 @@ namespace WheelChairCollaborativeGame
                 */
 
             }
+        }
         
 
 
