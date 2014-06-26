@@ -32,6 +32,7 @@ namespace WheelChairCollaborativeGame
         bool isWireframe = true;
         RasterizerState wireFrameState;
         GeometricPrimitive currentPrimitive;
+        GeometricPrimitive spherePrimitive;
         KinectTrigger triggerOne;
 
 
@@ -129,7 +130,13 @@ namespace WheelChairCollaborativeGame
             hand = GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
 
 
+
+            // triggering part testing
+            Vector3 difference = new Vector3(-0.25f, 0f, 0f);
+            triggerOne = new KinectTrigger(JointType.Head, difference, 0.1f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+
             currentPrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.1f, 8);
+            spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.2f, 8); 
             wireFrameState = new RasterizerState()
             {
                 FillMode = FillMode.WireFrame,
@@ -220,25 +227,20 @@ namespace WheelChairCollaborativeGame
             //Viewport colorViewPort = new Viewport(0, 0, (int)Config.cameraResolution.X, (int)Config.cameraResolution.Y);
             //Matrix Scale = Matrix.CreateScale(new Vector3(Config.cameraResolution.X / Config.resolution.X, Config.cameraResolution.Y / Config.resolution.Y, 1));
 
-            Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 0), new Vector3(0, 0, 100), Vector3.Up);
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
-                                                        //colorViewPort.AspectRatio,
-                                                        GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Viewport.AspectRatio,
-                                                        1.0f,
-                                                        100);
+            
             //projection *= Scale;
 
             // Draw the current primitive.
             Color color = Color.White;
 
-            DrawPrimitveSkeleton(currentPrimitive, view, projection, color);
+            DrawPrimitveSkeleton(currentPrimitive, color);
 
             //draw trigger
-            if (skeletonPlayerTank == null)
+            if (skeletonPlayerTank != null)
             {
                 //defines fixed positions:
-                Vector3 head = new Vector3(0f, 0f, 2f);
-                Vector3 hand = new Vector3(-0.1f, 0f, 2f);
+                /*Vector3 head = new Vector3(0f, 0f, 2f);
+                Vector3 hand = new Vector3(-0.1f, 0f, 2f);*/
                 Vector3 difference = new Vector3(-0.25f, 0f, 0f);
                 
 
@@ -250,37 +252,33 @@ namespace WheelChairCollaborativeGame
                 skeletonPoint.Y = 0.0f; // positive goes up
                 skeletonPoint.Z = -0.3f; //negative goes forward*/
 
-                triggerOne = new KinectTrigger(head, difference);
+                //triggerOne = new KinectTrigger(skeletonPlayerTank.Skeleton.Joints[JointType.Head], difference);
                 //var position = ConvertRealWorldPoint(triggerOne.getPosition());
 
 
-                Vector3 trigerPosition = triggerOne.getPosition(); // ConvertRealWorldPoint(triggerOne.getPosition());
-                Vector3 headPosition = head; //ConvertRealWorldPoint(head);
-                Vector3 handPosition = hand; //ConvertRealWorldPoint(hand);
 
                 //draw testing
-                Matrix scale = Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
 
-                GeometricPrimitive spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.2f, 8); //diameter is double from trigger radius, same scale
-                Matrix world = new Matrix();
-                world = Matrix.CreateTranslation(trigerPosition) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
+                //GeometricPrimitive spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.2f, 8); //diameter is double from trigger radius, same scale
+                /*Matrix world = new Matrix();
+                world = Matrix.CreateTranslation(triggerOne.getPosition()) * scale;
                 //world = Matrix.CreateTranslation(trigerPosition);
                 //scale *= world;
                 spherePrimitive.Draw(world, view, projection, Color.Yellow);
 
                 world = new Matrix();
-                world = Matrix.CreateTranslation(handPosition) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
+                world = Matrix.CreateTranslation(KinectTrigger.skeletonPointToVector3(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft])) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
                 currentPrimitive.Draw(world, view, projection, Color.Blue);
 
                 world = new Matrix();
-                world = Matrix.CreateTranslation(headPosition) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
-                currentPrimitive.Draw(world, view, projection, Color.Red);
+                world = Matrix.CreateTranslation(KinectTrigger.skeletonPointToVector3(skeletonPlayerTank.Skeleton.Joints[JointType.Head])) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
+                currentPrimitive.Draw(world, view, projection, Color.Red);*/
 
-                
+                triggerOne.draw();
 
 
-                BoundingSphere sphere = new BoundingSphere(trigerPosition, 0.1f);
-                BoundingSphere sphereHand = new BoundingSphere(handPosition, 0.05f); 
+                /*BoundingSphere sphere = new BoundingSphere(triggerOne.getPosition(), 0.1f);
+                BoundingSphere sphereHand = new BoundingSphere(KinectTrigger.skeletonPointToVector3(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]), 0.05f); 
 
                 //if (sphere.Contains(handPosition) == ContainmentType.Contains)
                 if (sphere.Intersects(sphereHand))
@@ -290,10 +288,8 @@ namespace WheelChairCollaborativeGame
                 else
                 {
                     graph.IsPressed = false;
-                }
+                }*/
 
-
-                
 
 
             }
@@ -305,7 +301,7 @@ namespace WheelChairCollaborativeGame
 
         }
 
-        private void DrawPrimitveSkeleton(GeometricPrimitive primitive, Matrix view, Matrix projection, Color color)
+        private void DrawPrimitveSkeleton(GeometricPrimitive primitive, Color color)
         {
             try
             {
@@ -315,11 +311,10 @@ namespace WheelChairCollaborativeGame
                     {
                         foreach (Joint joint in skeletonPlayerTank.Skeleton.Joints)
                         {
-                            //var position = ConvertRealWorldPoint(joint.Position);
                             Vector3 position = new Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
                             Matrix world = new Matrix();
                             world = Matrix.CreateTranslation(position) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
-                            primitive.Draw(world, view, projection, color);
+                            primitive.Draw(world, KinectTrigger.view, KinectTrigger.projection, color);
                         }
                     }
                 }
@@ -330,7 +325,7 @@ namespace WheelChairCollaborativeGame
             }
         }
 
-        public static Vector3 ConvertRealWorldPoint(Vector3 position)
+        /*public static Vector3 ConvertRealWorldPoint(Vector3 position)
         {
             var returnVector = new Vector3();
 
@@ -338,9 +333,9 @@ namespace WheelChairCollaborativeGame
             returnVector.Y = position.Y * 10f;
             returnVector.Z = position.Z * 10f;
             return returnVector;
-        }
+        }*/
 
-        public static Vector3 ConvertRealWorldPoint(SkeletonPoint position)
+        /*public static Vector3 ConvertRealWorldPoint(SkeletonPoint position)
         {
             var returnVector = new Vector3();
 
@@ -348,7 +343,7 @@ namespace WheelChairCollaborativeGame
             returnVector.Y = position.Y * 10f;
             returnVector.Z = position.Z * 10f;
             return returnVector;
-        }
+        }*/
 
         private void DrawSkeleton(Skeleton skeleton, Color color)
         {
@@ -519,6 +514,21 @@ namespace WheelChairCollaborativeGame
                     }
                 }
 
+                //kinect trigger part
+                GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+
+                if (skeletonPlayerTank != null){
+                    triggerOne.TrackingSkeleton = skeletonPlayerTank.Skeleton;
+
+                    if (triggerOne.checkIsTriggered(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]))
+                    {
+                        graph.IsPressed = true;
+                    }
+                    else
+                    {
+                        graph.IsPressed = false;
+                    }
+                }
 
 
                 /*EnhancedSkeleton skeleton = trackedSkeletons.Aggregate((x, y) => (x.Skeleton.Position.Z < y.Skeleton.Position.Z) ? x : y);
@@ -531,7 +541,7 @@ namespace WheelChairCollaborativeGame
                 if (skeletonPlayerTank == null)
                     return;
 
-                GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+                
                 //Get arms position
                 {
 

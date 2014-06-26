@@ -27,9 +27,9 @@ namespace WheelChairCollaborativeGame
     class GraphGameObject : GameObject
     {
 
-        private readonly int STARTING_X = 900;
+        private readonly int STARTING_X = 640;
         private readonly int PRESSED_Y = 450;
-        private readonly int NOT_PRESSED_Y = 500;
+        private readonly int NOT_PRESSED_Y = 470;
         private readonly int MAX_RECORDS = 10;
         private readonly int LINE_WIDTH = 2;
 
