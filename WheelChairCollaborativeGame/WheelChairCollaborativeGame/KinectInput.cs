@@ -27,6 +27,8 @@ namespace WheelChairCollaborativeGame
 
         EnhancedSkeleton skeletonPlayerTank;
         EnhancedSkeleton skeletonPlayerSoldier;
+        bool kinectFrameChange;
+        
 
 
         Texture2D kinectRGBVideo;
@@ -126,34 +128,162 @@ namespace WheelChairCollaborativeGame
             PlayerIndex playerIndex = PlayerIndex.One;
             bool isAction = graph.IsPressed;
 
-            //if (!isAction)
-            //{
+            /*
+            //Action by pressing A on gamepad.
             if (inputState.IsButtonPressed(Buttons.A, playerIndex, out playerIndex))
             {
                 action_count++;
                 isAction = true;
-                /*if (inputState.IsButtonPressed(Buttons.A, null, out playerIndex))
-                {
-                    isAction = true;
-                }*/
-                //}
-
             }
-            //else
-                //isAction = false;
-            
-            //if (isAction)
-            //{
-            if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
-                {
 
-                    isAction = false;
-                }
-            //}
-  
+            if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
+            {
+
+                isAction = false;
+            }
 
             graph.IsPressed = isAction;
-        }
+             */
+            if (kinectFrameChange == true)
+            {
+                if (skeletonPlayerTank != null)
+                {
+
+                    kinectFrameChange = false;
+
+
+
+                    /*
+                    
+                    //Get arms position
+                    {
+
+
+                        float TRESHOLD_DEPTH = 0.2f;
+                        float TRESHOLD_WIDTH = 0.1f;
+                        float TRESHOLD_HEIGHT = 0.1f;
+                        float MIN_WIDTH = -0.0f;
+                        float MAX_WIDTH = 0.3f;
+                        float START_DEPTH = -0.2f;
+                        float START_HEIGHT = -0.1f;
+
+
+                        Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
+                        Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
+                        Joint Sholder = skeletonPlayerTank.Skeleton.Joints[JointType.ShoulderCenter];
+                        float HpositionZ = Hand.Position.Z - Head.Position.Z;
+                        float HpositionX = Hand.Position.X - Head.Position.X;
+                        float HpositionY = Hand.Position.Y - Head.Position.Y;
+
+                        if (!isAction)
+                        {
+                            if (HpositionZ < START_DEPTH + TRESHOLD_DEPTH)
+                            {
+                                if (MIN_WIDTH < HpositionX && HpositionX < MAX_WIDTH)
+                                {
+                                    if (HpositionY > START_HEIGHT + TRESHOLD_HEIGHT)
+                                    {
+                                        isAction = true;
+                                        action_count++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (HpositionZ > START_DEPTH)
+                            {
+                                isAction = false;
+                            }
+                            if (HpositionX < MIN_WIDTH - TRESHOLD_WIDTH || MAX_WIDTH + TRESHOLD_WIDTH < HpositionX)
+                            {
+                                isAction = false;
+                            }
+                            if (HpositionY < START_HEIGHT)
+                            {
+                                isAction = false;
+                            }
+
+
+
+
+                        }
+
+                        Console.WriteLine("Distance " + HpositionY);
+
+                        graph.IsPressed = isAction;
+            
+
+                    }*/
+                    // high five
+                    {
+
+                        float TRESHOLD_DEPTH = 0.05f;
+                        float TRESHOLD_WIDTH = 0.1f;
+                        float TRESHOLD_HEIGHT = 0.1f;
+                        float MIN_DEPTH = -0.2f;
+                        float MAX_DEPTH = 0.1f;
+                        float START_WIDTH = 0.4f;
+                        float START_HEIGHT = 0.1f;
+
+                        Joint Shoulder = skeletonPlayerTank.Skeleton.Joints[JointType.ShoulderRight];
+                        Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
+                        Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
+
+
+
+
+                        float xPosition = Hand.Position.X - Head.Position.X;
+                        float zPosition = Hand.Position.Z - Head.Position.Z;
+                        float yPosition = Hand.Position.Y - Shoulder.Position.Y;
+
+                        //coming from not action
+                        if (!graph.IsPressed)
+                        {
+                            if (xPosition > START_WIDTH + TRESHOLD_WIDTH)
+                            {
+                                if (MIN_DEPTH < zPosition && zPosition < MAX_DEPTH)
+                                {
+                                    if (yPosition > START_HEIGHT + TRESHOLD_HEIGHT)
+                                    {
+                                        isAction = true;
+                                        action_count++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (xPosition < START_WIDTH)
+                            {
+                                isAction = false;
+                            }
+                            if (zPosition < MIN_DEPTH - TRESHOLD_DEPTH || MAX_DEPTH + TRESHOLD_DEPTH < zPosition)
+                            {
+                                isAction = false;
+                            }
+                            if (yPosition < START_HEIGHT)
+                            {
+                                isAction = false;
+                            }
+
+
+
+                        }
+
+                        Console.WriteLine("Distance " + zPosition);
+
+
+                        graph.IsPressed = isAction;
+
+                        wirstRotation = MathHelper.ToDegrees(skeletonPlayerTank.Skeleton.BoneOrientations[JointType.ShoulderRight].AbsoluteRotation.Quaternion.Z);
+
+
+                    }
+                }
+
+            }
+            }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
@@ -206,7 +336,7 @@ namespace WheelChairCollaborativeGame
 
 
 
-            string message = ("This is it");
+            string message = ("Actions made");
             Vector2 textPosition = new Vector2(100.0f, 35.0f);
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content, message, textPosition);
 
@@ -310,7 +440,7 @@ namespace WheelChairCollaborativeGame
                 // Sometimes the frame can be null
                 if (frame == null)
                     return;
-
+                kinectFrameChange = true;
                 // Get skeletons
                 frame.CopySkeletonDataTo(skeletons);
 
@@ -327,12 +457,14 @@ namespace WheelChairCollaborativeGame
                 if (skeletonPlayerTank != null)
                 {
                     trackedSkeletonTankPlayers = trackedSkeletons.Where(x => x.Skeleton.TrackingId == skeletonPlayerTank.Skeleton.TrackingId);
+                    
                 }
 
                 IEnumerable<EnhancedSkeleton> trackedSkeletonSoldierPlayers = new EnhancedSkeletonCollection();
                 if (skeletonPlayerSoldier != null)
                 {
                     trackedSkeletonSoldierPlayers = trackedSkeletons.Where(x => x.Skeleton.TrackingId == skeletonPlayerSoldier.Skeleton.TrackingId);
+                    
                 }
 
                 if (trackedSkeletonTankPlayers.Count() == 1 && trackedSkeletonSoldierPlayers.Count() == 1)
@@ -403,7 +535,7 @@ namespace WheelChairCollaborativeGame
 
                 if (skeletonPlayerTank == null)
                     return;
-
+/*
                 GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                  
                 //Get arms position
@@ -465,25 +597,8 @@ namespace WheelChairCollaborativeGame
 
                     graph.IsPressed = isAction;
 
+                */
 
-
-                    /*
-                    if (HpositionZ > -0.40 && HpositionZ < 0)
-                    {
-
-                        Console.WriteLine("HpositionZ" + HpositionZ);
-                        graph.IsPressed = false;
-
-                    }
-                    else
-                    {
-                        if (HpositionY > 0)
-                        {
-                            Console.WriteLine("HpositionY" + HpositionY);
-                            graph.IsPressed = true;
-                        }
-
-                    }*/
                     
                 }
 
@@ -522,7 +637,7 @@ namespace WheelChairCollaborativeGame
                                 if (yPosition > START_HEIGHT + TRESHOLD_HEIGHT)
                                 {
                                     isAction = true;
-                 *                  action_count ++;
+                                    action_count ++;
                                 }
                             }
                         }
@@ -721,8 +836,7 @@ namespace WheelChairCollaborativeGame
                 */
 
             }
-        }
-        
+                
 
 
 
