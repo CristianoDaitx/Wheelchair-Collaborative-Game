@@ -129,7 +129,7 @@ namespace WheelChairCollaborativeGame
             hand = GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
 
 
-            currentPrimitive = new CubePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 1f);
+            currentPrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.1f, 8);
             wireFrameState = new RasterizerState()
             {
                 FillMode = FillMode.WireFrame,
@@ -239,7 +239,7 @@ namespace WheelChairCollaborativeGame
                 //defines fixed positions:
                 Vector3 head = new Vector3(0f, 0f, 2f);
                 Vector3 hand = new Vector3(-0.1f, 0f, 2f);
-                Vector3 difference = new Vector3(-0.3f, 0f, 0f);
+                Vector3 difference = new Vector3(-0.25f, 0f, 0f);
                 
 
 
@@ -252,30 +252,38 @@ namespace WheelChairCollaborativeGame
 
                 triggerOne = new KinectTrigger(head, difference);
                 //var position = ConvertRealWorldPoint(triggerOne.getPosition());
-                
-                
-                Vector3 trigerPosition = ConvertRealWorldPoint(triggerOne.getPosition());
-                Vector3 headPosition = ConvertRealWorldPoint(head);
-                Vector3 handPosition = ConvertRealWorldPoint(hand);
 
-                //draw
-                GeometricPrimitive spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 4.000000f, 8); //diameter is double from trigger radius, same scale
+
+                Vector3 trigerPosition = triggerOne.getPosition(); // ConvertRealWorldPoint(triggerOne.getPosition());
+                Vector3 headPosition = head; //ConvertRealWorldPoint(head);
+                Vector3 handPosition = hand; //ConvertRealWorldPoint(hand);
+
+                //draw testing
+                Matrix scale = Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
+
+                GeometricPrimitive spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.2f, 8); //diameter is double from trigger radius, same scale
                 Matrix world = new Matrix();
-                world = Matrix.CreateTranslation(trigerPosition);
+                world = Matrix.CreateTranslation(trigerPosition) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
+                //world = Matrix.CreateTranslation(trigerPosition);
+                //scale *= world;
                 spherePrimitive.Draw(world, view, projection, Color.Yellow);
 
                 world = new Matrix();
-                world = Matrix.CreateTranslation(handPosition);
+                world = Matrix.CreateTranslation(handPosition) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
                 currentPrimitive.Draw(world, view, projection, Color.Blue);
 
                 world = new Matrix();
-                world = Matrix.CreateTranslation(headPosition);
+                world = Matrix.CreateTranslation(headPosition) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
                 currentPrimitive.Draw(world, view, projection, Color.Red);
 
+                
 
-                BoundingSphere sphere = new BoundingSphere(trigerPosition, 2.001f); //radius of 0.1f e.g 0.1f * 10; -0.1f == 10 cm
 
-                if (sphere.Contains(handPosition) == ContainmentType.Contains)
+                BoundingSphere sphere = new BoundingSphere(trigerPosition, 0.1f);
+                BoundingSphere sphereHand = new BoundingSphere(handPosition, 0.05f); 
+
+                //if (sphere.Contains(handPosition) == ContainmentType.Contains)
+                if (sphere.Intersects(sphereHand))
                 {
                     graph.IsPressed = true;
                 }
@@ -307,9 +315,10 @@ namespace WheelChairCollaborativeGame
                     {
                         foreach (Joint joint in skeletonPlayerTank.Skeleton.Joints)
                         {
-                            var position = ConvertRealWorldPoint(joint.Position);
+                            //var position = ConvertRealWorldPoint(joint.Position);
+                            Vector3 position = new Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
                             Matrix world = new Matrix();
-                            world = Matrix.CreateTranslation(position);
+                            world = Matrix.CreateTranslation(position) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
                             primitive.Draw(world, view, projection, color);
                         }
                     }
