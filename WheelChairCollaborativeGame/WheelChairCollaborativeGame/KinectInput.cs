@@ -34,6 +34,9 @@ namespace WheelChairCollaborativeGame
         GeometricPrimitive currentPrimitive;
         GeometricPrimitive spherePrimitive;
         KinectTrigger triggerOne;
+        KinectTrigger triggerTwo;
+        KinectTrigger triggerTree;
+        KinectMovement movementOne;
 
 
         Texture2D kinectRGBVideo;
@@ -132,8 +135,18 @@ namespace WheelChairCollaborativeGame
 
 
             // triggering part testing
-            Vector3 difference = new Vector3(-0.25f, 0f, 0f);
-            triggerOne = new KinectTrigger(JointType.Head, difference, 0.1f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            Vector3 difference = new Vector3(-0.25f, -0.15f, -0.10f);
+            Vector3 difference2 = new Vector3(-0.30f, -0.10f, -0.20f);
+            Vector3 difference3 = new Vector3(-0.30f, -0.05f, -0.45f);
+            triggerOne = new KinectTrigger(JointType.Head, difference, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            triggerTwo = new KinectTrigger(JointType.Head, difference2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            triggerTree = new KinectTrigger(JointType.Head, difference3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            movementOne = new KinectMovement();
+            movementOne.addTrigger(triggerOne);
+            movementOne.addTrigger(triggerTwo);
+            movementOne.addTrigger(triggerTree);
+            movementOne.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
+            movementOne.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
 
             currentPrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.1f, 8);
             spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.2f, 8); 
@@ -142,6 +155,18 @@ namespace WheelChairCollaborativeGame
                 FillMode = FillMode.WireFrame,
                 CullMode = CullMode.None,
             };
+        }
+
+        void movementOne_MovementQuit(object sender, EventArgs e)
+        {
+            GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+            graph.IsPressed = false;
+        }
+
+        void movementOne_MovementCompleted(object sender, EventArgs e)
+        {
+            GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+            graph.IsPressed = true;
         }
 
 
@@ -206,7 +231,7 @@ namespace WheelChairCollaborativeGame
 
             if (wirstRotation != null)
                 GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
-                        wirstRotation.ToString(), new Vector2(600, 400));
+                        movementOne.lastActiveTriggerIndex.ToString(), new Vector2(600, 400));
 
             GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
             GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
@@ -231,7 +256,7 @@ namespace WheelChairCollaborativeGame
             //projection *= Scale;
 
             // Draw the current primitive.
-            Color color = Color.White;
+            Color color = Color.YellowGreen;
 
             DrawPrimitveSkeleton(currentPrimitive, color);
 
@@ -275,6 +300,8 @@ namespace WheelChairCollaborativeGame
                 currentPrimitive.Draw(world, view, projection, Color.Red);*/
 
                 triggerOne.draw();
+                triggerTwo.draw();
+                triggerTree.draw();
 
 
                 /*BoundingSphere sphere = new BoundingSphere(triggerOne.getPosition(), 0.1f);
@@ -519,14 +546,17 @@ namespace WheelChairCollaborativeGame
 
                 if (skeletonPlayerTank != null){
                     triggerOne.TrackingSkeleton = skeletonPlayerTank.Skeleton;
+                    triggerTwo.TrackingSkeleton = skeletonPlayerTank.Skeleton;
+                    triggerTree.TrackingSkeleton = skeletonPlayerTank.Skeleton;
 
-                    if (triggerOne.checkIsTriggered(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]))
+                    //if (triggerOne.checkIsTriggered(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]))
+                    if (movementOne.update(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]))
                     {
-                        graph.IsPressed = true;
+                        //graph.IsPressed = true;
                     }
                     else
                     {
-                        graph.IsPressed = false;
+                        //graph.IsPressed = false;
                     }
                 }
 

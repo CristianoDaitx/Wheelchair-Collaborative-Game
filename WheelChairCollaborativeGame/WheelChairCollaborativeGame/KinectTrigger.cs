@@ -136,7 +136,7 @@ namespace WheelChairCollaborativeGame
 
         #region static methods and variables
 
-        public static Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 0), new Vector3(0, 0, 100), Vector3.Up);
+        public static Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 0), new Vector3(0, 0, 50), Vector3.Up);
 
         public static Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
                                                     //GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Viewport.AspectRatio,
