@@ -135,9 +135,14 @@ namespace WheelChairCollaborativeGame
 
 
             // triggering part testing
-            Vector3 difference = new Vector3(-0.25f, -0.15f, -0.10f);
-            Vector3 difference2 = new Vector3(-0.30f, -0.10f, -0.20f);
-            Vector3 difference3 = new Vector3(-0.30f, -0.05f, -0.45f);
+            //Vector3 difference = new Vector3(-0.25f, -0.15f, -0.10f);
+            //Vector3 difference2 = new Vector3(-0.30f, -0.10f, -0.20f);
+            //Vector3 difference3 = new Vector3(-0.30f, -0.05f, -0.45f);
+
+            Vector3 difference = new Vector3(0.35f, -0.25f, -0.10f);
+            Vector3 difference2 = new Vector3(0.55f, -0.15f, -0.10f);
+            Vector3 difference3 = new Vector3(0.75f, -0.15f, -0.10f);
+
             triggerOne = new KinectTrigger(JointType.Head, difference, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
             triggerTwo = new KinectTrigger(JointType.Head, difference2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
             triggerTree = new KinectTrigger(JointType.Head, difference3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
@@ -550,7 +555,7 @@ namespace WheelChairCollaborativeGame
                     triggerTree.TrackingSkeleton = skeletonPlayerTank.Skeleton;
 
                     //if (triggerOne.checkIsTriggered(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]))
-                    if (movementOne.update(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]))
+                    if (movementOne.update(skeletonPlayerTank.Skeleton.Joints[JointType.HandRight]))
                     {
                         //graph.IsPressed = true;
                     }
