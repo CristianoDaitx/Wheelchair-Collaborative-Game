@@ -101,7 +101,7 @@ namespace WheelChairCollaborativeGame
 
 
             //check if going forward on move
-            for (int x = 0; x < kinectTriggers.Count(); x++)
+            for (int x = 0; x < triggerStatus.Count(); x++)
             {
                 if (triggerStatus[x])
                 {
@@ -118,7 +118,7 @@ namespace WheelChairCollaborativeGame
             }
 
             //check if going back on move
-            for (int x = kinectTriggers.Count() -1 ; x >= 0; x--)
+            for (int x = triggerStatus.Count() - 1; x >= 0; x--)
             {
                 if (!triggerStatus[x])
                 {

@@ -43,7 +43,6 @@ namespace WheelChairCollaborativeGame
 
         Texture2D kinectRGBVideo;
 
-        float wirstRotation;
 
         Texture2D hand;
         Vector2 headPositionPixels = new Vector2();
@@ -72,12 +71,8 @@ namespace WheelChairCollaborativeGame
         readonly LinearNudgeListener linearNudgeGesture;
         readonly AngularNudgeListener angularNudgeGesture;
 
-        readonly ThresholdListener menuLeftListener;
-        readonly ThresholdListener menuRightListener;
-        readonly ThresholdListener menuEnterListener;
 
         private float action_count = 0;
-        int binNum;
 
         float distance;
         float angle;
@@ -87,16 +82,6 @@ namespace WheelChairCollaborativeGame
         public EnhancedSkeletonCollection skeletons;
 
         //int binNum;
-
-
-        enum MoveState
-        {
-            active,
-            startPosition,
-            outside
-        };
-        MoveState moveState = MoveState.outside;
-
 
 
 
@@ -137,9 +122,9 @@ namespace WheelChairCollaborativeGame
 
 
             // Movement front
-            Vector3 differenceFront1 = new Vector3(-0.25f, -0.15f, -0.10f);
-            Vector3 differenceFront2 = new Vector3(-0.30f, -0.10f, -0.20f);
-            Vector3 differenceFront3 = new Vector3(-0.30f, -0.05f, -0.45f);
+            Vector3 differenceFront1 = new Vector3(0.25f, -0.15f, -0.10f);
+            Vector3 differenceFront2 = new Vector3(0.30f, -0.10f, -0.20f);
+            Vector3 differenceFront3 = new Vector3(0.30f, -0.05f, -0.45f);
 
             movementFront = new KinectMovement(
                 new KinectTrigger(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
@@ -230,17 +215,10 @@ namespace WheelChairCollaborativeGame
                 case 0:
                     if (controlSelect == 0)
                     {
-
-
-
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex, out playerIndex))
                         {
-
-
                             action_count++;
                             isAction = true;
-
-
                         }
                         if (isAction == true)
                         {
@@ -258,7 +236,6 @@ namespace WheelChairCollaborativeGame
                 case 1:
                     if (controlSelect == 1)
                     {
-
                         if (kinectFrameChange == true)
                         {
                             //kinect trigger part
@@ -274,7 +251,6 @@ namespace WheelChairCollaborativeGame
                 case 2:
                     if (controlSelect == 2)
                     {
-
                         // high five
                         if (kinectFrameChange == true)
                         {
@@ -282,7 +258,7 @@ namespace WheelChairCollaborativeGame
                             if (skeletonPlayerTank != null)
                             {
                                 movementSide.setTriggersTrackingSkeleton(skeletonPlayerTank.Skeleton);
-                                movementSide.update();                            
+                                movementSide.update();
                             }
                         }
                     }
@@ -305,25 +281,7 @@ namespace WheelChairCollaborativeGame
             GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
             GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
-            //ScreenManager.SpriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
-            //ScreenManager.SpriteBatch.Draw(hand, headPositionPixels, null, Color.White, 0, new Vector2(hand.Width / 2, hand.Height / 2), 1, SpriteEffects.None, 0);
-
-
-            //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
-
-            /*foreach (EnhancedSkeleton enhancedSkeleton in skeletons)
-            {
-                if (enhancedSkeleton.Skeleton != null)
-                {
-                    foreach (Joint joint in enhancedSkeleton.Skeleton.Joints)
-                    {
-                        Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (640)), (((-0.5f * joint.Position.Y) + 0.5f) * (480)));
-                        GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Draw(hand, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Red);
-                    }
-                }
-            }*/
-
+            //draw video
             spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
 
             if (skeletonPlayerTank != null)
@@ -345,13 +303,10 @@ namespace WheelChairCollaborativeGame
             Vector2 textPosition = new Vector2(100.0f, 35.0f);
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content, message, textPosition);
 
-                //GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
-                       // movementFront.lastActiveTriggerIndex.ToString(), new Vector2(600, 400));
+
 
             GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
             GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
-            //ScreenManager.SpriteBatch.End();
-            //GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
 
             if (isWireframe)
             {
@@ -363,21 +318,14 @@ namespace WheelChairCollaborativeGame
             }
 
 
-
-            //Viewport colorViewPort = new Viewport(0, 0, (int)Config.cameraResolution.X, (int)Config.cameraResolution.Y);
-            //Matrix Scale = Matrix.CreateScale(new Vector3(Config.cameraResolution.X / Config.resolution.X, Config.cameraResolution.Y / Config.resolution.Y, 1));
-
-
-            //projection *= Scale;
-
-            // Draw the current primitive.
             Color color = Color.YellowGreen;
-
-            DrawPrimitveSkeleton(currentPrimitive, color);
-
+            DrawPrimitiveSkeleton(currentPrimitive, color);
 
 
-            movementFront.drawTriggers();
+            if (controlSelect == 1)
+                movementFront.drawTriggers();
+            else if (controlSelect == 2)
+                movementSide.drawTriggers();
 
 
 
@@ -391,7 +339,7 @@ namespace WheelChairCollaborativeGame
 
         }
 
-        private void DrawPrimitveSkeleton(GeometricPrimitive primitive, Color color)
+        private void DrawPrimitiveSkeleton(GeometricPrimitive primitive, Color color)
         {
             try
             {
@@ -607,7 +555,7 @@ namespace WheelChairCollaborativeGame
                     }
                 }
 
-                
+
 
                 /*EnhancedSkeleton skeleton = trackedSkeletons.Aggregate((x, y) => (x.Skeleton.Position.Z < y.Skeleton.Position.Z) ? x : y);
 
