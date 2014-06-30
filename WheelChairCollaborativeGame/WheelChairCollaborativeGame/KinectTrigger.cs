@@ -24,16 +24,17 @@ namespace WheelChairCollaborativeGame
         public TriggerState State
         {
             get { return state; }
+            protected set { state = value; }
         }
 
-        private readonly int sphereTesselation = 8;
-        private readonly Color color = Color.Yellow;
+        protected readonly int SPHERE_TESSELATION = 8;
+        protected readonly Color COLOR = Color.Yellow;
 
-        private SpherePrimitive spherePrimitive;
-        private SpherePrimitive spherePrimitiveThreshold;
+        protected SpherePrimitive spherePrimitive;
+        protected SpherePrimitive spherePrimitiveThreshold;
 
-        private JointType triggerJoint;
-        private JointType baseJoint;
+        protected JointType triggerJoint;
+        protected JointType baseJoint;
         private Vector3 relativePosition;
 
         /// <summary>
@@ -80,15 +81,15 @@ namespace WheelChairCollaborativeGame
             this.relativePosition = relativePosition;
             this.radius = radius;
             this.radiusThreshold = radiusThreshold;
-            this.spherePrimitive = new SpherePrimitive(graphicsDevice, radius * 2, sphereTesselation);
-            this.spherePrimitiveThreshold = new SpherePrimitive(graphicsDevice, (radius + radiusThreshold) * 2, sphereTesselation);
+            this.spherePrimitive = new SpherePrimitive(graphicsDevice, radius * 2, SPHERE_TESSELATION);
+            this.spherePrimitiveThreshold = new SpherePrimitive(graphicsDevice, (radius + radiusThreshold) * 2, SPHERE_TESSELATION);
         }
 
         /// <summary>
         /// Calculates the trigger position, based in the baseJoint
         /// </summary>
         /// <returns>The trigger position</returns>
-        private Vector3 getTriggerPosition()
+        protected virtual Vector3 getTriggerPosition()
         {
             return skeletonPointToVector3(trackingSkeleton.Joints[baseJoint]) + relativePosition;
         }
@@ -97,7 +98,7 @@ namespace WheelChairCollaborativeGame
         /// Check if the triggerJoint is inside the trigger zone. 
         /// </summary>
         /// <returns>True if triggerJoint is intersecting trigger zone, false otherwise.</returns>
-        public bool checkIsTriggered()
+        public virtual bool checkIsTriggered()
         {
             //TODO: should be autamatically used in the xna update method
             if (trackingSkeleton == null)
@@ -123,7 +124,7 @@ namespace WheelChairCollaborativeGame
 
         }
 
-        public void draw()
+        public virtual void draw()
         {
             if (trackingSkeleton == null)
                 return;
@@ -135,10 +136,10 @@ namespace WheelChairCollaborativeGame
             switch (state)
             {
                 case TriggerState.Inside:
-                    spherePrimitiveThreshold.Draw(world, view, projection, color);
+                    spherePrimitiveThreshold.Draw(world, view, projection, COLOR);
                     break;
                 case TriggerState.Outside:
-                    spherePrimitive.Draw(world, view, projection, color);
+                    spherePrimitive.Draw(world, view, projection, COLOR);
                     break;
             }
         }

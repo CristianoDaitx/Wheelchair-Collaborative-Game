@@ -43,6 +43,8 @@ namespace WheelChairCollaborativeGame
         KinectMovement movementSideSoldier;
         KinectMovement movementFrontSoldier;
 
+        KinectMovement movementDouble;
+        KinectTriggerDouble triggerDouble;
 
         Texture2D kinectRGBVideo;
 
@@ -162,12 +164,20 @@ namespace WheelChairCollaborativeGame
             movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
 
             movementSideSoldier = new KinectMovement(
-                new KinectTrigger(JointType.HandLeft, JointType.Head, differenceSide1, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTrigger(JointType.HandLeft, JointType.Head, differenceSide2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTrigger(JointType.HandLeft, JointType.Head, differenceSide3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice)
+                new KinectTrigger(JointType.HandLeft, JointType.Head, differenceSide1 * new Vector3(-1, 1, 1), 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
+                new KinectTrigger(JointType.HandLeft, JointType.Head, differenceSide2 * new Vector3(-1, 1, 1), 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
+                new KinectTrigger(JointType.HandLeft, JointType.Head, differenceSide3 * new Vector3(-1, 1, 1), 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice)
                 );
             movementSideSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementSideSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+
+
+            //movement to check for side high five
+
+            triggerDouble = new KinectTriggerDouble(JointType.HandLeft, JointType.Head, JointType.HandRight, JointType.Head, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            movementDouble = new KinectMovement(triggerDouble);
+
+
 
 
             currentPrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, KinectTrigger.JOINT_DEFAULT_RADIUS, 8);
@@ -313,6 +323,14 @@ namespace WheelChairCollaborativeGame
                                 movementSideSoldier.update();
 
                             }
+
+
+                            if (skeletonPlayerSoldier != null && skeletonPlayerTank != null)
+                            {
+                                triggerDouble.TrackingSkeleton = skeletonPlayerTank.Skeleton;
+                                triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier.Skeleton;
+                                movementDouble.update();
+                            }
                         }
                     }
                     break;
@@ -388,6 +406,8 @@ namespace WheelChairCollaborativeGame
             {
                 movementSideTank.drawTriggers();
                 movementSideSoldier.drawTriggers();
+
+                triggerDouble.draw();
             }
 
 
