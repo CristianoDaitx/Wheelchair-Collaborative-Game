@@ -108,7 +108,7 @@ namespace WheelChairCollaborativeGame
                 testingRadius += radiusThreshold;
 
             BoundingSphere sphereTrigger = new BoundingSphere(getTriggerPosition(), testingRadius);
-            BoundingSphere sphereJoint = new BoundingSphere( skeletonPointToVector3(trackingSkeleton.Joints[triggerJoint]), jointDefaultRadius);
+            BoundingSphere sphereJoint = new BoundingSphere( skeletonPointToVector3(trackingSkeleton.Joints[triggerJoint]), JOINT_DEFAULT_RADIUS);
 
             if (sphereTrigger.Intersects(sphereJoint))
             {
@@ -145,7 +145,7 @@ namespace WheelChairCollaborativeGame
 
         #region static methods and variables
 
-        private static float jointDefaultRadius = 0.05f;
+        public static readonly float JOINT_DEFAULT_RADIUS = 0.05f;
 
         /// <summary>
         /// View that mimics the on from the kinect color frame
