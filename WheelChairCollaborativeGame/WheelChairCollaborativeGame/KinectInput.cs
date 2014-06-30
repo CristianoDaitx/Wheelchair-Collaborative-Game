@@ -67,7 +67,7 @@ namespace WheelChairCollaborativeGame
         readonly ThresholdListener menuRightListener;
         readonly ThresholdListener menuEnterListener;
 
-        private int action_count = 0;
+        private float action_count = 0;
         int binNum;
 
         float distance;
@@ -162,14 +162,26 @@ namespace WheelChairCollaborativeGame
             switch (controlSelect){
                 case 0:
                     if (controlSelect == 0){
+
                        
+ 
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex, out playerIndex))
                             {
+                                
+                            
                             action_count++;
                             isAction = true;
+
+                            
                             }
+                        if (isAction == true)
+                        {
+                            action_count = action_count + 0.0166667f;
+                        }
+                            
                         if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
                             {
+                                
                             isAction = false;
                             }
                         graph.IsPressed = isAction;
@@ -355,7 +367,7 @@ namespace WheelChairCollaborativeGame
             {
                 DrawSkeleton(skeletonPlayerSoldier.Skeleton, Color.Red);
             }
-
+            
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                          action_count.ToString(), new Vector2(60, 40));
 
