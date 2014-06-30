@@ -132,6 +132,7 @@
     <Compile Include="GUImessage.cs" />
     <Compile Include="KinectMovement.cs" />
     <Compile Include="KinectTrigger.cs" />
+    <Compile Include="KinectTriggerDouble.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="SplashScreen.cs" />

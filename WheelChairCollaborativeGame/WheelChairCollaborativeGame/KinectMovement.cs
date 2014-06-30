@@ -48,10 +48,10 @@ namespace WheelChairCollaborativeGame
 
         private bool invalidatedMovement = false;
 
-        public delegate void MovementCompletedEventHandler(object sender, EventArgs e);
+        public delegate void MovementCompletedEventHandler(object sender, KinectMovementEventArgs e);
         public event MovementCompletedEventHandler MovementCompleted;
 
-        public delegate void MovementQuitEventHandler(object sender, EventArgs e);
+        public delegate void MovementQuitEventHandler(object sender, KinectMovementEventArgs e);
         public event MovementQuitEventHandler MovementQuit;
 
         /// <summary>
@@ -141,19 +141,29 @@ namespace WheelChairCollaborativeGame
             if (lastActiveTriggerIndex == kinectTriggers.Count() - 1 && !invalidatedMovement)
             {
                 //fire event once when the movement is finished
+                KinectMovementEventArgs args = new KinectMovementEventArgs();
+                args.TrackingID = kinectTriggers[kinectTriggers.Count() - 1].TrackingSkeleton.TrackingId;
                 if (state != MovementState.Activated)
-                    MovementCompleted(this, EventArgs.Empty);
+                    MovementCompleted(this, args);  
 
                 state = MovementState.Activated;
             }
             else
             {
                 //fire event if movement is no more activated
+                KinectMovementEventArgs args = new KinectMovementEventArgs();
+                args.TrackingID = kinectTriggers[kinectTriggers.Count() - 1].TrackingSkeleton.TrackingId;
                 if (state != MovementState.Wating)
-                    MovementQuit(this, EventArgs.Empty);
+                    MovementQuit(this, args);
 
                 state = MovementState.Wating;
             }
         }
+    }
+
+
+    public class KinectMovementEventArgs : EventArgs
+    {
+        public int TrackingID { get; set; }
     }
 }
