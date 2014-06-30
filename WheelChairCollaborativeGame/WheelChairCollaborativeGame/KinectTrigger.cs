@@ -3,26 +3,16 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
-
-using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
-using WheelChairGameLibrary.Sprites;
-
-using KinectForWheelchair;
-using KinectForWheelchair.Listeners;
-
 using Microsoft.Kinect;
-
 #endregion
+
 namespace WheelChairCollaborativeGame
 {
-
-
+    /// <summary>
+    /// An helper that can be used to test if a specific joint is inside a trigger zone (relative to another joint), given a tracking skeleton.
+    /// Can be used alone or with KinectMovemnt
+    /// </summary>
     class KinectTrigger
     {
         public enum TriggerState
@@ -30,7 +20,6 @@ namespace WheelChairCollaborativeGame
             Inside,
             Outside
         }
-
         private TriggerState state = TriggerState.Outside;
         public TriggerState State
         {
@@ -40,33 +29,53 @@ namespace WheelChairCollaborativeGame
         private readonly int sphereTesselation = 8;
         private readonly Color color = Color.Yellow;
 
-        SpherePrimitive spherePrimitive;
-        SpherePrimitive spherePrimitiveThreshold;
+        private SpherePrimitive spherePrimitive;
+        private SpherePrimitive spherePrimitiveThreshold;
 
-        JointType baseJoint;
-        Vector3 relativePosition;
+        private JointType triggerJoint;
+        private JointType baseJoint;
+        private Vector3 relativePosition;
 
-        private float radius;
+        /// <summary>
+        /// radius can only be set at once in creation, to create the SpherePrimitive
+        /// </summary>       
         public float Radius
         {
             get { return radius; }
         }
+        private float radius;
 
-        private float radiusThreshold;
+        /// <summary>
+        /// same as radius
+        /// </summary>        
         public float RadiusThreshold
         {
             get { return radiusThreshold; }
         }
+        private float radiusThreshold;
 
-        private Skeleton trackingSkeleton;
+        /// <summary>
+        /// Sets a skeleton to the trigger work on.
+        /// </summary>
         public Skeleton TrackingSkeleton
         {
             get { return trackingSkeleton; }
             set { trackingSkeleton = value; }
         }
+        private Skeleton trackingSkeleton;
 
-        public KinectTrigger(JointType baseJoint, Vector3 relativePosition, float radius, float radiusThreshold, GraphicsDevice graphicsDevice)
+        /// <summary>
+        /// Set base parameters and set drawing parameters
+        /// </summary>
+        /// <param name="triggerJoint">Trigger joint</param>
+        /// <param name="baseJoint">The base joint of the trigger zone</param>
+        /// <param name="relativePosition">The relative position of the trigger zone to the base joint</param>
+        /// <param name="radius">Radius of the trigger zone sphere</param>
+        /// <param name="radiusThreshold">Radius of the trigger that is used when the trigger is triggered, so the triggerOut position is a bit bigger</param>
+        /// <param name="graphicsDevice">Used to draw</param>
+        public KinectTrigger(JointType triggerJoint, JointType baseJoint, Vector3 relativePosition, float radius, float radiusThreshold, GraphicsDevice graphicsDevice)
         {
+            this.triggerJoint = triggerJoint;
             this.baseJoint = baseJoint;
             this.relativePosition = relativePosition;
             this.radius = radius;
@@ -75,32 +84,31 @@ namespace WheelChairCollaborativeGame
             this.spherePrimitiveThreshold = new SpherePrimitive(graphicsDevice, (radius + radiusThreshold) * 2, sphereTesselation);
         }
 
-        /*public KinectTrigger(Joint baseJoint, Vector3 relativePosition)
+        /// <summary>
+        /// Calculates the trigger position, based in the baseJoint
+        /// </summary>
+        /// <returns>The trigger position</returns>
+        private Vector3 getTriggerPosition()
         {
-            this.baseJoint = skeletonPointToVector3(baseJoint);
-            this.relativePosition = relativePosition;
-        }*/
-
-        private Vector3 getPosition()
-        {
-            /*SkeletonPoint skeletonPoint = new SkeletonPoint();
-            skeletonPoint.X = relativePosition.X + baseJoint.Position.X;
-            skeletonPoint.Y = relativePosition.Y + baseJoint.Position.Y;
-            skeletonPoint.Z = relativePosition.Z + baseJoint.Position.Z;*/
             return skeletonPointToVector3(trackingSkeleton.Joints[baseJoint]) + relativePosition;
         }
 
-        public bool checkIsTriggered(Joint joint)
+        /// <summary>
+        /// Check if the triggerJoint is inside the trigger zone. 
+        /// </summary>
+        /// <returns>True if triggerJoint is intersecting trigger zone, false otherwise.</returns>
+        public bool checkIsTriggered()
         {
+            //TODO: should be autamatically used in the xna update method
             if (trackingSkeleton == null)
                 return false;
 
-            float triggerRadius = radius;
+            float testingRadius = radius;
             if (state == TriggerState.Inside)
-                triggerRadius += radiusThreshold;
+                testingRadius += radiusThreshold;
 
-            BoundingSphere sphereTrigger = new BoundingSphere(getPosition(), triggerRadius);
-            BoundingSphere sphereJoint = new BoundingSphere( skeletonPointToVector3(joint), 0.05f);
+            BoundingSphere sphereTrigger = new BoundingSphere(getTriggerPosition(), testingRadius);
+            BoundingSphere sphereJoint = new BoundingSphere( skeletonPointToVector3(trackingSkeleton.Joints[triggerJoint]), jointDefaultRadius);
 
             if (sphereTrigger.Intersects(sphereJoint))
             {
@@ -120,9 +128,10 @@ namespace WheelChairCollaborativeGame
             if (trackingSkeleton == null)
                 return;
 
-            //GeometricPrimitive spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.2f, 8); //diameter is double from trigger radius, same scale
+            //creates a world matrix with the proper scale
             Matrix world = new Matrix();
-            world = Matrix.CreateTranslation(getPosition()) * kinectTo3DScale;
+            world = Matrix.CreateTranslation(getTriggerPosition()) * kinectTo3DScale;
+
             switch (state)
             {
                 case TriggerState.Inside:
@@ -136,14 +145,25 @@ namespace WheelChairCollaborativeGame
 
         #region static methods and variables
 
+        private static float jointDefaultRadius = 0.05f;
+
+        /// <summary>
+        /// View that mimics the on from the kinect color frame
+        /// </summary>
         public static Matrix view = Matrix.CreateLookAt(new Vector3(0, 0, 0), new Vector3(0, 0, 50), Vector3.Up);
 
+        /// <summary>
+        /// Perspective of view that mimics the on from the kinect color frame
+        /// </summary>
         public static Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
                                                     //GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Viewport.AspectRatio,
                                                     new Viewport(0,0, (int) Config.cameraResolution.Y, (int)Config.cameraResolution.X).AspectRatio,
                                                     1.0f,
                                                     100);
 
+        /// <summary>
+        /// Transform kinect values (in meters) to a decent value in 3D coordinates. This scale transform the points to match the kinect color frame.
+        /// </summary>
         public static Matrix kinectTo3DScale = Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
 
         public static Vector3 skeletonPointToVector3(SkeletonPoint point)

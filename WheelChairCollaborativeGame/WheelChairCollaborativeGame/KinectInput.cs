@@ -143,13 +143,10 @@ namespace WheelChairCollaborativeGame
             Vector3 difference2 = new Vector3(0.55f, -0.15f, -0.10f);
             Vector3 difference3 = new Vector3(0.75f, -0.15f, -0.10f);
 
-            triggerOne = new KinectTrigger(JointType.Head, difference, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
-            triggerTwo = new KinectTrigger(JointType.Head, difference2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
-            triggerTree = new KinectTrigger(JointType.Head, difference3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
-            movementOne = new KinectMovement();
-            movementOne.addTrigger(triggerOne);
-            movementOne.addTrigger(triggerTwo);
-            movementOne.addTrigger(triggerTree);
+            triggerOne = new KinectTrigger(JointType.HandRight, JointType.Head, difference, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            triggerTwo = new KinectTrigger(JointType.HandRight, JointType.Head, difference2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            triggerTree = new KinectTrigger(JointType.HandRight, JointType.Head, difference3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            movementOne = new KinectMovement(triggerOne, triggerTwo, triggerTree);
             movementOne.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementOne.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
 
@@ -265,66 +262,14 @@ namespace WheelChairCollaborativeGame
 
             DrawPrimitveSkeleton(currentPrimitive, color);
 
-            //draw trigger
-            if (skeletonPlayerTank != null)
-            {
-                //defines fixed positions:
-                /*Vector3 head = new Vector3(0f, 0f, 2f);
-                Vector3 hand = new Vector3(-0.1f, 0f, 2f);*/
-                Vector3 difference = new Vector3(-0.25f, 0f, 0f);
-                
 
 
-                GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
-
-                /*SkeletonPoint skeletonPoint = new SkeletonPoint();
-                skeletonPoint.X = -0.2f; // positive goes right
-                skeletonPoint.Y = 0.0f; // positive goes up
-                skeletonPoint.Z = -0.3f; //negative goes forward*/
-
-                //triggerOne = new KinectTrigger(skeletonPlayerTank.Skeleton.Joints[JointType.Head], difference);
-                //var position = ConvertRealWorldPoint(triggerOne.getPosition());
+                movementOne.drawTriggers();
 
 
 
-                //draw testing
 
-                //GeometricPrimitive spherePrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 0.2f, 8); //diameter is double from trigger radius, same scale
-                /*Matrix world = new Matrix();
-                world = Matrix.CreateTranslation(triggerOne.getPosition()) * scale;
-                //world = Matrix.CreateTranslation(trigerPosition);
-                //scale *= world;
-                spherePrimitive.Draw(world, view, projection, Color.Yellow);
-
-                world = new Matrix();
-                world = Matrix.CreateTranslation(KinectTrigger.skeletonPointToVector3(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft])) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
-                currentPrimitive.Draw(world, view, projection, Color.Blue);
-
-                world = new Matrix();
-                world = Matrix.CreateTranslation(KinectTrigger.skeletonPointToVector3(skeletonPlayerTank.Skeleton.Joints[JointType.Head])) * Matrix.CreateScale(new Vector3(-10f, 10f, 10f));
-                currentPrimitive.Draw(world, view, projection, Color.Red);*/
-
-                triggerOne.draw();
-                triggerTwo.draw();
-                triggerTree.draw();
-
-
-                /*BoundingSphere sphere = new BoundingSphere(triggerOne.getPosition(), 0.1f);
-                BoundingSphere sphereHand = new BoundingSphere(KinectTrigger.skeletonPointToVector3(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]), 0.05f); 
-
-                //if (sphere.Contains(handPosition) == ContainmentType.Contains)
-                if (sphere.Intersects(sphereHand))
-                {
-                    graph.IsPressed = true;
-                }
-                else
-                {
-                    graph.IsPressed = false;
-                }*/
-
-
-
-            }
+            
 
 
             // Reset the fill mode renderstate.
@@ -547,22 +492,13 @@ namespace WheelChairCollaborativeGame
                 }
 
                 //kinect trigger part
-                GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
 
                 if (skeletonPlayerTank != null){
-                    triggerOne.TrackingSkeleton = skeletonPlayerTank.Skeleton;
-                    triggerTwo.TrackingSkeleton = skeletonPlayerTank.Skeleton;
-                    triggerTree.TrackingSkeleton = skeletonPlayerTank.Skeleton;
+                    movementOne.setTriggersTrackingSkeleton(skeletonPlayerTank.Skeleton);
 
                     //if (triggerOne.checkIsTriggered(skeletonPlayerTank.Skeleton.Joints[JointType.HandLeft]))
-                    if (movementOne.update(skeletonPlayerTank.Skeleton.Joints[JointType.HandRight]))
-                    {
-                        //graph.IsPressed = true;
-                    }
-                    else
-                    {
-                        //graph.IsPressed = false;
-                    }
+                    movementOne.update();
+    
                 }
 
 
