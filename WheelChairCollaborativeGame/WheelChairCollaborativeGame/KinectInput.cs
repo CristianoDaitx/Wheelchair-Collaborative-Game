@@ -30,6 +30,7 @@ namespace WheelChairCollaborativeGame
         EnhancedSkeleton skeletonPlayerSoldier;
         bool kinectFrameChange;
         int controlSelect;
+        private double time = 0;
 
 
         bool isWireframe = true;
@@ -160,12 +161,14 @@ namespace WheelChairCollaborativeGame
         {
             GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
             graph.IsPressed = false;
+            time = 0;
         }
 
         void movementOne_MovementCompleted(object sender, EventArgs e)
         {
             GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
             graph.IsPressed = true;
+            action_count++;
         }
 
 
@@ -222,12 +225,12 @@ namespace WheelChairCollaborativeGame
                         }
                         if (isAction == true)
                         {
-                            action_count = action_count + 0.0166667f;
+                            time += gameTime.ElapsedGameTime.TotalMilliseconds;
                         }
 
                         if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
                         {
-
+                            time = 0;
                             isAction = false;
                         }
                         graph.IsPressed = isAction;
@@ -243,7 +246,16 @@ namespace WheelChairCollaborativeGame
                             {
                                 movementFront.setTriggersTrackingSkeleton(skeletonPlayerTank.Skeleton);
                                 movementFront.update();
+                                
                             }
+                            if (movementFront.State == KinectMovement.MovementState.Activated)
+                            {
+                                
+                                time += gameTime.ElapsedGameTime.TotalMilliseconds;
+                            }
+                            
+
+
 
                         }
                     }
@@ -259,6 +271,12 @@ namespace WheelChairCollaborativeGame
                             {
                                 movementSide.setTriggersTrackingSkeleton(skeletonPlayerTank.Skeleton);
                                 movementSide.update();
+                                
+                            }
+                            if (movementSide.State == KinectMovement.MovementState.Activated)
+                            {
+
+                                time += gameTime.ElapsedGameTime.TotalMilliseconds;
                             }
                         }
                     }
@@ -296,7 +314,8 @@ namespace WheelChairCollaborativeGame
 
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                          action_count.ToString(), new Vector2(60, 40));
-
+            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+                        TimeSpan.FromMilliseconds(time).Seconds.ToString(), new Vector2(60, 60));
 
 
             string message = ("Actions made");

@@ -28,12 +28,16 @@ namespace WheelChairCollaborativeGame
     /// </summary>
     class KinectMovement
     {        
-        private enum MovementState
+        public enum MovementState
         {
             Activated,
             Wating
         }
         private MovementState state = MovementState.Wating;
+        public MovementState State
+        {
+            get { return state; }
+        }
 
         private List<KinectTrigger> kinectTriggers = new List<KinectTrigger>();
 
