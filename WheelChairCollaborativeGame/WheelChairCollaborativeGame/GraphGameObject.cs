@@ -28,10 +28,38 @@ namespace WheelChairCollaborativeGame
     {
 
         private readonly int STARTING_X = 640;
-        private readonly int PRESSED_Y = 450;
-        private readonly int NOT_PRESSED_Y = 470;
+        private int pressedY = 450;
+        private int notPressedY = 470;
         private readonly int MAX_RECORDS = 10;
         private readonly int LINE_WIDTH = 2;
+
+
+        public int PressedY
+        {
+            get { return pressedY; }
+            set
+            {
+                if (value != pressedY)
+                    isChanged = true;
+                if (value < Config.resolution.Y && value > 0)
+                    pressedY = value;
+            }
+
+        }
+        
+        public int NotPressedY
+        {
+            get { return notPressedY; }
+            set
+            {
+                if (value != notPressedY)
+                    isChanged = true;
+                if (value > pressedY && value < Config.resolution.Y)
+                    notPressedY = value;
+            }
+
+        }
+
 
 
         private bool isPressed = false;
@@ -69,20 +97,20 @@ namespace WheelChairCollaborativeGame
             if (isChanged)
                 isUp = !IsPressed;
 
-            Vector2 startPosition = new Vector2(STARTING_X, (isUp ? PRESSED_Y : NOT_PRESSED_Y));
-            Vector2 endPosition = new Vector2(STARTING_X - (float)scale(time), (isUp ? PRESSED_Y : NOT_PRESSED_Y));
+            Vector2 startPosition = new Vector2(STARTING_X, (isUp ? pressedY : notPressedY));
+            Vector2 endPosition = new Vector2(STARTING_X - (float)scale(time), (isUp ? pressedY : notPressedY));
             PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
 
             double timeSum = time;            
             for (int x = times.Count() - 1; x >= 0; x--)
             {                
                 isUp = !isUp;
-                startPosition = new Vector2(STARTING_X - (float)scale(timeSum), (isUp ? PRESSED_Y : NOT_PRESSED_Y));
-                endPosition = new Vector2(STARTING_X - (float)scale(times.ElementAt(x) + timeSum), (isUp ? PRESSED_Y : NOT_PRESSED_Y));
+                startPosition = new Vector2(STARTING_X - (float)scale(timeSum), (isUp ? pressedY : notPressedY));
+                endPosition = new Vector2(STARTING_X - (float)scale(times.ElementAt(x) + timeSum), (isUp ? pressedY : notPressedY));
                 PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
 
-                startPosition = new Vector2(STARTING_X - (float)scale(timeSum), NOT_PRESSED_Y);
-                endPosition = new Vector2(STARTING_X - (float)scale(timeSum), PRESSED_Y - LINE_WIDTH);
+                startPosition = new Vector2(STARTING_X - (float)scale(timeSum), notPressedY);
+                endPosition = new Vector2(STARTING_X - (float)scale(timeSum), pressedY - LINE_WIDTH);
                 PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
                 
                 timeSum += times.ElementAt(x);

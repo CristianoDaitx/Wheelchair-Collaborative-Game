@@ -76,6 +76,17 @@ namespace WheelChairCollaborativeGame
             GameObjectManager.addGameObject(graph);
             //graph.IsPressed = true;
 
+            GraphGameObject graph2 = new GraphGameObject(GameObjectManager, "graphPlayer2");
+            GameObjectManager.addGameObject(graph2);
+            graph2.PressedY = 300;
+            graph2.NotPressedY = 320;
+
+            GraphGameObject graphSinc = new GraphGameObject(GameObjectManager, "graphSinc");
+            GameObjectManager.addGameObject(graphSinc);
+            graphSinc.PressedY = 200;
+            graphSinc.NotPressedY = 220;
+
+
             
 
             //backgroundTexture = ScreenManager.Game.Content.Load<Texture2D>("tiles/splash");

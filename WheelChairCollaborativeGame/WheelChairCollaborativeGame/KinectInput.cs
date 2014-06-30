@@ -31,6 +31,8 @@ namespace WheelChairCollaborativeGame
         bool kinectFrameChange;
         int controlSelect;
         private double time = 0;
+        private double time2 = 0;
+        private double timeSinc = 0;
 
 
         bool isWireframe = true;
@@ -73,7 +75,9 @@ namespace WheelChairCollaborativeGame
         readonly AngularNudgeListener angularNudgeGesture;
 
 
-        private float action_count = 0;
+        private int actionCount = 0;
+        private int actionCount2 = 0;
+        private int actionCountSinc = 0;
 
         float distance;
         float angle;
@@ -168,7 +172,7 @@ namespace WheelChairCollaborativeGame
         {
             GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
             graph.IsPressed = true;
-            action_count++;
+            actionCount++;
         }
 
 
@@ -180,8 +184,16 @@ namespace WheelChairCollaborativeGame
         {
             base.Update(gameTime, inputState);
             GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+            GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
+            GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
             PlayerIndex playerIndex = PlayerIndex.One;
+            PlayerIndex player2 = PlayerIndex.Two;
             bool isAction = graph.IsPressed;
+            bool isAction2 = graph2.IsPressed;
+            bool isActionSinc = graphSinc.IsPressed;
+
+            
+           
 
 
 
@@ -220,8 +232,13 @@ namespace WheelChairCollaborativeGame
                     {
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex, out playerIndex))
                         {
-                            action_count++;
+                            actionCount++;
                             isAction = true;
+                            if (isAction2 == true)
+                            {
+                                isActionSinc = true;
+                                actionCountSinc++;
+                            }
                         }
                         if (isAction == true)
                         {
@@ -232,8 +249,46 @@ namespace WheelChairCollaborativeGame
                         {
                             time = 0;
                             isAction = false;
+                            isActionSinc = false;
                         }
                         graph.IsPressed = isAction;
+                        graphSinc.IsPressed = isActionSinc;
+                    
+                    if (inputState.IsButtonPressed(Buttons.A, player2, out player2))
+                        {
+                            actionCount2++;
+                            isAction2 = true;
+                            if (isAction == true)
+                            {
+                                isActionSinc = true;
+                                actionCountSinc++;
+                            }
+                        }
+                        if (isAction2 == true)
+                        {
+                            time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                        }
+
+                        if (inputState.IsButtonReleased(Buttons.A, player2, out player2))
+                        {
+                            time = 0;
+                            isAction2 = false;
+                            isActionSinc = false;
+                        }
+                        graph2.IsPressed = isAction2;
+                        graphSinc.IsPressed = isActionSinc;
+                        
+                        if (isAction == true && isAction2 == true)
+                        {
+                            isActionSinc = true;
+                            timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
+                        }
+                        else
+                        {
+                            timeSinc = 0;
+                            isActionSinc = false;
+                        }
+
                     }
                     break;
                 case 1:
@@ -253,6 +308,8 @@ namespace WheelChairCollaborativeGame
                                 
                                 time += gameTime.ElapsedGameTime.TotalMilliseconds;
                             }
+
+
                             
 
 
@@ -313,9 +370,9 @@ namespace WheelChairCollaborativeGame
             }
 
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
-                         action_count.ToString(), new Vector2(60, 40));
+                         actionCountSinc.ToString(), new Vector2(60, 40));
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
-                        TimeSpan.FromMilliseconds(time).Seconds.ToString(), new Vector2(60, 60));
+                        TimeSpan.FromMilliseconds(timeSinc).Seconds.ToString(), new Vector2(60, 60));
 
 
             string message = ("Actions made");
