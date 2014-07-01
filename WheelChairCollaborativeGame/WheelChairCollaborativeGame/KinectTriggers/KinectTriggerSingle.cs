@@ -13,7 +13,7 @@ namespace WheelChairCollaborativeGame
     /// An helper that can be used to test if a specific joint is inside a trigger zone (relative to another joint), given a tracking skeleton.
     /// Can be used alone or with KinectMovemnt
     /// </summary>
-    sealed class KinectTriggerSingle : KinnectTrigger
+    sealed class KinectTriggerSingle : KinectTrigger
     {
         
 

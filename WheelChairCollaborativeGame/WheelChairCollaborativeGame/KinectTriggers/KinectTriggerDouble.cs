@@ -9,7 +9,7 @@ using Microsoft.Kinect;
 
 namespace WheelChairCollaborativeGame
 {
-    class KinectTriggerDouble : KinnectTrigger
+    class KinectTriggerDouble : KinectTrigger
     {
 
         public Skeleton TrackingSkeletonOne

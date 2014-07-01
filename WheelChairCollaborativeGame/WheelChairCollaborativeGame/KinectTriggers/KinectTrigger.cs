@@ -9,7 +9,7 @@ using Microsoft.Kinect;
 
 namespace WheelChairCollaborativeGame
 {
-    public abstract class KinnectTrigger
+    public abstract class KinectTrigger
     {
 
         public enum TriggerState
@@ -54,7 +54,7 @@ namespace WheelChairCollaborativeGame
         private float radiusThreshold;
 
 
-        public KinnectTrigger(float radius, float radiusThreshold, GraphicsDevice graphicsDevice)
+        public KinectTrigger(float radius, float radiusThreshold, GraphicsDevice graphicsDevice)
         {
             this.radius = radius;
             this.radiusThreshold = radiusThreshold;

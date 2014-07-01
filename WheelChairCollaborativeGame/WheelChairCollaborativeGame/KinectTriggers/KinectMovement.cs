@@ -39,7 +39,7 @@ namespace WheelChairCollaborativeGame
             get { return state; }
         }
 
-        private List<KinnectTrigger> kinectTriggers = new List<KinnectTrigger>();
+        private List<KinectTrigger> kinectTriggers = new List<KinectTrigger>();
 
         /// <summary>
         /// Keep track of the last active index of the triggers in the list
@@ -58,13 +58,13 @@ namespace WheelChairCollaborativeGame
         /// 
         /// </summary>
         /// <param name="kinectTriggers">A list of triggers to be used in this movement</param>
-        public KinectMovement(params KinnectTrigger[] kinectTriggers)
+        public KinectMovement(params KinectTrigger[] kinectTriggers)
         {
-            foreach (KinnectTrigger trigger in kinectTriggers)
+            foreach (KinectTrigger trigger in kinectTriggers)
                 addTrigger(trigger);
         }
 
-        public void addTrigger(KinnectTrigger kinectTrigger)
+        public void addTrigger(KinectTrigger kinectTrigger)
         {
             kinectTriggers.Add(kinectTrigger);            
         }
@@ -170,6 +170,6 @@ namespace WheelChairCollaborativeGame
 
     public class KinectMovementEventArgs : EventArgs
     {
-        public KinnectTrigger LastTrigger { get; set; }
+        public KinectTrigger LastTrigger { get; set; }
     }
 }
