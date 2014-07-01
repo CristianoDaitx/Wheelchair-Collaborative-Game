@@ -198,14 +198,18 @@ namespace WheelChairCollaborativeGame
                 if (e.TrackingID == skeletonPlayerTank.Skeleton.TrackingId)
                 {
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
                     graph.IsPressed = false;
+                    graphSinc.IsPressed = false;
                     time = 0;
                 }
             if (skeletonPlayerSoldier != null)
                 if (e.TrackingID == skeletonPlayerSoldier.Skeleton.TrackingId)
                 {
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
                     graph2.IsPressed = false;
+                    graphSinc.IsPressed = false;
                     time2 = 0;
                 }
 
@@ -219,17 +223,42 @@ namespace WheelChairCollaborativeGame
                 if (e.TrackingID == skeletonPlayerTank.Skeleton.TrackingId)
                 {
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+                    GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
                     graph.IsPressed = true;
                     actionCount++;
-
+                    if (graph2.IsPressed == true)
+                    {
+                        graphSinc.IsPressed = true;
+                        actionCountSinc++;
+                    }
+                    else
+                    {
+                        graphSinc.IsPressed = false;
+                        
+                    }
                 }
 
             if (skeletonPlayerSoldier != null)
                 if (e.TrackingID == skeletonPlayerSoldier.Skeleton.TrackingId)
                 {
+                    GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
                     graph2.IsPressed = true;
                     actionCount2++;
+
+                    if (graph.IsPressed == true)
+                    {
+                        graphSinc.IsPressed = true;
+                        actionCountSinc++;
+
+                    }
+                    else
+                    {
+                        graphSinc.IsPressed = false;
+                        
+                    }
                 }
 
 
@@ -363,19 +392,22 @@ namespace WheelChairCollaborativeGame
                                 movementFrontTank.update();
 
                             }
-                            if (movementFrontTank.State == KinectMovement.MovementState.Activated)
-                            {
-
-                                time += gameTime.ElapsedGameTime.TotalMilliseconds;
-                            }
-
-
-
+                        
                             if (skeletonPlayerSoldier != null)
                             {
                                 movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier.Skeleton);
                                 movementFrontSoldier.update();
 
+                            }
+                            if (movementFrontTank.State == KinectMovement.MovementState.Activated && movementFrontSoldier.State == KinectMovement.MovementState.Activated)
+                            {
+
+                                timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
+                                
+                            }
+                            else
+                            {
+                                timeSinc = 0;
                             }
 
                         }
@@ -414,6 +446,16 @@ namespace WheelChairCollaborativeGame
                                 triggerDouble.TrackingSkeleton = skeletonPlayerTank.Skeleton;
                                 triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier.Skeleton;
                                 movementDouble.update();
+                            }
+                            if (movementSideTank.State == KinectMovement.MovementState.Activated && movementSideSoldier.State == KinectMovement.MovementState.Activated)
+                            {
+
+                                timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                            }
+                            else
+                            {
+                                timeSinc = 0;
                             }
                         }
                     }
