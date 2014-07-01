@@ -180,6 +180,8 @@ namespace WheelChairCollaborativeGame
 
             triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.Head, 0.2f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
             movementDouble = new KinectMovement(triggerDouble);
+            movementDouble.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementDouble_MovementQuit);
+            movementDouble.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementDouble_MovementCompleted);
 
 
 
@@ -190,6 +192,21 @@ namespace WheelChairCollaborativeGame
                 FillMode = FillMode.WireFrame,
                 CullMode = CullMode.None,
             };
+        }
+
+        void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
+        {
+            GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
+            GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
+            GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+            if (graph.IsPressed == true && graph2.IsPressed == true)
+                graphSinc.IsPressed = true;
+        }
+
+        void movementDouble_MovementQuit(object sender, KinectMovementEventArgs e)
+        {
+            GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+            graphSinc.IsPressed = false;
         }
 
         void movementOne_MovementQuit(object sender, KinectMovementEventArgs e)
@@ -227,7 +244,7 @@ namespace WheelChairCollaborativeGame
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
                     graph.IsPressed = true;
                     actionCount++;
-                    if (graph2.IsPressed == true)
+                    if (graph2.IsPressed == true && movementDouble.State == KinectMovement.MovementState.Activated)
                     {
                         graphSinc.IsPressed = true;
                         actionCountSinc++;
@@ -248,7 +265,7 @@ namespace WheelChairCollaborativeGame
                     graph2.IsPressed = true;
                     actionCount2++;
 
-                    if (graph.IsPressed == true)
+                    if (graph.IsPressed == true && movementDouble.State == KinectMovement.MovementState.Activated)
                     {
                         graphSinc.IsPressed = true;
                         actionCountSinc++;
@@ -447,7 +464,8 @@ namespace WheelChairCollaborativeGame
                                 triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier.Skeleton;
                                 movementDouble.update();
                             }
-                            if (movementSideTank.State == KinectMovement.MovementState.Activated && movementSideSoldier.State == KinectMovement.MovementState.Activated)
+                            if (movementSideTank.State == KinectMovement.MovementState.Activated && movementSideSoldier.State == KinectMovement.MovementState.Activated
+                                && movementDouble.State == KinectMovement.MovementState.Activated)
                             {
 
                                 timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -495,6 +513,9 @@ namespace WheelChairCollaborativeGame
                          actionCountSinc.ToString(), new Vector2(60, 40));
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                         TimeSpan.FromMilliseconds(timeSinc).Seconds.ToString(), new Vector2(60, 60));
+
+            //GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+            //            movementDouble.State.ToString(), new Vector2(60, 80));
 
 
             string message = ("Actions made");
