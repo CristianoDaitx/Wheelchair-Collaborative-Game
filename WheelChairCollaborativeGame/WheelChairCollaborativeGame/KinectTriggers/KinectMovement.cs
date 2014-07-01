@@ -39,7 +39,7 @@ namespace WheelChairCollaborativeGame
             get { return state; }
         }
 
-        private List<KinectTrigger> kinectTriggers = new List<KinectTrigger>();
+        private List<KinnectTrigger> kinectTriggers = new List<KinnectTrigger>();
 
         /// <summary>
         /// Keep track of the last active index of the triggers in the list
@@ -58,13 +58,13 @@ namespace WheelChairCollaborativeGame
         /// 
         /// </summary>
         /// <param name="kinectTriggers">A list of triggers to be used in this movement</param>
-        public KinectMovement(params KinectTrigger[] kinectTriggers)
+        public KinectMovement(params KinnectTrigger[] kinectTriggers)
         {
-            foreach (KinectTrigger trigger in kinectTriggers)
+            foreach (KinnectTrigger trigger in kinectTriggers)
                 addTrigger(trigger);
         }
 
-        public void addTrigger(KinectTrigger kinectTrigger)
+        public void addTrigger(KinnectTrigger kinectTrigger)
         {
             kinectTriggers.Add(kinectTrigger);            
         }
@@ -75,7 +75,7 @@ namespace WheelChairCollaborativeGame
         /// <param name="skeleton"></param>
         public void setTriggersTrackingSkeleton(Skeleton trackingSkeleton)
         {
-            foreach (KinectTrigger trigger in kinectTriggers)
+            foreach (KinectTriggerSingle trigger in kinectTriggers)
                 trigger.TrackingSkeleton = trackingSkeleton;
         }
 
@@ -84,7 +84,7 @@ namespace WheelChairCollaborativeGame
         /// </summary>
         public void drawTriggers()
         {
-            foreach (KinectTrigger trigger in kinectTriggers)
+            foreach (KinectTriggerSingle trigger in kinectTriggers)
                 trigger.draw();
         }
 
@@ -142,7 +142,7 @@ namespace WheelChairCollaborativeGame
             {
                 //fire event once when the movement is finished
                 KinectMovementEventArgs args = new KinectMovementEventArgs();
-                args.TrackingID = kinectTriggers[kinectTriggers.Count() - 1].TrackingSkeleton.TrackingId;
+                args.LastTrigger = kinectTriggers[kinectTriggers.Count() - 1];
                 if (state != MovementState.Activated)
                 {
                     state = MovementState.Activated;
@@ -155,7 +155,7 @@ namespace WheelChairCollaborativeGame
             {
                 //fire event if movement is no more activated
                 KinectMovementEventArgs args = new KinectMovementEventArgs();
-                args.TrackingID = kinectTriggers[kinectTriggers.Count() - 1].TrackingSkeleton.TrackingId;
+                args.LastTrigger = kinectTriggers[kinectTriggers.Count() - 1];
                 if (state != MovementState.Wating)
                 {
                     state = MovementState.Wating;
@@ -170,6 +170,6 @@ namespace WheelChairCollaborativeGame
 
     public class KinectMovementEventArgs : EventArgs
     {
-        public int TrackingID { get; set; }
+        public KinnectTrigger LastTrigger { get; set; }
     }
 }
