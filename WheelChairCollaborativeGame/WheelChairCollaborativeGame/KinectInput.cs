@@ -35,7 +35,7 @@ namespace WheelChairCollaborativeGame
         private double timeSinc = 0;
 
 
-        bool isWireframe = true;
+        bool isWireframe = false;
         RasterizerState wireFrameState;
 
         GeometricPrimitive currentPrimitive;
@@ -178,7 +178,7 @@ namespace WheelChairCollaborativeGame
 
             //movement to check for side high five
 
-            triggerDouble = new KinectTriggerDouble(JointType.HandLeft, JointType.Head, JointType.HandRight, JointType.Head, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.Head, 0.2f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
             movementDouble = new KinectMovement(triggerDouble);
 
 
@@ -488,8 +488,8 @@ namespace WheelChairCollaborativeGame
             }
             else if (controlSelect == 2)
             {
-                movementSideTank.drawTriggers();
-                movementSideSoldier.drawTriggers();
+                //movementSideTank.drawTriggers();
+                //movementSideSoldier.drawTriggers();
 
                 triggerDouble.draw();
             }

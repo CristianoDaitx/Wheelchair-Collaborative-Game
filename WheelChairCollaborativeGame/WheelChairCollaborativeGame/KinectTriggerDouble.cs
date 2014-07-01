@@ -33,7 +33,7 @@ namespace WheelChairCollaborativeGame
 
         protected override Vector3 getTriggerPosition()
         {
-            return (skeletonPointToVector3(TrackingSkeleton.Joints[baseJoint]) + skeletonPointToVector3(TrackingSkeletonTwo.Joints[baseJointTwo]) / 2);
+            return ((skeletonPointToVector3(TrackingSkeleton.Joints[baseJoint]) + skeletonPointToVector3(TrackingSkeletonTwo.Joints[baseJointTwo])) / 2);
         }
 
         public override bool checkIsTriggered()

@@ -144,7 +144,8 @@ namespace WheelChairCollaborativeGame
                 KinectMovementEventArgs args = new KinectMovementEventArgs();
                 args.TrackingID = kinectTriggers[kinectTriggers.Count() - 1].TrackingSkeleton.TrackingId;
                 if (state != MovementState.Activated)
-                    MovementCompleted(this, args);  
+                    if (MovementCompleted != null)
+                        MovementCompleted(this, args);  
 
                 state = MovementState.Activated;
             }
@@ -154,7 +155,8 @@ namespace WheelChairCollaborativeGame
                 KinectMovementEventArgs args = new KinectMovementEventArgs();
                 args.TrackingID = kinectTriggers[kinectTriggers.Count() - 1].TrackingSkeleton.TrackingId;
                 if (state != MovementState.Wating)
-                    MovementQuit(this, args);
+                    if (MovementCompleted != null)
+                        MovementQuit(this, args);
 
                 state = MovementState.Wating;
             }
