@@ -36,7 +36,7 @@ namespace WheelChairCollaborativeGame
         private int actionCountSinc = 0;
 
 
-        bool isWireframe = false;
+        bool isWireframe = true;
         RasterizerState wireFrameState;
 
         GeometricPrimitive currentPrimitive;
@@ -143,7 +143,7 @@ namespace WheelChairCollaborativeGame
 
             //movement to check for side high five
 
-            triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.Head, JointType.HandLeft, JointType.Head, 0.2f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.HandRight, JointType.HandLeft, JointType.HandLeft, 0.1f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
             movementDouble = new KinectMovement(triggerDouble);
             movementDouble.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementDouble_MovementQuit);
             movementDouble.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementDouble_MovementCompleted);
@@ -159,7 +159,7 @@ namespace WheelChairCollaborativeGame
             };
 
 
-            tankGameObject = (TankGameObject) GameObjectManager.getGameObject("playerTank");
+            tankGameObject = (TankGameObject)GameObjectManager.getGameObject("playerTank");
         }
 
         void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
@@ -167,9 +167,11 @@ namespace WheelChairCollaborativeGame
             GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
             GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
             GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-            if (graph.IsPressed == true && graph2.IsPressed == true)
-                graphSinc.IsPressed = true;
-
+            //if (graph.IsPressed == true && graph2.IsPressed == true)
+            graphSinc.IsPressed = true;
+            //add ball
+            actionCountSinc++;
+            GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
 
         }
 
@@ -225,7 +227,7 @@ namespace WheelChairCollaborativeGame
                     else
                     {
                         graphSinc.IsPressed = false;
-                        
+
                     }
                 }
 
@@ -249,7 +251,7 @@ namespace WheelChairCollaborativeGame
                     else
                     {
                         graphSinc.IsPressed = false;
-                        
+
                     }
                 }
 
@@ -313,7 +315,7 @@ namespace WheelChairCollaborativeGame
                                 //add ball
                                 GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
                             }
-                            
+
                         }
                         if (isAction == true)
                         {
@@ -380,7 +382,7 @@ namespace WheelChairCollaborativeGame
                                 movementFrontTank.update();
 
                             }
-                        
+
                             if (skeletonPlayerSoldier != null)
                             {
                                 movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier.Skeleton);
@@ -391,7 +393,7 @@ namespace WheelChairCollaborativeGame
                             {
 
                                 timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
-                                
+
                             }
                             else
                             {
@@ -407,35 +409,14 @@ namespace WheelChairCollaborativeGame
                         // high five
                         if (kinectFrameChange == true)
                         {
-                            //kinect trigger part
-                            if (skeletonPlayerTank != null)
-                            {
-                                movementSideTank.setTriggersTrackingSkeleton(skeletonPlayerTank.Skeleton);
-                                movementSideTank.update();
-
-                            }
-                            if (movementSideTank.State == KinectMovement.MovementState.Activated)
-                            {
-
-                                time += gameTime.ElapsedGameTime.TotalMilliseconds;
-                            }
-
-
-                            if (skeletonPlayerSoldier != null)
-                            {
-                                movementSideSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier.Skeleton);
-                                movementSideSoldier.update();
-
-                            }
-
                             if (skeletonPlayerSoldier != null && skeletonPlayerTank != null)
                             {
                                 triggerDouble.TrackingSkeletonOne = skeletonPlayerTank.Skeleton;
                                 triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier.Skeleton;
                                 movementDouble.update();
                             }
-                            if (movementSideTank.State == KinectMovement.MovementState.Activated && movementSideSoldier.State == KinectMovement.MovementState.Activated
-                                && movementDouble.State == KinectMovement.MovementState.Activated)
+
+                            if (movementDouble.State == KinectMovement.MovementState.Activated)
                             {
 
                                 timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -454,7 +435,7 @@ namespace WheelChairCollaborativeGame
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             base.Draw(spriteBatch, gameTime);
-            return;
+            //return;
 
             /*Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
@@ -721,7 +702,7 @@ namespace WheelChairCollaborativeGame
                 }
 
 
-                
+
                 /*// Make sure skeleton has valid info for listening
                 if (skeleton == null || skeleton.Mode != Mode.Seated)
                     return;*/
