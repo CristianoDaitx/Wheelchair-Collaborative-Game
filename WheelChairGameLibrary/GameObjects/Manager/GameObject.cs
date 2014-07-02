@@ -37,13 +37,13 @@ namespace WheelChairGameLibrary.GameObjects
 
         }
 
-        /*private Collider collider;
+        private Collider collider;
         public Collider Collider
         {
             get { return collider; }
             set { collider = value; }
 
-        }*/
+        }
 
         public GameObject(GameObjectManager gameObjectManager, String tag)
         {
@@ -63,8 +63,8 @@ namespace WheelChairGameLibrary.GameObjects
             if (sprite != null)
                 sprite.Draw(spriteBatch, gameTime);
 
-            /*if (DEBUG_GAME_OBJECT && collider != null)
-                collider.Draw();*/
+            if (DEBUG_GAME_OBJECT && collider != null)
+                collider.Draw();
         }
 
         /// <summary>
@@ -72,13 +72,12 @@ namespace WheelChairGameLibrary.GameObjects
         /// </summary>
         public virtual void endedAnimation() { }
 
-        /*
+        
         /// <summary>
         /// Called when an Collider is inside it's collider element
         /// </summary>
         /// <param name="collider">The other collider</param>
         public virtual void collisionEntered(Collider collider) { }
-         * */
 
     }
 }

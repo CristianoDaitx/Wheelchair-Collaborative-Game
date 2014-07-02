@@ -24,7 +24,7 @@ namespace WheelChairCollaborativeGame
     {
         Texture2D backgroundTexture;
 
-        int secondsToChangeScreen = 5;
+        int secondsToChangeScreen = 4;
         double time = 0;
 
 
@@ -61,16 +61,16 @@ namespace WheelChairCollaborativeGame
 
             time = 0;
 
-
-            KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
-            GameObjectManager.addGameObject(kinectInput);
-
             TankGameObject playerTank = new TankGameObject(GameObjectManager, "playerTank");
             GameObjectManager.addGameObject(playerTank);
 
 
-            /*EnemyGameObject enemy = new EnemyGameObject(GameObjectManager, "enemy");
-            GameObjectManager.addGameObject(enemy);*/
+            KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
+            GameObjectManager.addGameObject(kinectInput);
+           
+
+            //EnemyGameObject enemy = new EnemyGameObject(GameObjectManager, "enemy");
+            //GameObjectManager.addGameObject(enemy);
 
             GraphGameObject graph = new GraphGameObject(GameObjectManager, "graph");
             GameObjectManager.addGameObject(graph);
@@ -116,26 +116,28 @@ namespace WheelChairCollaborativeGame
 
         }
 
-        /*public override void Update(GameTime gameTime, InputState input, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public override void Update(GameTime gameTime, InputState input, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, input, otherScreenHasFocus, coveredByOtherScreen);
 
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            PlayerIndex newPlayerIndex;
+            //PlayerIndex newPlayerIndex;
             /*if (input.IsMenuSelect(null, out newPlayerIndex)){
                 ExitScreen();
                 //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
 
                 
             }
-
+            */
             if (time > TimeSpan.FromSeconds(secondsToChangeScreen).TotalMilliseconds)
             {
-                ExitScreen();
+                //ExitScreen();
                 //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
-            }* /
+                GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
+                time = 0;
+            }
 
-        }*/
+        }
     }
 }

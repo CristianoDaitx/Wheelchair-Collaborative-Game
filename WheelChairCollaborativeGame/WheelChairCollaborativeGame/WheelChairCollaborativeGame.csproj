@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BallGameObject.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EnemyGameObject.cs" />
     <Compile Include="GeometricPrimitives\BezierPrimitive.cs" />

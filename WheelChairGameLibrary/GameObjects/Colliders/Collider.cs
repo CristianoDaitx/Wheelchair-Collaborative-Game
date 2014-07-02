@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using WheelChairGameLibrary.Helpers;
 #endregion
 
-namespace MortalKomatG.GameObjects
+namespace WheelChairGameLibrary.GameObjects
 {
     public class Collider
     {

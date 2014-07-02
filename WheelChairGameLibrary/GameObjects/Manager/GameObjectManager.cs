@@ -29,12 +29,12 @@ namespace WheelChairGameLibrary.GameObjects
         /// </summary>
         private bool isInUpdateLoop;
 
-        /*
+        
         /// <summary>
         /// list of active colliders
         /// </summary>
         private List<Collider> colliders = new List<Collider>();
-         */
+         
 
         List<GameObject> gameObjectsToAdd = new List<GameObject>();
         List<GameObject> gameObjectsToRemove = new List<GameObject>();
@@ -54,6 +54,8 @@ namespace WheelChairGameLibrary.GameObjects
             foreach (GameObject gameObject in gameObjects)
                 gameObject.Update(gameTime, inputState);
 
+            calculateCollisions(gameTime);
+
             isInUpdateLoop = false;
 
             if (gameObjectsToAdd.Count > 0)
@@ -70,11 +72,11 @@ namespace WheelChairGameLibrary.GameObjects
                 gameObjectsToRemove.Clear();
             }
 
-            //calculateCollisions(gameTime);
+            
 
         }
 
-        /*
+        
         private void calculateCollisions(GameTime gameTime)
         {
             for (int x = 0; x < colliders.Count; x++)
@@ -100,7 +102,7 @@ namespace WheelChairGameLibrary.GameObjects
                     //    }
                 }
             }
-        }*/
+        }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
@@ -118,8 +120,8 @@ namespace WheelChairGameLibrary.GameObjects
             if (!isInUpdateLoop)
             {
                 gameObjects.Add(gameObject);
-                //if (gameObject.Collider != null)
-                //    colliders.Add(gameObject.Collider);
+                if (gameObject.Collider != null)
+                    colliders.Add(gameObject.Collider);
             }
             else
                 gameObjectsToAdd.Add(gameObject);
@@ -129,8 +131,8 @@ namespace WheelChairGameLibrary.GameObjects
         {
             if (!isInUpdateLoop)
             {
-                //if (gameObject.Collider != null)
-                //    colliders.Remove(gameObject.Collider);
+                if (gameObject.Collider != null)
+                    colliders.Remove(gameObject.Collider);
                 gameObjects.Remove(gameObject);
             } else
                 gameObjectsToRemove.Add(gameObject);

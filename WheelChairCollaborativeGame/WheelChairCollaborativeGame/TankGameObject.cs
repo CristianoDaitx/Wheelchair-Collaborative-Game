@@ -25,8 +25,8 @@ namespace WheelChairCollaborativeGame
     {
 
 
-        private readonly int ATTACK_STANCE_Y = 20;
-        private readonly int DEFENCE_STANCE_Y = 40;
+        private readonly int ATTACK_STANCE_Y = 360;
+        private readonly int DEFENCE_STANCE_Y = 380;
 
         private bool isAttackStance = false;
 
@@ -37,7 +37,7 @@ namespace WheelChairCollaborativeGame
         {
 
             Sprite = new WheelChairGameLibrary.Sprites.Sprite (this, gameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader"),
-                    gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(282, 65), 1);
+                    gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(282, DEFENCE_STANCE_Y), 1);
         }
 
         public override void Update(GameTime gameTime, InputState inputState)
