@@ -482,7 +482,10 @@ namespace WheelChairCollaborativeGame
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                          actionCountSinc.ToString(), new Vector2(60, 40));
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
-                        TimeSpan.FromMilliseconds(timeSinc).Seconds.ToString(), new Vector2(60, 60));
+                        TimeSpan.FromMilliseconds(timeSinc).Seconds.ToString() + "    Bullet Size", new Vector2(60, 60));
+
+            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+                        "Input method : " + controlSelect.ToString(), new Vector2(400, 80));
 
             //GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
             //            movementDouble.State.ToString(), new Vector2(60, 80));
