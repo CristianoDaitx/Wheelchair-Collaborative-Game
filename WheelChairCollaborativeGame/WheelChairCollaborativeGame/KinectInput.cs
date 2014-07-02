@@ -24,8 +24,6 @@ namespace WheelChairCollaborativeGame
 {
     class KinectInput : GameObject
     {
-
-
         EnhancedSkeleton skeletonPlayerTank;
         EnhancedSkeleton skeletonPlayerSoldier;
         bool kinectFrameChange;
@@ -33,6 +31,9 @@ namespace WheelChairCollaborativeGame
         private double time = 0;
         private double time2 = 0;
         private double timeSinc = 0;
+        private int actionCount = 0;
+        private int actionCount2 = 0;
+        private int actionCountSinc = 0;
 
 
         bool isWireframe = false;
@@ -51,47 +52,19 @@ namespace WheelChairCollaborativeGame
         Texture2D kinectRGBVideo;
 
 
-        Texture2D hand;
-        Vector2 headPositionPixels = new Vector2();
-
-        //Skeleton aSkeleton;
-
-
         // Constants //
-
-        const int skeletonId = -1;
 
         const int pwmForwardPeriod = 1000;
         const int pwmTurningPeriod = 200;
-
-        const float handThreshold = 0.5f;
-        const float handThresholdError = 0.1f;
-
-        const float handDistanceThreshold = 0.7f;
-        const float handDistanceThresholdError = 0.1f;
 
         // Readonly //
 
         readonly WheelchairDetector wheelchairDetector;
 
-        // Listeners
-        readonly LinearNudgeListener linearNudgeGesture;
-        readonly AngularNudgeListener angularNudgeGesture;
-
-
-        private int actionCount = 0;
-        private int actionCount2 = 0;
-        private int actionCountSinc = 0;
-
         float distance;
         float angle;
 
-
-
         public EnhancedSkeletonCollection skeletons;
-
-        //int binNum;
-
 
 
         public KinectInput(GameObjectManager gameObjectManager, String tag)
@@ -116,17 +89,7 @@ namespace WheelChairCollaborativeGame
             wheelchairDetector.KinectSensor.ColorFrameReady += new EventHandler<ColorImageFrameReadyEventArgs>(kinectSensor_ColorFrameReady);
             //wheelchairDetector.AllFramesReady += new EventHandler<KinectForWheelchair.AllFramesReadyEventArgs>(wheelchairDetector_AllFramesReady);
 
-            // Create linear nudge gesture
-            linearNudgeGesture = new LinearNudgeListener(wheelchairDetector, skeletonId);
-            //!!linearNudgeGesture.Triggered += new DCEventHandler(linearNudgeGesture_Triggered);
-
-            // Create angular nudge gesture
-            angularNudgeGesture = new AngularNudgeListener(wheelchairDetector, skeletonId);
-            //!!angularNudgeGesture.Triggered += new DCEventHandler(angularNudgeGesture_Triggered);
-
             skeletons = new EnhancedSkeletonCollection();
-
-            hand = GameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader");
 
 
             // Movement tank
@@ -286,8 +249,6 @@ namespace WheelChairCollaborativeGame
 
 
 
-
-
         public override void Update(GameTime gameTime, InputState inputState)
         {
             base.Update(gameTime, inputState);
@@ -302,14 +263,7 @@ namespace WheelChairCollaborativeGame
 
 
 
-
-
-
-
-
-
             //Action by pressing A on gamepad.
-
 
 
             if (inputState.IsKeyPressed(Keys.X, playerIndex, out playerIndex))
@@ -459,7 +413,6 @@ namespace WheelChairCollaborativeGame
 
                             }
 
-
                             if (skeletonPlayerSoldier != null && skeletonPlayerTank != null)
                             {
                                 triggerDouble.TrackingSkeletonOne = skeletonPlayerTank.Skeleton;
@@ -481,7 +434,6 @@ namespace WheelChairCollaborativeGame
                     }
                     break;
             }
-            Console.WriteLine("ControlSelect " + controlSelect);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -553,15 +505,11 @@ namespace WheelChairCollaborativeGame
             }
             else if (controlSelect == 2)
             {
-                //movementSideTank.drawTriggers();
-                //movementSideSoldier.drawTriggers();
+                movementSideTank.drawTriggers();
+                movementSideSoldier.drawTriggers();
 
                 triggerDouble.draw();
             }
-
-
-
-
 
 
 
@@ -587,27 +535,6 @@ namespace WheelChairCollaborativeGame
 
         }
 
-
-        /*public static Vector3 ConvertRealWorldPoint(Vector3 position)
-        {
-            var returnVector = new Vector3();
-
-            returnVector.X = position.X * -10f;
-            returnVector.Y = position.Y * 10f;
-            returnVector.Z = position.Z * 10f;
-            return returnVector;
-        }*/
-
-        /*public static Vector3 ConvertRealWorldPoint(SkeletonPoint position)
-        {
-            var returnVector = new Vector3();
-
-            returnVector.X = position.X * -10f;
-            returnVector.Y = position.Y * 10f;
-            returnVector.Z = position.Z * 10f;
-            return returnVector;
-        }*/
-
         private void DrawSkeleton(Skeleton skeleton, Color color)
         {
             foreach (Joint joint in skeleton.Joints)
@@ -617,11 +544,6 @@ namespace WheelChairCollaborativeGame
                 PrimitiveDrawing.DrawCircle(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, position, 4.0f, color, 4, 8);
 
             }
-
-            //skeleton.JointsJoints[JointType.HandRight].position
-            //Vector2 position1 = new Vector2((((0.5f * skeleton.Joints[JointType.HandRight].Position.X) + 0.5f) * (640)), (((-0.5f * skeleton.Joints[JointType.HandRight].Position.Y) + 0.5f) * (480)));
-            //Vector2 position2 = new Vector2((((0.5f * skeleton.Joints[JointType.ElbowRight].Position.X) + 0.5f) * (640)), (((-0.5f * skeleton.Joints[JointType.ElbowRight].Position.Y) + 0.5f) * (480)));
-
 
             //head
             PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
@@ -699,7 +621,7 @@ namespace WheelChairCollaborativeGame
                 // Get skeletons
                 frame.CopySkeletonDataTo(skeletons);
 
-                // Track closest skeleton to Kinect
+                // Find and match skeletons
                 IEnumerable<EnhancedSkeleton> trackedSkeletons = skeletons.Where(x => x.Skeleton.TrackingState == SkeletonTrackingState.Tracked);
                 if (trackedSkeletons.Count() == 0)
                 {
@@ -780,213 +702,13 @@ namespace WheelChairCollaborativeGame
                 }
 
 
-
-                /*EnhancedSkeleton skeleton = trackedSkeletons.Aggregate((x, y) => (x.Skeleton.Position.Z < y.Skeleton.Position.Z) ? x : y);
-
-
-                // Make sure skeleton has valid info for listening
+                
+                /*// Make sure skeleton has valid info for listening
                 if (skeleton == null || skeleton.Mode != Mode.Seated)
                     return;*/
 
                 if (skeletonPlayerTank == null)
                     return;
-
-                /*
-                                GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
-                 
-
-                                //Get arms position
-                                {
-
-
-                                    float TRESHOLD_DEPTH = 0.05f;
-                                    float TRESHOLD_WIDTH = 0.1f;
-                                    float TRESHOLD_HEIGHT = 0.1f;
-                                    float MIN_WIDTH = -0.0f;
-                                    float MAX_WIDTH = 0.3f;
-                                    float START_DEPTH = -0.2f;
-                                    float START_HEIGHT = -0.1f;
-
-                                    float MIN_DEPTH = -0.3f;
-                                    float MAX_DEPTH = 0.1f;
-
-                                    //bool isAction = graph.IsPressed;
-
-                                    Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
-                                    Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
-                                    Joint Sholder = skeletonPlayerTank.Skeleton.Joints[JointType.ShoulderCenter];
-                                    float HpositionZ = Hand.Position.Z - Head.Position.Z;
-                                    float HpositionX = Hand.Position.X - Head.Position.X;
-                                    float HpositionY = Hand.Position.Y - Head.Position.Y;
-
-
-                                    switch (moveState)
-                                    {
-                                        case MoveState.startPosition:
-                                            if (HpositionZ < START_DEPTH + TRESHOLD_DEPTH)
-                                            {
-                                                if (MIN_WIDTH < HpositionX && HpositionX < MAX_WIDTH)
-                                                {
-
-                                                    if (HpositionY > START_HEIGHT + TRESHOLD_HEIGHT)
-                                                    {
-                                                        moveState = MoveState.active;
-                                                    }
-
-                                                    isAction = true;
-                                                    action_count++;
-
-                                                }
-                                            }
-
-                                            if (HpositionZ > START_DEPTH)
-                                            {
-                                                moveState = MoveState.outside;
-                                            }
-                                            if (HpositionX < MIN_WIDTH - TRESHOLD_WIDTH || MAX_WIDTH + TRESHOLD_WIDTH < HpositionX)
-                                            {
-                                                moveState = MoveState.outside;
-                                            }
-                                            if (HpositionY < START_HEIGHT)
-                                            {
-                                                moveState = MoveState.outside;
-                                            }
-                                            break;
-
-                                        case MoveState.active:
-                                            if (HpositionZ > START_DEPTH)
-                                            {
-                                                moveState = MoveState.outside;
-                                            }
-                                            if (HpositionX < MIN_WIDTH - TRESHOLD_WIDTH || MAX_WIDTH + TRESHOLD_WIDTH < HpositionX)
-                                            {
-                                                moveState = MoveState.outside;
-                                            }
-                                            if (HpositionY < START_HEIGHT)
-                                            {
-                                                moveState = MoveState.outside;
-                                            }
-                                            break;
-
-                                        case MoveState.outside:
-                                            if (MIN_DEPTH < HpositionZ && HpositionZ < MAX_DEPTH + TRESHOLD_DEPTH) // (HpositionZ < START_DEPTH + TRESHOLD_DEPTH )
-                                            {
-                                                if (MIN_WIDTH < HpositionX && HpositionX < MAX_WIDTH)
-                                                {
-                                                    if (HpositionY > START_HEIGHT/* + TRESHOLD_HEIGHT/* /)
-                                                    {
-                                                        moveState = MoveState.startPosition;
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                    }
-
-                                    Console.WriteLine("Distance " + HpositionZ);
-                                    Console.WriteLine("State " + moveState);
-
-                                    /*if (moveState == MoveState.active)
-                                        graph.IsPressed = true;
-                                    else
-                                        graph.IsPressed = false;*/
-
-
-
-                /*
-                if (HpositionZ > -0.40 && HpositionZ < 0)
-                {
-
-                    Console.WriteLine("HpositionZ" + HpositionZ);
-                    graph.IsPressed = false;
-
-                }
-                else
-                {
-                    if (HpositionY > 0)
-                    {
-                        Console.WriteLine("HpositionY" + HpositionY);
-                        graph.IsPressed = true;
-                    }
-
-                }*/
-
-                //}
-
-
-
-                /*
-                // high five
-                {
-
-                    float TRESHOLD_DEPTH = 0.05f;
-                    float TRESHOLD_WIDTH = 0.1f;
-                    float TRESHOLD_HEIGHT = 0.1f;
-                    float MIN_DEPTH = -0.2f;
-                    float MAX_DEPTH = 0.1f;
-                    float START_WIDTH = 0.4f;
-                    float START_HEIGHT = 0.1f;
-
-                    Joint Shoulder = skeletonPlayerTank.Skeleton.Joints[JointType.ShoulderRight];
-                    Joint Hand = skeletonPlayerTank.Skeleton.Joints[JointType.HandRight];
-                    Joint Head = skeletonPlayerTank.Skeleton.Joints[JointType.Head];
-
-                    bool isAction = graph.IsPressed;
-
-
-                    float xPosition = Hand.Position.X - Head.Position.X;
-                    float zPosition = Hand.Position.Z - Head.Position.Z;
-                    float yPosition = Hand.Position.Y - Shoulder.Position.Y;
-
-                    //coming from not action
-                    if (!graph.IsPressed)
-                    {
-                        if (xPosition > START_WIDTH + TRESHOLD_WIDTH)
-                        {
-                            if (MIN_DEPTH < zPosition && zPosition < MAX_DEPTH)
-                            {
-                                if (yPosition > START_HEIGHT + TRESHOLD_HEIGHT)
-                                {
-                                    isAction = true;
-                                    action_count ++;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (xPosition < START_WIDTH)
-                        {
-                            isAction = false;
-                        }
-                        if (zPosition < MIN_DEPTH - TRESHOLD_DEPTH || MAX_DEPTH + TRESHOLD_DEPTH < zPosition)
-                        {
-                            isAction = false;
-                        }
-                        if (yPosition < START_HEIGHT)
-                        {
-                            isAction = false;
-                        }
-
-
-
-                    }
-
-                    Console.WriteLine("Distance " + zPosition);
-
-
-                    graph.IsPressed = isAction;
-
-                    wirstRotation = MathHelper.ToDegrees(skeletonPlayerTank.Skeleton.BoneOrientations[JointType.ShoulderRight].AbsoluteRotation.Quaternion.Z);
-
-
-                }
-                */
-
-
-
-
-
-
 
                 // Position
                 {
@@ -1060,7 +782,6 @@ namespace WheelChairCollaborativeGame
                     //labelKey.Text = newDuty.ToString();
                     Console.WriteLine("Turn: " + newDuty.ToString());
 
-
                     TankGameObject playerTank = (TankGameObject)GameObjectManager.getGameObject("playerTank");
 
                     if (newDuty < 0)
@@ -1073,78 +794,7 @@ namespace WheelChairCollaborativeGame
                         playerTank.slideToLeft();
 
                     }
-
-
                 }
-
-
-
-                //testing to draw
-                //if (skeletonData != null)
-                //{
-                //    foreach (Skeleton skel in skeletonData)
-                //    {
-                //        if (skel.TrackingState == SkeletonTrackingState.Tracked)
-                //        {
-                //aSkeleton = skeleton.Skeleton;
-                //        }
-                //    }
-                //}
-
-
-                /*
-                // Normalize
-                const float maxValue = 0.008f;
-                angle = (angle + maxValue) / (2 * maxValue);
-
-
-                // Clamp to between zero and one
-                if (angle < 0)
-                    angle = 0;
-                if (angle > 1)
-                    angle = 1;
-
-                // Place in bin
-                const int numBins = 3;
-                int newBinNum = (int)Math.Floor(angle * numBins);
-                if (newBinNum == 3)
-                    newBinNum = 2;
-
-
-                // Set timer
-                if (newBinNum != binNum)
-                {
-
-                    // Unpress key
-                    switch (binNum)
-                    {
-                        case 0: KeyMessaging.KeySender.SendKey(Keys.Right, false); break;
-                        case 1: KeyMessaging.KeySender.SendKey(Keys.Up, false); break;
-                        case 2: KeyMessaging.KeySender.SendKey(Keys.Left, false); break;
-                    }
-
-                    // Press key
-                    switch (newBinNum)
-                    {
-                        case 0:
-                            KeyMessaging.KeySender.SendKey(Keys.Right, true);
-                            labelKey.Text = "Right";
-                            break;
-
-                        case 1:
-                            KeyMessaging.KeySender.SendKey(Keys.Up, true);
-                            labelKey.Text = "Straight"; break;
-
-                        case 2:
-                            KeyMessaging.KeySender.SendKey(Keys.Left, true);
-                            labelKey.Text = "Left";
-                            break;
-                    }
-
-                    binNum = newBinNum;
-                }
-                */
-
             }
         }
 
