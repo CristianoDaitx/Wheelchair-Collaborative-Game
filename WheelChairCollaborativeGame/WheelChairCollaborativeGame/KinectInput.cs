@@ -188,7 +188,7 @@ namespace WheelChairCollaborativeGame
                 {
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                    graph.IsPressed = false;
+                    //graph.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time = 0;
                 }
@@ -197,7 +197,7 @@ namespace WheelChairCollaborativeGame
                 {
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                    graph2.IsPressed = false;
+                   // graph2.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time2 = 0;
                 }
@@ -214,7 +214,7 @@ namespace WheelChairCollaborativeGame
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                    graph.IsPressed = true;
+                    //graph.IsPressed = true;
                     actionCount++;
 
                     if (graph2.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontTank)))
@@ -237,7 +237,7 @@ namespace WheelChairCollaborativeGame
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                    graph2.IsPressed = true;
+                   // graph2.IsPressed = true;
                     actionCount2++;
 
                     if (graph.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontSoldier)))
@@ -320,6 +320,15 @@ namespace WheelChairCollaborativeGame
                         if (isAction == true)
                         {
                             time += gameTime.ElapsedGameTime.TotalMilliseconds;
+                            if (time > 1000)
+                            {
+                                if (isAction2 == false)
+                                {
+                                    isAction = false ;
+                                }
+                            }
+                                
+                                
                         }
 
                         if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
@@ -328,6 +337,7 @@ namespace WheelChairCollaborativeGame
                             isAction = false;
                             isActionSinc = false;
                         }
+
                         graph.IsPressed = isAction;
                         graphSinc.IsPressed = isActionSinc;
 
@@ -346,14 +356,22 @@ namespace WheelChairCollaborativeGame
                         if (isAction2 == true)
                         {
                             time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                            if (time2 > 1000)
+                            {
+                                if (isAction == false)
+                                {
+                                    isAction2 = false;
+                                }
+                            }
                         }
 
                         if (inputState.IsButtonReleased(Buttons.A, player2, out player2))
                         {
-                            time = 0;
+                            time2 = 0;
                             isAction2 = false;
                             isActionSinc = false;
                         }
+
                         graph2.IsPressed = isAction2;
                         graphSinc.IsPressed = isActionSinc;
 
@@ -389,6 +407,37 @@ namespace WheelChairCollaborativeGame
                                 movementFrontSoldier.update();
 
                             }
+
+                            if (movementFrontTank.State == KinectMovement.MovementState.Activated)
+                            {
+                                time += gameTime.ElapsedGameTime.TotalMilliseconds;
+                                isAction = true;
+                                if (time > 1000)
+                                {
+                                    if (isAction2 == false)
+                                    {
+                                        isAction = false;
+                                    }
+                                }
+                            }
+
+                            if (movementFrontSoldier.State == KinectMovement.MovementState.Activated)
+                            {
+                                time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                                isAction2 = true;
+                                if (time2 > 1000)
+                                {
+                                    if (isAction == false)
+                                    {
+                                        isAction2 = false;
+                                    }
+                                }
+
+                            }
+
+
+                            graph.IsPressed = isAction;
+                            graph2.IsPressed = isAction2;
                             if (movementFrontTank.State == KinectMovement.MovementState.Activated && movementFrontSoldier.State == KinectMovement.MovementState.Activated)
                             {
 
