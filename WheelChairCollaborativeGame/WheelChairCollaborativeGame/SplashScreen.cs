@@ -30,15 +30,6 @@ namespace WheelChairCollaborativeGame
 
 
 
-        
-        //KinectSensor kinectSensor;
-
-        //TODO
-        //string connectedStatus = "Not connected";
-        
-
-
-
 
 
         KinectInput wheelchairSkeletonFrame;
@@ -61,22 +52,22 @@ namespace WheelChairCollaborativeGame
 
             time = 0;
 
-            TankGameObject playerTank = new TankGameObject(GameObjectManager, "playerTank");
-            GameObjectManager.addGameObject(playerTank);
+            //TankGameObject playerTank = new TankGameObject(GameObjectManager, "playerTank");
+            //GameObjectManager.addGameObject(playerTank);
 
 
-            KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
-            GameObjectManager.addGameObject(kinectInput);
+            //KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
+            //GameObjectManager.addGameObject(kinectInput);
            
 
             //EnemyGameObject enemy = new EnemyGameObject(GameObjectManager, "enemy");
             //GameObjectManager.addGameObject(enemy);
 
-            GraphGameObject graph = new GraphGameObject(GameObjectManager, "graph");
-            GameObjectManager.addGameObject(graph);
+            //GraphGameObject graph = new GraphGameObject(GameObjectManager, "graph");
+            //GameObjectManager.addGameObject(graph);
             //graph.IsPressed = true;
 
-            GraphGameObject graph2 = new GraphGameObject(GameObjectManager, "graphPlayer2");
+            /*GraphGameObject graph2 = new GraphGameObject(GameObjectManager, "graphPlayer2");
             GameObjectManager.addGameObject(graph2);
             graph2.PressedY = 300;
             graph2.NotPressedY = 320;
@@ -84,7 +75,7 @@ namespace WheelChairCollaborativeGame
             GraphGameObject graphSinc = new GraphGameObject(GameObjectManager, "graphSinc");
             GameObjectManager.addGameObject(graphSinc);
             graphSinc.PressedY = 200;
-            graphSinc.NotPressedY = 220;
+            graphSinc.NotPressedY = 220;*/
 
 
             
@@ -134,7 +125,7 @@ namespace WheelChairCollaborativeGame
             {
                 //ExitScreen();
                 //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
-                GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
+                //GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
                 time = 0;
             }
 

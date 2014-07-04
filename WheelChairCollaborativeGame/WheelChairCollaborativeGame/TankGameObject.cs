@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using WheelChairGameLibrary.Screens;
 using WheelChairGameLibrary.GameObjects;
@@ -32,12 +33,12 @@ namespace WheelChairCollaborativeGame
 
         private double time = 0;
 
-        public TankGameObject(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public TankGameObject(GameEnhanced game, String tag)
+            : base(game, tag)
         {
 
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite (this, gameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader"),
-                    gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(282, DEFENCE_STANCE_Y), 1);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite (this, this.Game.Content.Load<Texture2D>("Space_Invader"),
+                    this.Game.WhitePixel, new Vector2(282, DEFENCE_STANCE_Y), 1);
         }
 
         public override void Update(GameTime gameTime, InputState inputState)

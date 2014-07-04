@@ -108,7 +108,7 @@ namespace WheelChairGameLibrary.GameObjects
         {
             spriteBatch.Begin();
             foreach (GameObject gameObject in gameObjects)
-                gameObject.Draw(spriteBatch, gameTime);
+                gameObject.Draw(gameTime);
             spriteBatch.End();
         }
 

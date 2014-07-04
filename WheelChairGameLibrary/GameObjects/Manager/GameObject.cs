@@ -8,11 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 using WheelChairGameLibrary.Sprites;
 using WheelChairGameLibrary.Helpers;
+
+
 #endregion
 
 namespace WheelChairGameLibrary.GameObjects
 {
-    public abstract class GameObject
+    public abstract class GameObject : DrawableGameComponent
     {
         private readonly bool DEBUG_GAME_OBJECT = true;
 
@@ -45,10 +47,18 @@ namespace WheelChairGameLibrary.GameObjects
 
         }
 
-        public GameObject(GameObjectManager gameObjectManager, String tag)
+        public GameObject(GameEnhanced game, String tag)
+            :base(game)
         {
-            this.gameObjectManager = gameObjectManager;
+            //this.gameObjectManager = gameObjectManager;
             this.tag = tag;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (sprite != null)
+                sprite.Update();
+            base.Update(gameTime);
         }
 
         public virtual void Update(GameTime gameTime, InputState inputState){
@@ -58,14 +68,19 @@ namespace WheelChairGameLibrary.GameObjects
             
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+        }
+
+        /*public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (sprite != null)
                 sprite.Draw(spriteBatch, gameTime);
 
             if (DEBUG_GAME_OBJECT && collider != null)
                 collider.Draw();
-        }
+        }*/
 
         /// <summary>
         /// Called when an aniation in the Sprite reached it's end
@@ -78,6 +93,59 @@ namespace WheelChairGameLibrary.GameObjects
         /// </summary>
         /// <param name="collider">The other collider</param>
         public virtual void collisionEntered(Collider collider) { }
+
+
+
+
+
+
+
+
+
+
+
+        public new GameEnhanced Game
+        {
+            get { return (GameEnhanced)base.Game; }
+        }
+
+
+
+        // xna example stuff
+
+        /// <summary>
+        /// Gets or sets the position of the object.
+        /// </summary>
+        public Vector2 Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the object.
+        /// </summary>
+        public Vector2 Size { get; set; }
+
+        /// <summary>
+        /// Gets the KinectChooser from the services.
+        /// </summary>
+        public KinectChooser Chooser
+        {
+            get
+            {
+                return (KinectChooser)this.Game.Services.GetService(typeof(KinectChooser));
+            }
+        }
+
+        /// <summary>
+        /// Gets the SpriteBatch from the services.
+        /// </summary>
+        public SpriteBatch SharedSpriteBatch
+        {
+            get
+            {
+                return (SpriteBatch)this.Game.Services.GetService(typeof(SpriteBatch));
+            }
+        }
+
+        
 
     }
 }

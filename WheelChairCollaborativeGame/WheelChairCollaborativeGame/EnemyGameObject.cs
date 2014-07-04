@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using WheelChairGameLibrary.Screens;
 using WheelChairGameLibrary.GameObjects;
@@ -26,21 +27,30 @@ namespace WheelChairCollaborativeGame
 
         private double time = 0;
 
-        public EnemyGameObject(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public EnemyGameObject(GameEnhanced game, String tag)
+            : base(game, tag)
         {
 
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, gameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader"),
-                    gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(282, 0), 0.5f);
+            
+
+            
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Space_Invader"),
+                    this.Game.WhitePixel, new Vector2(282, 0), 0.5f);
 
             Sprite.velocity.Y = 0.5f;
 
             Collider = new Collider(this, new Rectangle(0, 0, (int)Sprite.size.X * 2, (int)Sprite.size.Y * 2));
         }
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
+            base.Update(gameTime);
 
 
             time += gameTime.ElapsedGameTime.TotalMilliseconds;

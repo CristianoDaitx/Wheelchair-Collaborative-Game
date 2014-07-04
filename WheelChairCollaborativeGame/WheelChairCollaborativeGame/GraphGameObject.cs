@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using WheelChairGameLibrary.Screens;
 using WheelChairGameLibrary.GameObjects;
@@ -82,13 +83,13 @@ namespace WheelChairCollaborativeGame
 
         Queue<double> times = new Queue<double>();
 
-        public GraphGameObject(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public GraphGameObject(GameEnhanced game, String tag)
+            : base(game, tag)
         {
 
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             base.Draw(spriteBatch, gameTime);
 
@@ -116,7 +117,7 @@ namespace WheelChairCollaborativeGame
                 timeSum += times.ElementAt(x);
             }
 
-        }
+        }*/
 
         private double scale(double valueIn) 
         {

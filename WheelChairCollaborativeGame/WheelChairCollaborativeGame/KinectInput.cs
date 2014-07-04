@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using WheelChairGameLibrary.Screens;
 using WheelChairGameLibrary.GameObjects;
@@ -69,8 +70,8 @@ namespace WheelChairCollaborativeGame
 
         private TankGameObject tankGameObject;
 
-        public KinectInput(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public KinectInput(GameEnhanced game, String tag)
+            : base(game, tag)
         {
             // Create wheelchair detector
             wheelchairDetector = new WheelchairDetector();
@@ -171,7 +172,7 @@ namespace WheelChairCollaborativeGame
             graphSinc.IsPressed = true;
             //add ball
             actionCountSinc++;
-            GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+            //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
 
         }
 
@@ -222,7 +223,7 @@ namespace WheelChairCollaborativeGame
                         graphSinc.IsPressed = true;
                         actionCountSinc++;
                         //add ball
-                        GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+                        //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
                     }
                     else
                     {
@@ -245,7 +246,7 @@ namespace WheelChairCollaborativeGame
                         graphSinc.IsPressed = true;
                         actionCountSinc++;
                         //add ball
-                        GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+                        //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
 
                     }
                     else
@@ -313,7 +314,7 @@ namespace WheelChairCollaborativeGame
                                 isActionSinc = true;
                                 actionCountSinc++;
                                 //add ball
-                                GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+                                //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
                             }
 
                         }
@@ -350,7 +351,7 @@ namespace WheelChairCollaborativeGame
                                 isActionSinc = true;
                                 actionCountSinc++;
                                 //add ball
-                                GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+                                //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
                             }
                         }
                         if (isAction2 == true)
@@ -481,7 +482,7 @@ namespace WheelChairCollaborativeGame
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             base.Draw(spriteBatch, gameTime);
             //return;
@@ -491,7 +492,7 @@ namespace WheelChairCollaborativeGame
             ScreenManager.SpriteBatch.Begin();
             //ScreenManager.SpriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
             ScreenManager.SpriteBatch.End();
-            */
+            * /
             GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
             GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
             GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -507,7 +508,7 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerSoldier != null)
             {
                 DrawSkeleton(skeletonPlayerSoldier.Skeleton, Color.Red);
-            }*/
+            }* /
 
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                          actionCountSinc.ToString(), new Vector2(60, 40));
@@ -566,7 +567,7 @@ namespace WheelChairCollaborativeGame
             GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
 
-        }
+        }*/
 
         private void DrawPrimitiveSkeleton(Skeleton skeleton, GeometricPrimitive primitive, Color color)
         {
