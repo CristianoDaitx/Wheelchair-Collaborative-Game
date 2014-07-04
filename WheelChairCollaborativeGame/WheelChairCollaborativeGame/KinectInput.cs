@@ -262,9 +262,9 @@ namespace WheelChairCollaborativeGame
 
 
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
+            base.Update(gameTime);
             GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
             GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
             GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
@@ -274,19 +274,20 @@ namespace WheelChairCollaborativeGame
             bool isAction2 = graph2.IsPressed;
             bool isActionSinc = graphSinc.IsPressed;
 
+            InputState inputState = (InputState) Game.Services.GetService(typeof(InputState));
 
 
             //Action by pressing A on gamepad.
 
 
-            if (inputState.IsKeyPressed(Keys.X, playerIndex, out playerIndex))
+            /*if (inputState.IsKeyPressed(Keys.X, playerIndex, out playerIndex))
             {
                 controlSelect--;
             }
             if (inputState.IsKeyPressed(Keys.Space, playerIndex, out playerIndex))
             {
                 controlSelect++;
-            }
+            }*/
 
 
             if (controlSelect == 3)

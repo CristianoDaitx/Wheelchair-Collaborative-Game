@@ -52,7 +52,7 @@ namespace WheelChairGameLibrary.GameObjects
         {
             isInUpdateLoop = true;
             foreach (GameObject gameObject in gameObjects)
-                gameObject.Update(gameTime, inputState);
+                gameObject.Update(gameTime);
 
             calculateCollisions(gameTime);
 

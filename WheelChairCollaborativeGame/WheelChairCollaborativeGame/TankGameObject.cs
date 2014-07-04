@@ -38,18 +38,18 @@ namespace WheelChairCollaborativeGame
         {
 
             Sprite = new WheelChairGameLibrary.Sprites.Sprite (this, this.Game.Content.Load<Texture2D>("Space_Invader"),
-                    this.Game.WhitePixel, new Vector2(282, DEFENCE_STANCE_Y), 1);
+                     new Vector2(282, DEFENCE_STANCE_Y), 1);
         }
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
+            base.Update(gameTime);
 
 
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
 
-            Sprite.position.Y += 0.0001f;
+            //Position.Y += 0.0001f;
 
 
             if (TimeSpan.FromMilliseconds(time).TotalSeconds > 2) //more than two seconds
@@ -62,25 +62,25 @@ namespace WheelChairCollaborativeGame
 
         public void setAttackStance()
         {
-            Sprite.position.Y = ATTACK_STANCE_Y; 
+            //TODO Sprite.position.Y = ATTACK_STANCE_Y; 
 
             isAttackStance = true;
         }
 
         public void setDefenceStance()
         {
-            Sprite.position.Y = DEFENCE_STANCE_Y;
+            //TODO Sprite.position.Y = DEFENCE_STANCE_Y;
             isAttackStance = false;
         }
 
         public void slideToRight()
         {
-            Sprite.position.X += 3; 
+            //this.Position.X = new Vector2(this.Position.X +3, this.Position.Y); 
         }
 
         public void slideToLeft()
         {
-            Sprite.position.X -= 3;
+            //this.Position.X -= 3;
         }
 
 

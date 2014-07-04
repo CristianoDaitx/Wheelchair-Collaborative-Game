@@ -1,6 +1,8 @@
 #region Using Statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+
+using WheelChairGameLibrary.GameObjects;
 #endregion
 
 namespace WheelChairGameLibrary.Helpers
@@ -11,7 +13,7 @@ namespace WheelChairGameLibrary.Helpers
     /// methods for high level input actions such as "move up through the menu"
     /// or "pause the game".
     /// </summary>
-    public class InputState
+    public class InputState : GameObject
     {
 
         Keys p1HighPunch = Keys.W;
@@ -63,7 +65,8 @@ namespace WheelChairGameLibrary.Helpers
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
-        public InputState()
+        public InputState(GameEnhanced game)
+            :base (game, "input")
         {
             CurrentKeyboardStates = new KeyboardState[MaxInputs];
             CurrentGamePadStates = new GamePadState[MaxInputs];
@@ -83,8 +86,10 @@ namespace WheelChairGameLibrary.Helpers
         /// <summary>
         /// Reads the latest state of the keyboard and gamepad.
         /// </summary>
-        public void Update()
+        public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             for (int i = 0; i < MaxInputs; i++)
             {
                 LastKeyboardStates[i] = CurrentKeyboardStates[i];
@@ -226,7 +231,7 @@ namespace WheelChairGameLibrary.Helpers
         public bool IsMenuEnter(PlayerIndex? controllingPlayer,
                                  out PlayerIndex playerIndex)
         {
-            return 
+            return
                    IsKeyPressed(Keys.Enter, controllingPlayer, out playerIndex) ||
 
                    IsButtonPressed(Buttons.Start, controllingPlayer, out playerIndex);
@@ -262,7 +267,7 @@ namespace WheelChairGameLibrary.Helpers
                    IsButtonPressed(Buttons.LeftThumbstickUp, controllingPlayer, out playerIndex);
             else
                 return IsKeyPressed(Keys.Up, controllingPlayer, out playerIndex);
-                   
+
         }
 
         public bool IsMenuRight(PlayerIndex? controllingPlayer)
@@ -274,7 +279,7 @@ namespace WheelChairGameLibrary.Helpers
                 return
                    IsButtonPressed(Buttons.DPadRight, controllingPlayer, out playerIndex) ||
                    IsButtonPressed(Buttons.LeftThumbstickRight, controllingPlayer, out playerIndex);
-            else                
+            else
                 return IsKeyPressed(Keys.Right, controllingPlayer, out playerIndex);
         }
 

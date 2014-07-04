@@ -47,8 +47,8 @@ namespace WheelChairCollaborativeGame
         public MyGame()
         {
             
-            this.Graphics.PreferredBackBufferWidth = 480;
-            this.Graphics.PreferredBackBufferHeight = ((480 / 4) * 3) + 110;
+            this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.Y;
+            this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.X;
             
             //TODO: add: this.graphics.PreparingDeviceSettings += this.GraphicsDevicePreparingDeviceSettings;
 

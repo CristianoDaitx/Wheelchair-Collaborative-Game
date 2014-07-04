@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 using WheelChairGameLibrary.Screens;
+using WheelChairGameLibrary.Helpers;
 
 using Microsoft.Kinect;
 
@@ -96,7 +97,11 @@ namespace WheelChairGameLibrary
             this.chooser = new KinectChooser(this, ColorImageFormat.RgbResolution640x480Fps30, DepthImageFormat.Resolution640x480Fps30);
             this.Services.AddService(typeof(KinectChooser), this.chooser);
 
+            InputState inputState = new InputState(this);
+            this.Services.AddService(typeof(InputState), inputState);
+
             this.Components.Add(this.chooser);
+            this.Components.Add(inputState);
 
         }
 

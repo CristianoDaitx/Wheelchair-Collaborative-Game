@@ -37,9 +37,9 @@ namespace WheelChairCollaborativeGame
             
         }*/
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
+            base.Update(gameTime);
 
             if (position.Y < 10)
             {

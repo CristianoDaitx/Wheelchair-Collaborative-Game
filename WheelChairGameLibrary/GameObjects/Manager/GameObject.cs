@@ -18,6 +18,8 @@ namespace WheelChairGameLibrary.GameObjects
     {
         private readonly bool DEBUG_GAME_OBJECT = true;
 
+        public bool isFlipped { get; set; }            // has the sprite been flipped?
+
         private GameObjectManager gameObjectManager;
         public GameObjectManager GameObjectManager
         {
@@ -58,18 +60,51 @@ namespace WheelChairGameLibrary.GameObjects
         {
             if (sprite != null)
                 sprite.Update();
+
+
+            velocity += acceleration;
+
+            if (!isFlipped)
+                Position += velocity;
+            else
+                Position -= velocity;
+
+
+            if (!isFlipped)
+            {
+                if (velocity.X > 0 && acceleration.X > 0)
+                {
+                    acceleration.X = 0;
+                    velocity.X = 0;
+                }
+                if (velocity.Y > 0 && acceleration.Y > 0)
+                {
+                    acceleration.Y = 0;
+                    velocity.Y = 0;
+                }
+            }
+            else
+            {
+                if (velocity.X > 0 && acceleration.X > 0)
+                {
+                    acceleration.X = 0;
+                    velocity.X = 0;
+                }
+                if (velocity.Y > 0 && acceleration.Y > 0)
+                {
+                    acceleration.Y = 0;
+                    velocity.Y = 0;
+                }
+            }
+
+
             base.Update(gameTime);
-        }
-
-        public virtual void Update(GameTime gameTime, InputState inputState){
-            if (sprite != null)
-                sprite.Update();
-
-            
         }
 
         public override void Draw(GameTime gameTime)
         {
+            if (sprite != null)
+                sprite.Draw(SharedSpriteBatch, gameTime);
             base.Draw(gameTime);
         }
 
@@ -109,6 +144,9 @@ namespace WheelChairGameLibrary.GameObjects
             get { return (GameEnhanced)base.Game; }
         }
 
+
+        public Vector2 velocity;
+        public Vector2 acceleration;
 
 
         // xna example stuff

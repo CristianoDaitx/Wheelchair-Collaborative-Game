@@ -20,7 +20,7 @@ namespace WheelChairGameLibrary.Screens
         private List<GameScreen> screens = new List<GameScreen>();
         private List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        private InputState input = new InputState();
+        private InputState input;// = new InputState();
 
         private SpriteBatch spriteBatch;
         /// <summary>
@@ -120,7 +120,7 @@ namespace WheelChairGameLibrary.Screens
         public override void Update(GameTime gameTime)
         {
             // Read the keyboard and gamepad.
-            input.Update();
+            //input.Update();
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
