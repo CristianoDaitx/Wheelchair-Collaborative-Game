@@ -37,8 +37,14 @@ namespace WheelChairCollaborativeGame
             : base(game, tag)
         {
 
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite (this, this.Game.Content.Load<Texture2D>("Space_Invader"),
+            
+        }
+
+        protected override void LoadContent()
+        {
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Space_Invader"),
                      new Vector2(282, DEFENCE_STANCE_Y), 1);
+            base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)

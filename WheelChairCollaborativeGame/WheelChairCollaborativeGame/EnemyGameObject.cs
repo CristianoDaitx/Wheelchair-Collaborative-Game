@@ -77,7 +77,8 @@ namespace WheelChairCollaborativeGame
         public override void collisionEntered(Collider collider)
         {
             if (collider.GameObject.GetType() == typeof (BallGameObject))
-                GameObjectManager.removeGameObject(this);
+                Game.Components.Remove(this);
+                //GameObjectManager.removeGameObject(this);
         }
 
     }

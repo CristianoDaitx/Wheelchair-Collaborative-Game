@@ -55,6 +55,25 @@ namespace WheelChairCollaborativeGame
 
             GameComponent enemy = new EnemyGameObject(this, "asd");
             this.Components.Add(enemy);
+
+            TankGameObject playerTank = new TankGameObject(this, "playerTank");
+            this.Components.Add(playerTank);
+
+            GraphGameObject graph = new GraphGameObject(this, "graph");
+            this.Components.Add(graph);
+            graph.IsPressed = true;
+
+            GraphGameObject graph2 = new GraphGameObject(this, "graphPlayer2");
+            this.Components.Add(graph2);
+            graph2.PressedY = 300;
+            graph2.NotPressedY = 320;
+
+            GraphGameObject graphSinc = new GraphGameObject(this, "graphSinc");
+            this.Components.Add(graphSinc);
+            graphSinc.PressedY = 200;
+
+            KinectInput kinectInput = new KinectInput(this, "kinectInput");
+            this.Components.Add(kinectInput);
         }
 
        

@@ -33,7 +33,7 @@ namespace WheelChairGameLibrary.GameObjects
 
         public void Draw()
         {
-            PrimitiveDrawing.DrawRectangle(gameObject.GameObjectManager.GameScreen.ScreenManager.WhitePixel, gameObject.GameObjectManager.GameScreen.ScreenManager.SpriteBatch, boundingBox, Color.White);
+            PrimitiveDrawing.DrawRectangle(GameObject.Game.WhitePixel, GameObject.SharedSpriteBatch, boundingBox, Color.White);
         }
     }
 }

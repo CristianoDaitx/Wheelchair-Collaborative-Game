@@ -58,8 +58,8 @@ namespace WheelChairCollaborativeGame
         {
             this.radius = radius;
             this.radiusThreshold = radiusThreshold;
-            this.spherePrimitive = new SpherePrimitive(graphicsDevice, radius * 2, SPHERE_TESSELATION);
-            this.spherePrimitiveThreshold = new SpherePrimitive(graphicsDevice, (radius + radiusThreshold) * 2, SPHERE_TESSELATION);
+            //this.spherePrimitive = new SpherePrimitive(graphicsDevice, radius * 2, SPHERE_TESSELATION);
+            //this.spherePrimitiveThreshold = new SpherePrimitive(graphicsDevice, (radius + radiusThreshold) * 2, SPHERE_TESSELATION);
         }
 
         /// <summary>

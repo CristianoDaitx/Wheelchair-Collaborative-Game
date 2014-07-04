@@ -87,7 +87,7 @@ namespace WheelChairCollaborativeGame
             //wheelchairSkeletonFrame = new KinectInput();
             wheelchairDetector.SkeletonFrameReady += wheelchairDetector_SkeletonFrameReady;
 
-            kinectRGBVideo = new Texture2D(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, 480, 640);
+            
             wheelchairDetector.KinectSensor.ColorStream.Enable();
             wheelchairDetector.KinectSensor.ColorFrameReady += new EventHandler<ColorImageFrameReadyEventArgs>(kinectSensor_ColorFrameReady);
             //wheelchairDetector.AllFramesReady += new EventHandler<KinectForWheelchair.AllFramesReadyEventArgs>(wheelchairDetector_AllFramesReady);
@@ -103,9 +103,9 @@ namespace WheelChairCollaborativeGame
             Vector3 differenceFront3 = new Vector3(0.30f, -0.05f, -0.45f);
 
             movementFrontTank = new KinectMovement(
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice)
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
@@ -116,9 +116,9 @@ namespace WheelChairCollaborativeGame
             Vector3 differenceSide3 = new Vector3(0.75f, -0.15f, -0.10f);
 
             movementSideTank = new KinectMovement(
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide1, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice)
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide1, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide2, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementSideTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementSideTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
@@ -126,17 +126,17 @@ namespace WheelChairCollaborativeGame
 
             // Movement soldier
             movementFrontSoldier = new KinectMovement(
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice)
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
 
             movementSideSoldier = new KinectMovement(
-                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide1 * new Vector3(-1, 1, 1), 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide2 * new Vector3(-1, 1, 1), 0.15f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide3 * new Vector3(-1, 1, 1), 0.25f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice)
+                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide1 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide2 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide3 * new Vector3(-1, 1, 1), 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementSideSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementSideSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
@@ -144,7 +144,7 @@ namespace WheelChairCollaborativeGame
 
             //movement to check for side high five
 
-            triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.HandRight, JointType.HandLeft, JointType.HandLeft, 0.1f, 0.02f, GameObjectManager.GameScreen.ScreenManager.GraphicsDevice);
+            triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.HandRight, JointType.HandLeft, JointType.HandLeft, 0.1f, 0.02f, Game.GraphicsDevice);
             movementDouble = new KinectMovement(triggerDouble);
             movementDouble.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementDouble_MovementQuit);
             movementDouble.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementDouble_MovementCompleted);
@@ -152,22 +152,22 @@ namespace WheelChairCollaborativeGame
 
 
 
-            currentPrimitive = new SpherePrimitive(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, KinectTriggerSingle.JOINT_DEFAULT_RADIUS, 8);
+            
             wireFrameState = new RasterizerState()
             {
                 FillMode = FillMode.WireFrame,
                 CullMode = CullMode.None,
             };
 
+            tankGameObject = (TankGameObject)Game.Components.OfType<GameObject>().FirstOrDefault(x => ((GameObject)x).Tag == "playerTank"); //GameObjectManager.getGameObject("playerTank");
 
-            tankGameObject = (TankGameObject)GameObjectManager.getGameObject("playerTank");
         }
 
         void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
-            GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
-            GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
-            GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
+            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
+            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
             //if (graph.IsPressed == true && graph2.IsPressed == true)
             graphSinc.IsPressed = true;
             //add ball
@@ -178,7 +178,7 @@ namespace WheelChairCollaborativeGame
 
         void movementDouble_MovementQuit(object sender, KinectMovementEventArgs e)
         {
-            GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
             graphSinc.IsPressed = false;
         }
 
@@ -187,8 +187,8 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerTank != null)
                 if (sender.Equals(movementFrontTank) || sender.Equals(movementSideTank))
                 {
-                    GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
-                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
                     //graph.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time = 0;
@@ -196,8 +196,8 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerSoldier != null)
                 if (sender.Equals(movementFrontSoldier) || sender.Equals(movementSideSoldier))
                 {
-                    GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
                    // graph2.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time2 = 0;
@@ -212,9 +212,9 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerTank != null)
                 if (sender.Equals(movementFrontTank) || sender.Equals(movementSideTank))
                 {
-                    GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
-                    GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
+                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
                     //graph.IsPressed = true;
                     actionCount++;
 
@@ -235,9 +235,9 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerSoldier != null)
                 if (sender.Equals(movementFrontSoldier) || sender.Equals(movementSideSoldier))
                 {
-                    GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
-                    GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
+                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
                    // graph2.IsPressed = true;
                     actionCount2++;
 
@@ -265,9 +265,9 @@ namespace WheelChairCollaborativeGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
-            GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
-            GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
+            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
+            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
+            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
             PlayerIndex playerIndex = PlayerIndex.One;
             PlayerIndex player2 = PlayerIndex.Two;
             bool isAction = graph.IsPressed;
@@ -483,9 +483,10 @@ namespace WheelChairCollaborativeGame
             }
         }
 
-        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            base.Draw(spriteBatch, gameTime);
+        public override void  Draw(GameTime gameTime)
+{
+ 	 base.Draw(gameTime);
+
             //return;
 
             /*Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
@@ -493,13 +494,12 @@ namespace WheelChairCollaborativeGame
             ScreenManager.SpriteBatch.Begin();
             //ScreenManager.SpriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
             ScreenManager.SpriteBatch.End();
-            * /
-            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
-            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
-            GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+            */
+            SharedSpriteBatch.Begin();
+            Game.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //draw video
-            spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
+            SharedSpriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
 
             /*if (skeletonPlayerTank != null)
             {
@@ -509,36 +509,36 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerSoldier != null)
             {
                 DrawSkeleton(skeletonPlayerSoldier.Skeleton, Color.Red);
-            }* /
+            }*/
 
-            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                          actionCountSinc.ToString(), new Vector2(60, 40));
-            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         TimeSpan.FromMilliseconds(timeSinc).Seconds.ToString() + "    Bullet Size", new Vector2(60, 60));
 
-            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         "Input method : " + controlSelect.ToString(), new Vector2(400, 80));
 
-            //GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+            //GUImessage.MessageDraw(SharedSpriteBatch, Game.Game.Content,
             //            movementDouble.State.ToString(), new Vector2(60, 80));
 
 
             string message = ("Actions made");
             Vector2 textPosition = new Vector2(100.0f, 35.0f);
-            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content, message, textPosition);
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, message, textPosition);
 
 
 
-            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.End();
-            GameObjectManager.GameScreen.ScreenManager.SpriteBatch.Begin();
+            SharedSpriteBatch.End();
+            SharedSpriteBatch.Begin();
 
             if (isWireframe)
             {
-                GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.RasterizerState = wireFrameState;
+                Game.GraphicsDevice.RasterizerState = wireFrameState;
             }
             else
             {
-                GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                Game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             }
 
 
@@ -563,12 +563,13 @@ namespace WheelChairCollaborativeGame
             }
 
 
+            SharedSpriteBatch.End();
 
             // Reset the fill mode renderstate.
-            GameObjectManager.GameScreen.ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            Game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
 
-        }*/
+        }
 
         private void DrawPrimitiveSkeleton(Skeleton skeleton, GeometricPrimitive primitive, Color color)
         {
@@ -592,60 +593,60 @@ namespace WheelChairCollaborativeGame
             {
                 Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (640)), (((-0.5f * joint.Position.Y) + 0.5f) * (480)));
 
-                PrimitiveDrawing.DrawCircle(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, position, 4.0f, color, 4, 8);
+                PrimitiveDrawing.DrawCircle(Game.WhitePixel, SharedSpriteBatch, position, 4.0f, color, 4, 8);
 
             }
 
             //head
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.Head].Position), screenPosition(skeleton.Joints[JointType.ShoulderCenter].Position), color, 1);
 
             //left arm
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ShoulderCenter].Position), screenPosition(skeleton.Joints[JointType.ShoulderLeft].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ShoulderLeft].Position), screenPosition(skeleton.Joints[JointType.ElbowLeft].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ElbowLeft].Position), screenPosition(skeleton.Joints[JointType.WristLeft].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.WristLeft].Position), screenPosition(skeleton.Joints[JointType.HandLeft].Position), color, 1);
 
             //right arm
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ShoulderCenter].Position), screenPosition(skeleton.Joints[JointType.ShoulderRight].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ShoulderRight].Position), screenPosition(skeleton.Joints[JointType.ElbowRight].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ElbowRight].Position), screenPosition(skeleton.Joints[JointType.WristRight].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.WristRight].Position), screenPosition(skeleton.Joints[JointType.HandRight].Position), color, 1);
 
             //trunk
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ShoulderLeft].Position), screenPosition(skeleton.Joints[JointType.Spine].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.ShoulderRight].Position), screenPosition(skeleton.Joints[JointType.Spine].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.Spine].Position), screenPosition(skeleton.Joints[JointType.HipCenter].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.HipCenter].Position), screenPosition(skeleton.Joints[JointType.HipLeft].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.HipCenter].Position), screenPosition(skeleton.Joints[JointType.HipRight].Position), color, 1);
 
             //left leg
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.HipLeft].Position), screenPosition(skeleton.Joints[JointType.KneeLeft].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.KneeLeft].Position), screenPosition(skeleton.Joints[JointType.AnkleLeft].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.AnkleLeft].Position), screenPosition(skeleton.Joints[JointType.FootLeft].Position), color, 1);
 
             //right leg
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.HipRight].Position), screenPosition(skeleton.Joints[JointType.KneeRight].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.KneeRight].Position), screenPosition(skeleton.Joints[JointType.AnkleRight].Position), color, 1);
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch,
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch,
                 screenPosition(skeleton.Joints[JointType.AnkleRight].Position), screenPosition(skeleton.Joints[JointType.FootRight].Position), color, 1);
 
         }
@@ -658,7 +659,15 @@ namespace WheelChairCollaborativeGame
         }
 
 
+        protected override void LoadContent()
+        {
+            kinectRGBVideo = new Texture2D(Game.GraphicsDevice, 480, 640);
 
+            currentPrimitive = new SpherePrimitive(Game.GraphicsDevice, KinectTriggerSingle.JOINT_DEFAULT_RADIUS, 8);
+
+
+            base.LoadContent();
+        }
 
         public void wheelchairDetector_SkeletonFrameReady(object sender, KinectForWheelchair.SkeletonFrameReadyEventArgs e)
         {
@@ -785,7 +794,7 @@ namespace WheelChairCollaborativeGame
                     //    newDuty = forward.Period;
 
                     // Set duty cycle
-                    TankGameObject playerTank = (TankGameObject)GameObjectManager.getGameObject("playerTank");
+                    TankGameObject playerTank = (TankGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "playerTank");
                     //forward.Duty = newDuty;
                     Console.WriteLine("Distance: " + distance);
                     if (distance < 0.5f)
@@ -833,7 +842,7 @@ namespace WheelChairCollaborativeGame
                     //labelKey.Text = newDuty.ToString();
                     Console.WriteLine("Turn: " + newDuty.ToString());
 
-                    TankGameObject playerTank = (TankGameObject)GameObjectManager.getGameObject("playerTank");
+                    TankGameObject playerTank = (TankGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "playerTank");
 
                     if (newDuty < 0)
                     {
@@ -864,7 +873,7 @@ namespace WheelChairCollaborativeGame
                     colorImageFrame.CopyPixelDataTo(pixelsFromFrame);
 
                     Color[] color = new Color[colorImageFrame.Height * colorImageFrame.Width];
-                    kinectRGBVideo = new Texture2D(GameObjectManager.GameScreen.ScreenManager.GraphicsDevice, colorImageFrame.Width, colorImageFrame.Height);
+                    kinectRGBVideo = new Texture2D(Game.GraphicsDevice, colorImageFrame.Width, colorImageFrame.Height);
 
                     // Go through each pixel and set the bytes correctly
                     // Remember, each pixel got a Rad, Green and Blue

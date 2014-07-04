@@ -43,7 +43,8 @@ namespace WheelChairCollaborativeGame
 
             if (position.Y < 10)
             {
-                GameObjectManager.removeGameObject(this);
+                Game.Components.Remove(this);
+                //GameObjectManager.removeGameObject(this);
             }
 
 
@@ -54,7 +55,8 @@ namespace WheelChairCollaborativeGame
 
         public override void collisionEntered(Collider collider)
         {
-            GameObjectManager.removeGameObject(this);
+            Game.Components.Remove(this);
+            //GameObjectManager.removeGameObject(this);
         }
     }
 }

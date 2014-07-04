@@ -20,11 +20,11 @@ namespace WheelChairGameLibrary.GameObjects
 
         public bool isFlipped { get; set; }            // has the sprite been flipped?
 
-        private GameObjectManager gameObjectManager;
+        /*private GameObjectManager gameObjectManager;
         public GameObjectManager GameObjectManager
         {
             get { return gameObjectManager; }
-        }
+        }*/
 
         private String tag;
         public String Tag
