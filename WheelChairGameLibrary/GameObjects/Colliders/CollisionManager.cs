@@ -13,7 +13,7 @@ using WheelChairGameLibrary.Helpers;
 
 namespace WheelChairGameLibrary.GameObjects
 {
-    public class CollisionManager : GameComponent
+    public class CollisionManager : DrawableGameComponent
     {
         /// <summary>
         /// represent if the program is in the foreach loop during update, so no gameobjects can be added, removed at this time
@@ -74,6 +74,15 @@ namespace WheelChairGameLibrary.GameObjects
                     //        sprites[y].hit(sprites[x], gameTime);
                     //    }
                 }
+            }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            foreach (Collider collider in colliders)
+            {
+                collider.Draw();
             }
         }
 

@@ -28,12 +28,13 @@ namespace WheelChairCollaborativeGame
         private double time = 0;
 
         public EnemyGameObject(GameEnhanced game, String tag)
-            : base(game, tag)
+            : base(new Vector2(200,0), game, tag)
         {
 
 
-            Collider = new Collider(this, new Rectangle(0, 0, 50, 50));
-            
+            Collider = new Collider(this, 100, 100);
+            Velocity = new Vector2(0, 0.5f);
+
         }
 
         protected override void LoadContent()
@@ -41,12 +42,11 @@ namespace WheelChairCollaborativeGame
             base.LoadContent();
 
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Space_Invader"),
-                     new Vector2(282, 0), 0.5f);
+                      0.5f);
 
 
-            this.velocity.Y = 0.5f;
 
-            
+
         }
 
         public override void Update(GameTime gameTime)
@@ -61,25 +61,25 @@ namespace WheelChairCollaborativeGame
 
             if (this.Position.Y > 300)
             {
-                this.velocity.Y = 0;
-                this.velocity.X = 2f;
+                Velocity = new Vector2(2, 0); 
             }
 
-            Collider.BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
+            //Collider.BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
 
             //delete if exit screen
             if (this.Position.X > Config.resolution.X - 50)
-                Game.Components.Remove(this);
-                //GameObjectManager.removeGameObject(this);
+                //Game.Components.Remove(this);
+                ToBeRemoved = true;
+            //GameObjectManager.removeGameObject(this);
 
         }
 
         public override void collisionEntered(Collider collider)
         {
-            if (collider.GameObject.GetType() == typeof (BallGameObject))
+            if (collider.GameObject.GetType() == typeof(BallGameObject))
                 ToBeRemoved = true;
-                //Game.Components.Remove(this);
-                //GameObjectManager.removeGameObject(this);
+            //Game.Components.Remove(this);
+            //GameObjectManager.removeGameObject(this);
         }
 
     }

@@ -34,7 +34,7 @@ namespace WheelChairCollaborativeGame
         private double time = 0;
 
         public TankGameObject(GameEnhanced game, String tag)
-            : base(game, tag)
+            : base(new Vector2(200, 360), game, tag)
         {
 
             
@@ -43,7 +43,7 @@ namespace WheelChairCollaborativeGame
         protected override void LoadContent()
         {
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Space_Invader"),
-                     new Vector2(282, DEFENCE_STANCE_Y), 1);
+                      1);
             base.LoadContent();
         }
 

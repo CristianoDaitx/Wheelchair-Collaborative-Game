@@ -12,11 +12,23 @@ namespace WheelChairGameLibrary.GameObjects
 {
     public class Collider
     {
-        private Rectangle boundingBox;
+        private int width;
+        public int Width
+        {
+            get { return width; }
+        }
+
+        private int height;
+        public int Height
+        {
+            get { return height; }
+        }
+
+
         public Rectangle BoundingBox
         {
-            get { return boundingBox; }
-            set { boundingBox = value; }
+            get { return new Rectangle((int)gameObject.Position.X, (int)gameObject.Position.Y, width, height); }
+
         }
 
         private GameObject gameObject;
@@ -25,15 +37,18 @@ namespace WheelChairGameLibrary.GameObjects
             get { return gameObject; }
         }
 
-        public Collider(GameObject gameObject, Rectangle boundingBox)
+        public Collider(GameObject gameObject, int width, int height)
         {
             this.gameObject = gameObject;
-            this.boundingBox = boundingBox;
+            this.width = width;
+            this.height = height;
         }
 
         public void Draw()
         {
-            PrimitiveDrawing.DrawRectangle(GameObject.Game.WhitePixel, GameObject.SharedSpriteBatch, boundingBox, Color.White);
+            GameObject.SharedSpriteBatch.Begin();
+            PrimitiveDrawing.DrawRectangle(GameObject.Game.WhitePixel, GameObject.SharedSpriteBatch, BoundingBox, Color.Gray);
+            GameObject.SharedSpriteBatch.End();
         }
     }
 }

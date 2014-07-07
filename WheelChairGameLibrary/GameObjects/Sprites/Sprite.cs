@@ -42,14 +42,11 @@ namespace WheelChairGameLibrary.Sprites
         }
 
 
-        public Sprite( GameObject gameObject, Texture2D newTexture,   Vector2 newPosition, float newScale)
+        public Sprite( GameObject gameObject, Texture2D newTexture,   float newScale)
         {
             this.gameObject = gameObject;
             this.texture = newTexture;            
             this.scale = newScale;
-
-            gameObject.Position = newPosition;
-            gameObject.velocity = new Vector2();
 
             gameObject.Size = new Vector2(texture.Width * scale, texture.Height * scale);
 

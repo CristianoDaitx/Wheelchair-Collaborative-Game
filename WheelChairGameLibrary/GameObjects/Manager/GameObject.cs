@@ -20,13 +20,7 @@ namespace WheelChairGameLibrary.GameObjects
 
         public bool isFlipped { get; set; }            // has the sprite been flipped?
 
-        /*private GameObjectManager gameObjectManager;
-        public GameObjectManager GameObjectManager
-        {
-            get { return gameObjectManager; }
-        }*/
-
-        //used to force object to be destroyed in next update
+        //used to remove objects, it will be removed in next update
         private bool toBeRemoved = false;
         public bool ToBeRemoved
         {
@@ -65,7 +59,16 @@ namespace WheelChairGameLibrary.GameObjects
         public GameObject(GameEnhanced game, String tag)
             :base(game)
         {
+            position = new Vector2();
             //this.gameObjectManager = gameObjectManager;
+            this.tag = tag;
+        }
+
+        public GameObject(Vector2 position, GameEnhanced game, String tag)
+            : base(game)
+        {
+            //this.gameObjectManager = gameObjectManager;
+            this.position = position;
             this.tag = tag;
         }
 
@@ -82,12 +85,14 @@ namespace WheelChairGameLibrary.GameObjects
                 sprite.Update();
 
 
+            //Calculate physics
+
             velocity += acceleration;
 
             if (!isFlipped)
-                Position += velocity;
+                position += velocity;
             else
-                Position -= velocity;
+                position -= velocity;
 
 
             if (!isFlipped)
@@ -128,14 +133,7 @@ namespace WheelChairGameLibrary.GameObjects
             base.Draw(gameTime);
         }
 
-        /*public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            if (sprite != null)
-                sprite.Draw(spriteBatch, gameTime);
 
-            if (DEBUG_GAME_OBJECT && collider != null)
-                collider.Draw();
-        }*/
 
         /// <summary>
         /// Called when an aniation in the Sprite reached it's end
@@ -165,8 +163,19 @@ namespace WheelChairGameLibrary.GameObjects
         }
 
 
-        public Vector2 velocity;
-        public Vector2 acceleration;
+        private Vector2 velocity;
+        public Vector2 Velocity
+        {
+            set { velocity = value; }
+            get { return velocity; }
+        }
+
+        private Vector2 acceleration;
+        public Vector2 Acceleration
+        {
+            set { acceleration = value; }
+            get { return acceleration; }
+        }
 
 
         // xna example stuff
@@ -174,7 +183,13 @@ namespace WheelChairGameLibrary.GameObjects
         /// <summary>
         /// Gets or sets the position of the object.
         /// </summary>
-        public Vector2 Position { get; set; }
+        private Vector2 position;
+        public Vector2 Position
+        {
+            get { return position; }
+        }
+
+
 
         /// <summary>
         /// Gets or sets the size of the object.
