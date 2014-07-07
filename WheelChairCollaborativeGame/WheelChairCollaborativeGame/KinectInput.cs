@@ -34,7 +34,7 @@ namespace WheelChairCollaborativeGame
         private int actionCount = 0;
         private int actionCount2 = 0;
         private int actionCountSinc = 0;
-
+        public TimeSpan timeSpan = TimeSpan.FromMilliseconds(120000);
 
         bool isWireframe = true;
         RasterizerState wireFrameState;
@@ -273,6 +273,16 @@ namespace WheelChairCollaborativeGame
             bool isAction2 = graph2.IsPressed;
             bool isActionSinc = graphSinc.IsPressed;
 
+            timeSpan -= gameTime.ElapsedGameTime;
+            if (timeSpan < TimeSpan.Zero)
+            {
+
+                timeSpan = TimeSpan.Zero;
+
+
+                // Change state
+
+            }
 
 
             //Action by pressing A on gamepad.
@@ -486,6 +496,8 @@ namespace WheelChairCollaborativeGame
                          actionCountSinc.ToString(), new Vector2(60, 40));
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                         TimeSpan.FromMilliseconds(timeSinc).Seconds.ToString() + "    Bullet Size", new Vector2(60, 60));
+            GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
+                timeSpan.Minutes.ToString() + ":" + timeSpan.Seconds.ToString(), new Vector2(300, 60));
 
             GUImessage.MessageDraw(GameObjectManager.GameScreen.ScreenManager.SpriteBatch, GameObjectManager.GameScreen.ScreenManager.Game.Content,
                         "Input method : " + controlSelect.ToString(), new Vector2(400, 80));

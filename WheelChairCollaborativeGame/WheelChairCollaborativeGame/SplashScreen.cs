@@ -111,11 +111,12 @@ namespace WheelChairCollaborativeGame
             ScreenManager.SpriteBatch.End();
             */
 
+           
 
             ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             ScreenManager.SpriteBatch.Begin();
-
+         
 
             ScreenManager.SpriteBatch.End();
 
@@ -129,9 +130,10 @@ namespace WheelChairCollaborativeGame
         {
             timeSpan -= gameTime.ElapsedGameTime;
             Console.WriteLine("timer: " + timeSpan);
+           
             if (timeSpan < TimeSpan.Zero && !gameOver)
             {
-
+                
                 gameOver = true;
              
 
@@ -140,7 +142,7 @@ namespace WheelChairCollaborativeGame
             }
 
             base.Update(gameTime, input, otherScreenHasFocus, coveredByOtherScreen);
-
+            
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
 
