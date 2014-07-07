@@ -27,15 +27,18 @@ namespace WheelChairCollaborativeGame
         int secondsToChangeScreen = 4;
         double time = 0;
 
+        TimeSpan timeSpan = TimeSpan.FromMilliseconds(120000);
+        bool gameOver = false;
 
 
 
-        
+
+
         //KinectSensor kinectSensor;
 
         //TODO
         //string connectedStatus = "Not connected";
-        
+
 
 
 
@@ -43,15 +46,15 @@ namespace WheelChairCollaborativeGame
 
         KinectInput wheelchairSkeletonFrame;
 
-        
+
 
 
 
         public SplashScreen()
-            :base()
+            : base()
         {
             TransitionOnTime = TimeSpan.FromSeconds(1);
-            TransitionOffTime = TimeSpan.FromSeconds(0);             
+            TransitionOffTime = TimeSpan.FromSeconds(0);
         }
 
 
@@ -67,7 +70,7 @@ namespace WheelChairCollaborativeGame
 
             KinectInput kinectInput = new KinectInput(GameObjectManager, "kinectInput");
             GameObjectManager.addGameObject(kinectInput);
-           
+
 
             EnemyGameObject weakEnemy = new WeakEnemy(GameObjectManager, "weakEnemy");
             //GameObjectManager.addGameObject(weakEnemy);
@@ -93,14 +96,14 @@ namespace WheelChairCollaborativeGame
             graphSinc.NotPressedY = 220;
 
 
-            
+
 
             //backgroundTexture = ScreenManager.Game.Content.Load<Texture2D>("tiles/splash");
         }
 
         public override void Draw(GameTime gameTime)
         {
-            
+
             /*Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
             ScreenManager.SpriteBatch.Begin();
@@ -112,7 +115,7 @@ namespace WheelChairCollaborativeGame
             ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             ScreenManager.SpriteBatch.Begin();
-           
+
 
             ScreenManager.SpriteBatch.End();
 
@@ -124,9 +127,22 @@ namespace WheelChairCollaborativeGame
         public int X = 0;
         public override void Update(GameTime gameTime, InputState input, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            timeSpan -= gameTime.ElapsedGameTime;
+            Console.WriteLine("timer: " + timeSpan);
+            if (timeSpan < TimeSpan.Zero && !gameOver)
+            {
+
+                gameOver = true;
+             
+
+                // Change state
+
+            }
+
             base.Update(gameTime, input, otherScreenHasFocus, coveredByOtherScreen);
-            
+
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
+
 
             //PlayerIndex newPlayerIndex;
             /*if (input.IsMenuSelect(null, out newPlayerIndex)){
@@ -136,16 +152,24 @@ namespace WheelChairCollaborativeGame
                 
             }
             */
+
+
+           if (time > 120000)
+            {
+                X = -1;
+              
+            }
+
             if (X == 0)
             {
                 //ExitScreen();
                 //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
-               // GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
-                
+                // GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
+
                 GameObjectManager.addGameObject(new WeakEnemy(GameObjectManager, "weakEnemy"));
-        
+
                 X++;
-                
+
 
             }
 
@@ -163,8 +187,8 @@ namespace WheelChairCollaborativeGame
 
             if (X > 340 && X < 800)
             {
-                
-                X ++;
+
+                X++;
             }
             if (X == 800)
             {
@@ -185,21 +209,20 @@ namespace WheelChairCollaborativeGame
             if (X > 1540)
             {
                 X--;
-                
+
             }
             if (X == 1540)
             {
                 X = 0;
             }
-            
-            
-        
 
 
 
-            
 
-            
+
+
+
+
 
         }
     }
