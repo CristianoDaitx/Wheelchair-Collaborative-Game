@@ -34,14 +34,11 @@ namespace WheelChairCollaborativeGame
         private readonly int MAX_RECORDS = 10;
         private readonly int LINE_WIDTH = 2;
 
-
         public int PressedY
         {
             get { return pressedY; }
             set
             {
-                if (value != pressedY)
-                    isChanged = true;
                 if (value < Config.resolution.Y && value > 0)
                     pressedY = value;
             }
@@ -53,8 +50,6 @@ namespace WheelChairCollaborativeGame
             get { return notPressedY; }
             set
             {
-                if (value != notPressedY)
-                    isChanged = true;
                 if (value > pressedY && value < Config.resolution.Y)
                     notPressedY = value;
             }
@@ -63,19 +58,23 @@ namespace WheelChairCollaborativeGame
 
 
 
-        private bool isPressed = false;
-        public bool IsPressed
+        //private bool isPressed = false;
+        /*public bool IsPressed
         {
-            get { return isPressed; }
+            get { return isPressed}
             set {
-                if (value != isPressed)
+                if (value != IsPressed)
                     isChanged = true;
                 if (times.Count() > MAX_RECORDS)
                     times.Dequeue();
-                isPressed = value; }
-        }
+                //isPressed = value;
+            }
+        }*/
 
-        private bool isChanged = false;
+        public IOnOff IOnOff { private get; set; }
+        private bool lastStatus = false;
+
+        //private bool isChanged = false;
 
         private double time = 0;
 
@@ -83,20 +82,20 @@ namespace WheelChairCollaborativeGame
 
         Queue<double> times = new Queue<double>();
 
-        public GraphGameObject(GameEnhanced game, String tag)
+        public GraphGameObject(IOnOff IOnOff, GameEnhanced game, String tag)
             : base(game, tag)
         {
-
+            this.IOnOff = IOnOff;
         }
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
 
-            bool isUp = IsPressed;
-            // fix for one time delay
+            bool isUp = IOnOff.isOn();
+            /*// fix for one time delay
             if (isChanged)
-                isUp = !IsPressed;
+                isUp = !IsPressed;*/
 
             SharedSpriteBatch.Begin();
 
@@ -138,11 +137,14 @@ namespace WheelChairCollaborativeGame
             base.Update(gameTime);
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (isChanged)
+            if (lastStatus != IOnOff.isOn())
             {
                 times.Enqueue(time);
                 time = 0;
-                isChanged = false;
+                lastStatus = IOnOff.isOn();
+
+                if (times.Count() > MAX_RECORDS)
+                    times.Dequeue();
             }
 
 

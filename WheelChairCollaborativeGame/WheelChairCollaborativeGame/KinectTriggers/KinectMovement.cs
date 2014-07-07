@@ -22,12 +22,12 @@ using Microsoft.Kinect;
 
 namespace WheelChairCollaborativeGame
 {
-    
+
     /// <summary>
     /// Used with KinectTriggers to keep track of a bigger movement of a kinect skeleton
     /// </summary>
-    class KinectMovement
-    {        
+    class KinectMovement : DrawableGameComponent, IOnOff
+    {
         public enum MovementState
         {
             Activated,
@@ -54,11 +54,15 @@ namespace WheelChairCollaborativeGame
         public delegate void MovementQuitEventHandler(object sender, KinectMovementEventArgs e);
         public event MovementQuitEventHandler MovementQuit;
 
+        private readonly int MAX_ACTIVE_TIME_MILISECONDS = 1000;
+        private double time = 0;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="kinectTriggers">A list of triggers to be used in this movement</param>
-        public KinectMovement(params KinectTrigger[] kinectTriggers)
+        public KinectMovement(Game game, params KinectTrigger[] kinectTriggers)
+            : base(game)
         {
             foreach (KinectTrigger trigger in kinectTriggers)
                 addTrigger(trigger);
@@ -66,7 +70,7 @@ namespace WheelChairCollaborativeGame
 
         public void addTrigger(KinectTrigger kinectTrigger)
         {
-            kinectTriggers.Add(kinectTrigger);            
+            kinectTriggers.Add(kinectTrigger);
         }
 
         /// <summary>
@@ -82,9 +86,11 @@ namespace WheelChairCollaborativeGame
         /// <summary>
         /// Draw all triggers inside this movement
         /// </summary>
-        public void drawTriggers()
+        /// 
+        public override void Draw(GameTime gameTime)
         {
-            foreach (KinectTriggerSingle trigger in kinectTriggers)
+            base.Draw(gameTime);
+            foreach (KinectTrigger trigger in kinectTriggers)
                 trigger.draw();
         }
 
@@ -92,9 +98,27 @@ namespace WheelChairCollaborativeGame
         /// Checks the actual situation of the movement. Fires an event if the movement is completed, or when the final trigger is deactivated. 
         /// Should be called in every update
         /// </summary>
-        public void update()
+        public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
+
+            KinectMovementEventArgs args = new KinectMovementEventArgs();
+            args.LastTrigger = kinectTriggers[kinectTriggers.Count() - 1];
             //TODO: make this method be automatically called insade XNA update
+
+            time += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (time > MAX_ACTIVE_TIME_MILISECONDS)
+            {
+                if (State == MovementState.Activated)
+                {
+                    state = MovementState.Wating;
+                    MovementQuit(this, args);
+                    invalidatedMovement = true;
+                    return;
+                }
+            }
+
 
             // create and populate the status of the triggers
             bool[] triggerStatus = new bool[kinectTriggers.Count()];
@@ -111,7 +135,7 @@ namespace WheelChairCollaborativeGame
                 {
                     //reset movement if gesture is in the beginning
                     if (x == 0)
-                        invalidatedMovement = false; 
+                        invalidatedMovement = false;
                     //if last active index is lower than the actual
                     if (lastActiveTriggerIndex + 1 == x)
                     {
@@ -131,7 +155,7 @@ namespace WheelChairCollaborativeGame
                     {
                         lastActiveTriggerIndex--;
                         //always invalidates movement if users steps back
-                        invalidatedMovement = true; 
+                        invalidatedMovement = true;
                     }
 
                 }
@@ -141,29 +165,41 @@ namespace WheelChairCollaborativeGame
             if (lastActiveTriggerIndex == kinectTriggers.Count() - 1 && !invalidatedMovement)
             {
                 //fire event once when the movement is finished
-                KinectMovementEventArgs args = new KinectMovementEventArgs();
-                args.LastTrigger = kinectTriggers[kinectTriggers.Count() - 1];
+
                 if (state != MovementState.Activated)
                 {
                     state = MovementState.Activated;
                     if (MovementCompleted != null)
+                    {
+                        //resets the time of the movement
+                        time = 0;
                         MovementCompleted(this, args);
-                } else
+                    }
+                }
+                else
                     state = MovementState.Activated;
             }
             else
             {
                 //fire event if movement is no more activated
-                KinectMovementEventArgs args = new KinectMovementEventArgs();
-                args.LastTrigger = kinectTriggers[kinectTriggers.Count() - 1];
                 if (state != MovementState.Wating)
                 {
                     state = MovementState.Wating;
                     if (MovementCompleted != null)
                         MovementQuit(this, args);
-                } else
+                }
+                else
                     state = MovementState.Wating;
             }
+        }
+
+
+        public bool isOn()
+        {
+            if (this.State == MovementState.Activated)
+                return true;
+            else
+                return false;
         }
     }
 

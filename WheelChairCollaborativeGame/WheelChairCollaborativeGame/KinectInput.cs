@@ -80,32 +80,29 @@ namespace WheelChairCollaborativeGame
 
         private TankGameObject tankGameObject;
 
+
+
+        //controller input handling
+        OnOffController controllerOneOnOff;
+        OnOffController controllerTwoOnOff;
+        OnOffDouble controllerBothOnOff;
+
+        //IOnOff movementBothFront;
+        //IOnOff movementBothSide;
+
         public KinectInput(GameEnhanced game, String tag)
             : base(game, tag)
         {
-            // Create wheelchair detector
-            /*wheelchairDetector = new WheelchairDetector();
-            wheelchairDetector.KinectSensor.SkeletonStream.Enable(new TransformSmoothParameters()
-            {
-                Smoothing = 0.5f,
-                Correction = 0.5f,
-                Prediction = 0.5f,
-                JitterRadius = 0.05f,
-                MaxDeviationRadius = 0.04f
-            });
-            //wheelchairDetector.SkeletonFrameReady += new EventHandler<KinectForWheelchair.SkeletonFrameReadyEventArgs>(wheelchairDetector_SkeletonFrameReady);
-            //wheelchairSkeletonFrame = new KinectInput();
-            wheelchairDetector.SkeletonFrameReady += wheelchairDetector_SkeletonFrameReady;
+            // controller input instantiaton
+            controllerOneOnOff = new OnOffController(game);
+            controllerTwoOnOff = new OnOffController(game);
+            controllerBothOnOff = new OnOffDouble(controllerOneOnOff, controllerTwoOnOff);
 
-            
-            wheelchairDetector.KinectSensor.ColorStream.Enable();
-            wheelchairDetector.KinectSensor.ColorFrameReady += new EventHandler<ColorImageFrameReadyEventArgs>(kinectSensor_ColorFrameReady);
-            //wheelchairDetector.AllFramesReady += new EventHandler<KinectForWheelchair.AllFramesReadyEventArgs>(wheelchairDetector_AllFramesReady);
+            Game.Components.Add(controllerOneOnOff);
+            Game.Components.Add(controllerTwoOnOff);
 
-            skeletons = new EnhancedSkeletonCollection();
-            */
 
-            
+
 
 
 
@@ -127,17 +124,17 @@ namespace WheelChairCollaborativeGame
             GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
             GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
             //if (graph.IsPressed == true && graph2.IsPressed == true)
-            graphSinc.IsPressed = true;
+            //graphSinc.IsPressed = true;
             //add ball
             actionCountSinc++;
-            //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+            Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
 
         }
 
         void movementDouble_MovementQuit(object sender, KinectMovementEventArgs e)
         {
             GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-            graphSinc.IsPressed = false;
+            //graphSinc.IsPressed = false;
         }
 
         void movementOne_MovementQuit(object sender, KinectMovementEventArgs e)
@@ -148,7 +145,7 @@ namespace WheelChairCollaborativeGame
                     GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
                     GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
                     //graph.IsPressed = false;
-                    graphSinc.IsPressed = false;
+                    //graphSinc.IsPressed = false;
                     time = 0;
                 }
             if (skeletonPlayerSoldier != null)
@@ -156,8 +153,8 @@ namespace WheelChairCollaborativeGame
                 {
                     GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-                    // graph2.IsPressed = false;
-                    graphSinc.IsPressed = false;
+                    //graph2.IsPressed = false;
+                    //graphSinc.IsPressed = false;
                     time2 = 0;
                 }
 
@@ -176,18 +173,18 @@ namespace WheelChairCollaborativeGame
                     //graph.IsPressed = true;
                     actionCount++;
 
-                    if (graph2.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontTank)))
+                    /*if (graph2.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontTank)))
                     {
-                        graphSinc.IsPressed = true;
+                        //graphSinc.IsPressed = true;
                         actionCountSinc++;
                         //add ball
-                        //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+                        Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
                     }
                     else
                     {
-                        graphSinc.IsPressed = false;
+                        //graphSinc.IsPressed = false;
 
-                    }
+                    }*/
                 }
 
             if (skeletonPlayerSoldier != null)
@@ -196,22 +193,22 @@ namespace WheelChairCollaborativeGame
                     GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
                     GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-                    // graph2.IsPressed = true;
+                    //graph2.IsPressed = true;
                     actionCount2++;
 
-                    if (graph.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontSoldier)))
+                    /*if (graph.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontSoldier)))
                     {
                         graphSinc.IsPressed = true;
                         actionCountSinc++;
                         //add ball
-                        //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+                        Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
 
                     }
                     else
                     {
                         graphSinc.IsPressed = false;
 
-                    }
+                    }*/
                 }
 
 
@@ -240,9 +237,9 @@ namespace WheelChairCollaborativeGame
             GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
             PlayerIndex playerIndex = PlayerIndex.One;
             PlayerIndex player2 = PlayerIndex.Two;
-            bool isAction = graph.IsPressed;
-            bool isAction2 = graph2.IsPressed;
-            bool isActionSinc = graphSinc.IsPressed;
+            //bool isAction = graph.IsPressed;
+            //bool isAction2 = graph2.IsPressed;
+            //bool isActionSinc = graphSinc.IsPressed;
 
             InputState inputState = (InputState)Game.Services.GetService(typeof(InputState));
 
@@ -269,6 +266,54 @@ namespace WheelChairCollaborativeGame
                 controlSelect = 0;
             }
 
+            //set correct input for graph
+            switch (controlSelect)
+            {
+                case 0:
+                    graph.IOnOff = controllerOneOnOff;
+                    graph2.IOnOff = controllerTwoOnOff;
+                    graphSinc.IOnOff = controllerBothOnOff;
+
+                    //set to draw or not
+                    movementFrontTank.Enabled = false;
+                    movementFrontTank.Visible = false;
+                    movementFrontSoldier.Enabled = false;
+                    movementFrontSoldier.Visible = false;  
+                    movementDouble.Enabled = false;
+                    movementDouble.Visible = false;
+
+                    break;
+                case 1:
+                    graph.IOnOff = movementFrontTank;
+                    graph2.IOnOff = movementFrontSoldier;
+                    graphSinc.IOnOff = new OnOffDouble(movementFrontSoldier, movementFrontTank);
+
+                    //set to draw or not
+                    movementFrontTank.Enabled = true;
+                    movementFrontTank.Visible = true;       
+                    movementFrontSoldier.Enabled = true;
+                    movementFrontSoldier.Visible = true;    
+                    movementDouble.Enabled = false;
+                    movementDouble.Visible = false;
+
+
+                    break;
+                case 2:
+                    graph.IOnOff = movementSideTank;
+                    graph2.IOnOff = movementSideSoldier;
+                    graphSinc.IOnOff = movementDouble;
+
+                    //set to draw or not
+                    movementFrontTank.Enabled = false;
+                    movementFrontTank.Visible = false;
+                    movementFrontSoldier.Enabled = false;
+                    movementFrontSoldier.Visible = false;   
+                    movementDouble.Enabled = true;
+                    movementDouble.Visible = true;
+
+                    break;
+            }
+
 
 
             switch (controlSelect)
@@ -279,84 +324,51 @@ namespace WheelChairCollaborativeGame
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex, out playerIndex))
                         {
                             actionCount++;
-                            isAction = true;
-                            Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
-                            if (isAction2 == true)
+                            //isAction = true;
+                            //Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+                            controllerOneOnOff.IsOn = true;
+                            if (controllerTwoOnOff.IsOn == true)
                             {
-                                isActionSinc = true;
+                                //isActionSinc = true;
                                 actionCountSinc++;
                                 //add ball
-                                //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
+                                Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
                             }
 
                         }
-                        if (isAction == true)
-                        {
-                            time += gameTime.ElapsedGameTime.TotalMilliseconds;
-                            if (time > 1000)
-                            {
-                                if (isAction2 == false)
-                                {
-                                    isAction = false;
-                                }
-                            }
 
-
-                        }
 
                         if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
                         {
-                            time = 0;
-                            isAction = false;
-                            isActionSinc = false;
+                            controllerOneOnOff.IsOn = false;
                         }
 
-                        graph.IsPressed = isAction;
-                        graphSinc.IsPressed = isActionSinc;
 
                         if (inputState.IsButtonPressed(Buttons.A, player2, out player2))
                         {
                             actionCount2++;
-                            isAction2 = true;
-                            if (isAction == true)
+                            controllerTwoOnOff.IsOn = true;
+                            if (controllerOneOnOff.IsOn == true)
                             {
-                                isActionSinc = true;
                                 actionCountSinc++;
                                 //add ball
-                                //GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
-                            }
-                        }
-                        if (isAction2 == true)
-                        {
-                            time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                            if (time2 > 1000)
-                            {
-                                if (isAction == false)
-                                {
-                                    isAction2 = false;
-                                }
+                                Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
                             }
                         }
 
                         if (inputState.IsButtonReleased(Buttons.A, player2, out player2))
                         {
-                            time2 = 0;
-                            isAction2 = false;
-                            isActionSinc = false;
+                            controllerTwoOnOff.IsOn = false;
                         }
 
-                        graph2.IsPressed = isAction2;
-                        graphSinc.IsPressed = isActionSinc;
 
-                        if (isAction == true && isAction2 == true)
+                        if (controllerBothOnOff.isOn())
                         {
-                            isActionSinc = true;
                             timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
                         }
                         else
                         {
                             timeSinc = 0;
-                            isActionSinc = false;
                         }
 
                     }
@@ -370,47 +382,42 @@ namespace WheelChairCollaborativeGame
                             if (skeletonPlayerTank != null)
                             {
                                 movementFrontTank.setTriggersTrackingSkeleton(skeletonPlayerTank);
-                                movementFrontTank.update();
+
 
                             }
 
                             if (skeletonPlayerSoldier != null)
                             {
                                 movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
-                                movementFrontSoldier.update();
+
 
                             }
 
                             if (movementFrontTank.State == KinectMovement.MovementState.Activated)
                             {
                                 time += gameTime.ElapsedGameTime.TotalMilliseconds;
-                                isAction = true;
-                                if (time > 1000)
+                                /*if (time > 1000)
                                 {
-                                    if (isAction2 == false)
+                                    if (mo == false)
                                     {
                                         isAction = false;
                                     }
-                                }
+                                }*/
                             }
 
                             if (movementFrontSoldier.State == KinectMovement.MovementState.Activated)
                             {
                                 time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                                isAction2 = true;
-                                if (time2 > 1000)
+                                /*if (time2 > 1000)
                                 {
                                     if (isAction == false)
                                     {
                                         isAction2 = false;
                                     }
-                                }
+                                }*/
 
                             }
 
-
-                            graph.IsPressed = isAction;
-                            graph2.IsPressed = isAction2;
                             if (movementFrontTank.State == KinectMovement.MovementState.Activated && movementFrontSoldier.State == KinectMovement.MovementState.Activated)
                             {
 
@@ -435,7 +442,7 @@ namespace WheelChairCollaborativeGame
                             {
                                 triggerDouble.TrackingSkeletonOne = skeletonPlayerTank;
                                 triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier;
-                                movementDouble.update();
+
                             }
 
                             if (movementDouble.State == KinectMovement.MovementState.Activated)
@@ -549,19 +556,6 @@ namespace WheelChairCollaborativeGame
                 DrawPrimitiveSkeleton(skeletonPlayerSoldier, currentPrimitive, Color.Honeydew);
 
 
-            if (controlSelect == 1)
-            {
-                movementFrontTank.drawTriggers();
-                movementFrontSoldier.drawTriggers();
-            }
-            else if (controlSelect == 2)
-            {
-                movementSideTank.drawTriggers();
-                movementSideSoldier.drawTriggers();
-
-                triggerDouble.draw();
-            }
-
 
             SharedSpriteBatch.End();
 
@@ -672,20 +666,21 @@ namespace WheelChairCollaborativeGame
             Vector3 differenceFront2 = new Vector3(0.30f, -0.10f, -0.20f);
             Vector3 differenceFront3 = new Vector3(0.30f, -0.05f, -0.45f);
 
-            movementFrontTank = new KinectMovement(
+            movementFrontTank = new KinectMovement(Game,
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            Game.Components.Add(movementFrontTank);
 
             // Movement side
             Vector3 differenceSide1 = new Vector3(0.35f, -0.25f, -0.10f);
             Vector3 differenceSide2 = new Vector3(0.55f, -0.15f, -0.10f);
             Vector3 differenceSide3 = new Vector3(0.75f, -0.15f, -0.10f);
 
-            movementSideTank = new KinectMovement(
+            movementSideTank = new KinectMovement(Game,
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide1, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide2, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide3, 0.25f, 0.02f, Game.GraphicsDevice)
@@ -693,32 +688,49 @@ namespace WheelChairCollaborativeGame
             movementSideTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementSideTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
 
+            Game.Components.Add(movementSideTank);
 
             // Movement soldier
-            movementFrontSoldier = new KinectMovement(
+            movementFrontSoldier = new KinectMovement(Game,
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            Game.Components.Add(movementFrontSoldier);
 
-            movementSideSoldier = new KinectMovement(
+            movementSideSoldier = new KinectMovement(Game, 
                 new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide1 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide2 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide3 * new Vector3(-1, 1, 1), 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementSideSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementSideSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
-
+            Game.Components.Add(movementSideSoldier);
 
             //movement to check for side high five
 
             triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.HandRight, JointType.HandLeft, JointType.HandLeft, 0.1f, 0.02f, Game.GraphicsDevice);
-            movementDouble = new KinectMovement(triggerDouble);
+            movementDouble = new KinectMovement(Game, triggerDouble);
             movementDouble.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementDouble_MovementQuit);
             movementDouble.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementDouble_MovementCompleted);
+            Game.Components.Add(movementDouble);
 
+            GraphGameObject graph = new GraphGameObject(controllerOneOnOff, Game, "graph");
+            Game.Components.Add(graph);
+            graph.PressedY = 400;
+            graph.NotPressedY = 420;
+
+            GraphGameObject graph2 = new GraphGameObject(controllerTwoOnOff, Game, "graphPlayer2");
+            Game.Components.Add(graph2);
+            graph2.PressedY = 300;
+            graph2.NotPressedY = 320;
+
+            GraphGameObject graphSinc = new GraphGameObject(controllerBothOnOff, Game, "graphSinc");
+            Game.Components.Add(graphSinc);
+            graphSinc.PressedY = 200;
+            graphSinc.NotPressedY = 220;
 
             base.LoadContent();
         }

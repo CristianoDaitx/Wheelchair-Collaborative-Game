@@ -119,6 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BallGameObject.cs" />
+    <Compile Include="OnOffController.cs" />
+    <Compile Include="OnOffDouble.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EnemyGameObject.cs" />
     <Compile Include="GeometricPrimitives\BezierPrimitive.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="GeometricPrimitives\VertexPositionNormal.cs" />
     <Compile Include="GraphGameObject.cs" />
     <Compile Include="GUImessage.cs" />
+    <Compile Include="IOnOff.cs" />
     <Compile Include="KinectTriggers\KinectMovement.cs" />
     <Compile Include="KinectTriggers\KinectTriggerSingle.cs" />
     <Compile Include="KinectTriggers\KinectTriggerDouble.cs" />
