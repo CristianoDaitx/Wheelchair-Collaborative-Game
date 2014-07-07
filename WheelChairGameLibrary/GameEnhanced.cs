@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using WheelChairGameLibrary.GameObjects;
 using WheelChairGameLibrary.Screens;
 using WheelChairGameLibrary.Helpers;
 
@@ -39,6 +40,15 @@ namespace WheelChairGameLibrary
         protected KinectChooser Chooser
         {
             get { return chooser; }
+        }
+
+        /// <summary>
+        /// Takes care of all collisions in game
+        /// </summary>
+        private readonly CollisionManager collisionManager;
+        protected CollisionManager CollisionManager
+        {
+            get { return collisionManager; }
         }
 
         /// <summary>
@@ -96,13 +106,51 @@ namespace WheelChairGameLibrary
             // it is recommended to use KinectSensorChooser provided in Microsoft.Kinect.Toolkit (See components in Toolkit Browser).
             this.chooser = new KinectChooser(this, ColorImageFormat.RgbResolution640x480Fps30, DepthImageFormat.Resolution640x480Fps30);
             this.Services.AddService(typeof(KinectChooser), this.chooser);
+            this.Components.Add(this.chooser);
 
+
+            // start input service
             InputState inputState = new InputState(this);
             this.Services.AddService(typeof(InputState), inputState);
-
-            this.Components.Add(this.chooser);
             this.Components.Add(inputState);
+            
+            // start collision manager service
+            this.collisionManager = new CollisionManager(this);
+            this.Services.AddService(typeof(CollisionManager), collisionManager);
+            this.Components.ComponentAdded += new EventHandler<GameComponentCollectionEventArgs>(Components_ComponentAdded);
+            this.Components.ComponentRemoved += new EventHandler<GameComponentCollectionEventArgs>(Components_ComponentRemoved);
+            this.Components.Add(collisionManager);            
 
+
+            
+            
+            
+
+        }
+
+        
+
+        void Components_ComponentAdded(object sender, GameComponentCollectionEventArgs e)
+        {
+            if (typeof(GameObject).IsAssignableFrom(e.GameComponent.GetType()))
+            {
+                GameObject gameObject = (GameObject)e.GameComponent;
+                if (gameObject.Collider != null)
+                    this.CollisionManager.addCollider(gameObject.Collider);
+
+            }            
+
+
+        }
+
+        void Components_ComponentRemoved(object sender, GameComponentCollectionEventArgs e)
+        {
+            if (typeof(GameObject).IsAssignableFrom(e.GameComponent.GetType()))
+            {
+                GameObject gameObject = (GameObject)e.GameComponent;
+                if (gameObject.Collider != null)
+                    this.CollisionManager.removeCollider(gameObject.Collider);
+            }
         }
 
         /// <summary>

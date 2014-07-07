@@ -159,15 +159,15 @@ namespace WheelChairCollaborativeGame
                 CullMode = CullMode.None,
             };
 
-            tankGameObject = (TankGameObject)Game.Components.OfType<GameObject>().FirstOrDefault(x => ((GameObject)x).Tag == "playerTank"); //GameObjectManager.getGameObject("playerTank");
+            tankGameObject = (TankGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(TankGameObject) && ((TankGameObject)x).Tag == "playerTank"); //GameObjectManager.getGameObject("playerTank");
 
         }
 
         void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
-            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
-            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
-            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
+            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
+            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
+            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
             //if (graph.IsPressed == true && graph2.IsPressed == true)
             graphSinc.IsPressed = true;
             //add ball
@@ -178,7 +178,7 @@ namespace WheelChairCollaborativeGame
 
         void movementDouble_MovementQuit(object sender, KinectMovementEventArgs e)
         {
-            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
+            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameObject) && ((GameObject)x).Tag == "graphSinc");
             graphSinc.IsPressed = false;
         }
 
@@ -187,8 +187,8 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerTank != null)
                 if (sender.Equals(movementFrontTank) || sender.Equals(movementSideTank))
                 {
-                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
+                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
                     //graph.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time = 0;
@@ -196,8 +196,8 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerSoldier != null)
                 if (sender.Equals(movementFrontSoldier) || sender.Equals(movementSideSoldier))
                 {
-                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
+                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
                    // graph2.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time2 = 0;
@@ -212,9 +212,9 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerTank != null)
                 if (sender.Equals(movementFrontTank) || sender.Equals(movementSideTank))
                 {
-                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
-                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
+                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
+                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
                     //graph.IsPressed = true;
                     actionCount++;
 
@@ -235,9 +235,9 @@ namespace WheelChairCollaborativeGame
             if (skeletonPlayerSoldier != null)
                 if (sender.Equals(movementFrontSoldier) || sender.Equals(movementSideSoldier))
                 {
-                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
-                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
+                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
+                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
+                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
                    // graph2.IsPressed = true;
                     actionCount2++;
 
@@ -265,9 +265,9 @@ namespace WheelChairCollaborativeGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graph");
-            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphPlayer2");
-            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "graphSinc");
+            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
+            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
+            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
             PlayerIndex playerIndex = PlayerIndex.One;
             PlayerIndex player2 = PlayerIndex.Two;
             bool isAction = graph.IsPressed;
@@ -310,6 +310,7 @@ namespace WheelChairCollaborativeGame
                         {
                             actionCount++;
                             isAction = true;
+                            Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game,  "ball"));
                             if (isAction2 == true)
                             {
                                 isActionSinc = true;
@@ -487,7 +488,7 @@ namespace WheelChairCollaborativeGame
 {
  	 base.Draw(gameTime);
 
-            //return;
+            return;
 
             /*Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
@@ -842,7 +843,7 @@ namespace WheelChairCollaborativeGame
                     //labelKey.Text = newDuty.ToString();
                     Console.WriteLine("Turn: " + newDuty.ToString());
 
-                    TankGameObject playerTank = (TankGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "playerTank");
+                    TankGameObject playerTank = (TankGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameObject) && ((GameObject)x).Tag == "playerTank");
 
                     if (newDuty < 0)
                     {

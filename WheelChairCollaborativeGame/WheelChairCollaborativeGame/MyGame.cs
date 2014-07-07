@@ -74,6 +74,7 @@ namespace WheelChairCollaborativeGame
 
             KinectInput kinectInput = new KinectInput(this, "kinectInput");
             this.Components.Add(kinectInput);
+
         }
 
        

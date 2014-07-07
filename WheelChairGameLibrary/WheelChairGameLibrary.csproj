@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="GameEnhanced.cs" />
     <Compile Include="GameObjects\Colliders\Collider.cs" />
+    <Compile Include="GameObjects\Colliders\CollisionManager.cs" />
     <Compile Include="GameObjects\Manager\GameObject.cs" />
     <Compile Include="GameObjects\Manager\GameObjectManager.cs" />
     <Compile Include="GameObjects\Sprites\Sprite.cs" />

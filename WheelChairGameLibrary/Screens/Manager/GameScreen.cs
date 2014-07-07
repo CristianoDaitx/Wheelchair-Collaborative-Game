@@ -173,7 +173,7 @@ namespace WheelChairGameLibrary.Screens
         public GameScreen()
         {
             //Each game screen should have a GameObjectManager
-            GameObjectManager = new GameObjectManager(this);
+            //GameObjectManager = new GameObjectManager(this);
         }
 
         /// <summary>

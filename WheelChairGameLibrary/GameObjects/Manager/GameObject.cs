@@ -26,6 +26,13 @@ namespace WheelChairGameLibrary.GameObjects
             get { return gameObjectManager; }
         }*/
 
+        //used to force object to be destroyed in next update
+        private bool toBeRemoved = false;
+        public bool ToBeRemoved
+        {
+            set { toBeRemoved = value; }
+        }
+
         private String tag;
         public String Tag
         {
@@ -49,6 +56,12 @@ namespace WheelChairGameLibrary.GameObjects
 
         }
 
+        /// <summary>
+        /// Colliders must be instantiated inside constructor
+        /// Contend must be lodade inside load content (if added before the call of Game.Initialize), otherwise, check if content is loaded (as xnaBasics example)
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="tag"></param>
         public GameObject(GameEnhanced game, String tag)
             :base(game)
         {
@@ -58,6 +71,13 @@ namespace WheelChairGameLibrary.GameObjects
 
         public override void Update(GameTime gameTime)
         {
+            //removes object if marked to be destroyed
+            if (toBeRemoved)
+            {
+                Game.Components.Remove(this);
+                return;
+            }
+
             if (sprite != null)
                 sprite.Update();
 

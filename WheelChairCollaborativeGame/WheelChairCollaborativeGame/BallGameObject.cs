@@ -29,13 +29,16 @@ namespace WheelChairCollaborativeGame
         }
 
 
-        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void  Draw(GameTime gameTime)
         {
-            base.Draw(spriteBatch, gameTime);
-            PrimitiveDrawing.DrawCircle(GameObjectManager.GameScreen.ScreenManager.WhitePixel, spriteBatch, position, 4.0f, Color.Red, 4, 7);
+
+            base.Draw(gameTime);
+            SharedSpriteBatch.Begin();
+            PrimitiveDrawing.DrawCircle(Game.WhitePixel, SharedSpriteBatch, position, 4.0f, Color.Red, 4, 7);
+            SharedSpriteBatch.End();
 
             
-        }*/
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -55,8 +58,9 @@ namespace WheelChairCollaborativeGame
 
         public override void collisionEntered(Collider collider)
         {
-            Game.Components.Remove(this);
+            //Game.Components.Remove(this);
             //GameObjectManager.removeGameObject(this);
+            ToBeRemoved = true;
         }
     }
 }

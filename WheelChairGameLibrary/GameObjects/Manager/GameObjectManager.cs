@@ -15,14 +15,6 @@ namespace WheelChairGameLibrary.GameObjects
 
     public class GameObjectManager
     {
-        private GameScreen gameScreen;
-        /// <summary>
-        /// The GameScreen this manager belongs to
-        /// </summary>
-        public GameScreen GameScreen
-        {
-            get { return gameScreen; }
-        }
 
         /// <summary>
         /// represent if the program is in the foreach loop during update, so no gameobjects can be added, removed at this time
@@ -41,9 +33,8 @@ namespace WheelChairGameLibrary.GameObjects
 
         List<GameObject> gameObjects = new List<GameObject>();
 
-        public GameObjectManager(GameScreen gameScreen)
+        public GameObjectManager()
         {
-            this.gameScreen = gameScreen;
         }
 
         #region Update and Draw

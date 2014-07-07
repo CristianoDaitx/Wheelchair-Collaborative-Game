@@ -31,8 +31,8 @@ namespace WheelChairCollaborativeGame
             : base(game, tag)
         {
 
-            
 
+            Collider = new Collider(this, new Rectangle(0, 0, 50, 50));
             
         }
 
@@ -46,7 +46,7 @@ namespace WheelChairCollaborativeGame
 
             this.velocity.Y = 0.5f;
 
-            Collider = new Collider(this, new Rectangle(0, 0, (int)this.Size.X * 2, (int)this.Size.Y * 2));
+            
         }
 
         public override void Update(GameTime gameTime)
@@ -77,7 +77,8 @@ namespace WheelChairCollaborativeGame
         public override void collisionEntered(Collider collider)
         {
             if (collider.GameObject.GetType() == typeof (BallGameObject))
-                Game.Components.Remove(this);
+                ToBeRemoved = true;
+                //Game.Components.Remove(this);
                 //GameObjectManager.removeGameObject(this);
         }
 
