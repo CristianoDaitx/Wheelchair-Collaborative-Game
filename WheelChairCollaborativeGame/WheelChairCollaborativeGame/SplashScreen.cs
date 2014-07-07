@@ -69,8 +69,14 @@ namespace WheelChairCollaborativeGame
             GameObjectManager.addGameObject(kinectInput);
            
 
-            //EnemyGameObject enemy = new EnemyGameObject(GameObjectManager, "enemy");
-            //GameObjectManager.addGameObject(enemy);
+            EnemyGameObject weakEnemy = new WeakEnemy(GameObjectManager, "weakEnemy");
+            //GameObjectManager.addGameObject(weakEnemy);
+            EnemyGameObject weakEnemy2 = new WeakEnemy2(GameObjectManager, "weakEnemy2");
+            //GameObjectManager.addGameObject(weakEnemy2);
+            EnemyGameObject hardEnemy = new HardEnemy(GameObjectManager, "hardEnemy");
+            //GameObjectManager.addGameObject(hardEnemy);
+            EnemyGameObject avarageEnemy = new AvarageEnemy(GameObjectManager, "avarageEnemy");
+            //GameObjectManager.addGameObject(avarageEnemy);
 
             GraphGameObject graph = new GraphGameObject(GameObjectManager, "graph");
             GameObjectManager.addGameObject(graph);
@@ -115,11 +121,11 @@ namespace WheelChairCollaborativeGame
 
 
         }
-
+        public int X = 0;
         public override void Update(GameTime gameTime, InputState input, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, input, otherScreenHasFocus, coveredByOtherScreen);
-
+            
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             //PlayerIndex newPlayerIndex;
@@ -130,13 +136,70 @@ namespace WheelChairCollaborativeGame
                 
             }
             */
-            if (time > TimeSpan.FromSeconds(secondsToChangeScreen).TotalMilliseconds)
+            if (X == 0)
             {
                 //ExitScreen();
                 //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
-                GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
-                time = 0;
+               // GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
+                
+                GameObjectManager.addGameObject(new WeakEnemy(GameObjectManager, "weakEnemy"));
+        
+                X++;
+                
+
             }
+
+            if (X < 300)
+            {
+
+                X++;
+            }
+
+            if (X == 300)
+            {
+                GameObjectManager.addGameObject(new WeakEnemy2(GameObjectManager, "weakEnemy2"));
+                X = 350;
+            }
+
+            if (X > 340 && X < 800)
+            {
+                
+                X ++;
+            }
+            if (X == 800)
+            {
+                GameObjectManager.addGameObject(new AvarageEnemy(GameObjectManager, "avarageEnemy"));
+                X = 850;
+            }
+            if (X > 840 && X < 1500)
+            {
+
+                X++;
+            }
+
+            if (X == 1500)
+            {
+                GameObjectManager.addGameObject(new HardEnemy(GameObjectManager, "hardEnemy"));
+                X = 3500;
+            }
+            if (X > 1540)
+            {
+                X--;
+                
+            }
+            if (X == 1540)
+            {
+                X = 0;
+            }
+            
+            
+        
+
+
+
+            
+
+            
 
         }
     }

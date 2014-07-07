@@ -188,7 +188,7 @@ namespace WheelChairCollaborativeGame
                 {
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                    //graph.IsPressed = false;
+                    graph.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time = 0;
                 }
@@ -197,7 +197,7 @@ namespace WheelChairCollaborativeGame
                 {
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                   // graph2.IsPressed = false;
+                    graph2.IsPressed = false;
                     graphSinc.IsPressed = false;
                     time2 = 0;
                 }
@@ -214,7 +214,7 @@ namespace WheelChairCollaborativeGame
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                    //graph.IsPressed = true;
+                    graph.IsPressed = true;
                     actionCount++;
 
                     if (graph2.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontTank)))
@@ -237,7 +237,7 @@ namespace WheelChairCollaborativeGame
                     GraphGameObject graph = (GraphGameObject)GameObjectManager.getGameObject("graph");
                     GraphGameObject graph2 = (GraphGameObject)GameObjectManager.getGameObject("graphPlayer2");
                     GraphGameObject graphSinc = (GraphGameObject)GameObjectManager.getGameObject("graphSinc");
-                   // graph2.IsPressed = true;
+                    graph2.IsPressed = true;
                     actionCount2++;
 
                     if (graph.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontSoldier)))
@@ -320,6 +320,8 @@ namespace WheelChairCollaborativeGame
                         if (isAction == true)
                         {
                             time += gameTime.ElapsedGameTime.TotalMilliseconds;
+                            // Testing bullet
+                             GameObjectManager.addGameObject(new BallGameObject(tankGameObject.Sprite.position + new Vector2(tankGameObject.Sprite.size.X / 2, 0), GameObjectManager, "ball"));
                             if (time > 1000)
                             {
                                 if (isAction2 == false)
@@ -408,36 +410,7 @@ namespace WheelChairCollaborativeGame
 
                             }
 
-                            if (movementFrontTank.State == KinectMovement.MovementState.Activated)
-                            {
-                                time += gameTime.ElapsedGameTime.TotalMilliseconds;
-                                isAction = true;
-                                if (time > 1000)
-                                {
-                                    if (isAction2 == false)
-                                    {
-                                        isAction = false;
-                                    }
-                                }
-                            }
-
-                            if (movementFrontSoldier.State == KinectMovement.MovementState.Activated)
-                            {
-                                time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                                isAction2 = true;
-                                if (time2 > 1000)
-                                {
-                                    if (isAction == false)
-                                    {
-                                        isAction2 = false;
-                                    }
-                                }
-
-                            }
-
-
-                            graph.IsPressed = isAction;
-                            graph2.IsPressed = isAction2;
+                          
                             if (movementFrontTank.State == KinectMovement.MovementState.Activated && movementFrontSoldier.State == KinectMovement.MovementState.Activated)
                             {
 

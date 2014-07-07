@@ -14,9 +14,9 @@ namespace WheelChairCollaborativeGame
 {
     public class Config
     {
-        public static Vector2 resolution = new Vector2(480, 640); //480, 640//576, 1024
+        public static Vector2 resolution = new Vector2(640, 480); //480, 640//576, 1024
 
-        public static Vector2 cameraResolution = new Vector2(480, 640); //480, 640
+        public static Vector2 cameraResolution = new Vector2(640, 480); //480, 640
 
     }
 

@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvarageEnemy.cs" />
     <Compile Include="BallGameObject.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EnemyGameObject.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="GeometricPrimitives\VertexPositionNormal.cs" />
     <Compile Include="GraphGameObject.cs" />
     <Compile Include="GUImessage.cs" />
+    <Compile Include="HardEnemy.cs" />
     <Compile Include="KinectTriggers\KinectMovement.cs" />
     <Compile Include="KinectTriggers\KinectTriggerSingle.cs" />
     <Compile Include="KinectTriggers\KinectTriggerDouble.cs" />
@@ -140,6 +142,8 @@
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TankGameObject.cs" />
     <Compile Include="KinectInput.cs" />
+    <Compile Include="WeakEnemy.cs" />
+    <Compile Include="WeakEnemy2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
