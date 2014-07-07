@@ -59,9 +59,11 @@ namespace WheelChairCollaborativeGame
             TankGameObject playerTank = new TankGameObject(this, "playerTank");
             this.Components.Add(playerTank);
 
+
             GraphGameObject graph = new GraphGameObject(this, "graph");
             this.Components.Add(graph);
-            graph.IsPressed = true;
+            graph.PressedY = 400;
+            graph.NotPressedY = 420;
 
             GraphGameObject graph2 = new GraphGameObject(this, "graphPlayer2");
             this.Components.Add(graph2);
@@ -71,6 +73,7 @@ namespace WheelChairCollaborativeGame
             GraphGameObject graphSinc = new GraphGameObject(this, "graphSinc");
             this.Components.Add(graphSinc);
             graphSinc.PressedY = 200;
+            graph2.NotPressedY = 220;
 
             KinectInput kinectInput = new KinectInput(this, "kinectInput");
             this.Components.Add(kinectInput);
@@ -93,10 +96,12 @@ namespace WheelChairCollaborativeGame
         /// <param name="gameTime">The elapsed game time.</param>
         protected override void Draw(GameTime gameTime)
         {
+            
             // Clear the screen
-            GraphicsDevice.Clear(Color.White);
-
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
+
+            
 
         }
 

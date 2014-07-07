@@ -187,9 +187,10 @@ namespace WheelChairGameLibrary
         protected override void Draw(GameTime gameTime)
         {
             // Clear the screen
-            GraphicsDevice.Clear(Color.White);
-
             base.Draw(gameTime);
+            //GraphicsDevice.Clear(Color.White);
+
+            
         }
 
         //TODO: add GraphicsDevicePreparingDeviceSettings from XnaBasicsGame

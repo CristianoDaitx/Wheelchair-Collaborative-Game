@@ -89,18 +89,20 @@ namespace WheelChairCollaborativeGame
 
         }
 
-        /*public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-            base.Draw(spriteBatch, gameTime);
+            base.Draw(gameTime);
 
             bool isUp = IsPressed;
             // fix for one time delay
             if (isChanged)
                 isUp = !IsPressed;
 
+            SharedSpriteBatch.Begin();
+
             Vector2 startPosition = new Vector2(STARTING_X, (isUp ? pressedY : notPressedY));
             Vector2 endPosition = new Vector2(STARTING_X - (float)scale(time), (isUp ? pressedY : notPressedY));
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch, startPosition, endPosition, Color.Gray, LINE_WIDTH);
 
             double timeSum = time;            
             for (int x = times.Count() - 1; x >= 0; x--)
@@ -108,16 +110,17 @@ namespace WheelChairCollaborativeGame
                 isUp = !isUp;
                 startPosition = new Vector2(STARTING_X - (float)scale(timeSum), (isUp ? pressedY : notPressedY));
                 endPosition = new Vector2(STARTING_X - (float)scale(times.ElementAt(x) + timeSum), (isUp ? pressedY : notPressedY));
-                PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
+                PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch, startPosition, endPosition, Color.Gray, LINE_WIDTH);
 
                 startPosition = new Vector2(STARTING_X - (float)scale(timeSum), notPressedY);
                 endPosition = new Vector2(STARTING_X - (float)scale(timeSum), pressedY - LINE_WIDTH);
-                PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
+                PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch, startPosition, endPosition, Color.Gray, LINE_WIDTH);
                 
                 timeSum += times.ElementAt(x);
             }
 
-        }*/
+            SharedSpriteBatch.End();
+        }
 
         private double scale(double valueIn) 
         {
