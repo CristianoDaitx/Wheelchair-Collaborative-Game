@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Sprites;
 
 using KinectForWheelchair;
@@ -23,28 +22,25 @@ namespace WheelChairCollaborativeGame
 {
     class HardEnemy : EnemyGameObject
     {
-        public HardEnemy(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public HardEnemy(GameEnhanced game, String tag)
+            : base(new Vector2(Config.resolution.X / 2, 0), game, tag)
         {
             this.maxhits = 3;
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, gameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_InvaderHard"),
-                    gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(Config.resolution.X/2, 0), 0.5f);
-            
-            Sprite.velocity.Y = 0.7f;
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("Space_InvaderHard"),
+                     0.5f);
+
+            Velocity = new Vector2(0.7f, 0);
+
+
 
         }
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
-            if (Sprite.position.Y > Config.resolution.Y - 150)
+            base.Update(gameTime);
+            if (Position.Y > Config.resolution.Y - 150)
             {
-                Sprite.velocity.Y = 0;
-                Sprite.velocity.X = 0.7f;
+                Velocity = new Vector2(0.7f, 0);
             }
         }
-
-       
-       
-
     }
 }

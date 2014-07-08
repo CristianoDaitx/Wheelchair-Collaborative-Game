@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
+
 using WheelChairGameLibrary.Sprites;
 
 using KinectForWheelchair;
@@ -33,14 +33,11 @@ namespace WheelChairCollaborativeGame
         private readonly int MAX_RECORDS = 10;
         private readonly int LINE_WIDTH = 2;
 
-
         public int PressedY
         {
             get { return pressedY; }
             set
             {
-                if (value != pressedY)
-                    isChanged = true;
                 if (value < Config.resolution.Y && value > 0)
                     pressedY = value;
             }
@@ -52,8 +49,6 @@ namespace WheelChairCollaborativeGame
             get { return notPressedY; }
             set
             {
-                if (value != notPressedY)
-                    isChanged = true;
                 if (value > pressedY && value < Config.resolution.Y)
                     notPressedY = value;
             }
@@ -62,19 +57,23 @@ namespace WheelChairCollaborativeGame
 
 
 
-        private bool isPressed = false;
-        public bool IsPressed
+        //private bool isPressed = false;
+        /*public bool IsPressed
         {
-            get { return isPressed; }
+            get { return isPressed}
             set {
-                if (value != isPressed)
+                if (value != IsPressed)
                     isChanged = true;
                 if (times.Count() > MAX_RECORDS)
                     times.Dequeue();
-                isPressed = value; }
-        }
+                //isPressed = value;
+            }
+        }*/
 
-        private bool isChanged = false;
+        public IOnOff IOnOff { private get; set; }
+        private bool lastStatus = false;
+
+        //private bool isChanged = false;
 
         private double time = 0;
 
@@ -82,24 +81,26 @@ namespace WheelChairCollaborativeGame
 
         Queue<double> times = new Queue<double>();
 
-        public GraphGameObject(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public GraphGameObject(IOnOff IOnOff, GameEnhanced game, String tag)
+            : base(game, tag)
         {
-
+            this.IOnOff = IOnOff;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-            base.Draw(spriteBatch, gameTime);
+            base.Draw(gameTime);
 
-            bool isUp = IsPressed;
-            // fix for one time delay
+            bool isUp = IOnOff.isOn();
+            /*// fix for one time delay
             if (isChanged)
-                isUp = !IsPressed;
+                isUp = !IsPressed;*/
+
+            SharedSpriteBatch.Begin();
 
             Vector2 startPosition = new Vector2(STARTING_X, (isUp ? pressedY : notPressedY));
             Vector2 endPosition = new Vector2(STARTING_X - (float)scale(time), (isUp ? pressedY : notPressedY));
-            PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
+            PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch, startPosition, endPosition, Color.Gray, LINE_WIDTH);
 
             double timeSum = time;            
             for (int x = times.Count() - 1; x >= 0; x--)
@@ -107,15 +108,16 @@ namespace WheelChairCollaborativeGame
                 isUp = !isUp;
                 startPosition = new Vector2(STARTING_X - (float)scale(timeSum), (isUp ? pressedY : notPressedY));
                 endPosition = new Vector2(STARTING_X - (float)scale(times.ElementAt(x) + timeSum), (isUp ? pressedY : notPressedY));
-                PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
+                PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch, startPosition, endPosition, Color.Gray, LINE_WIDTH);
 
                 startPosition = new Vector2(STARTING_X - (float)scale(timeSum), notPressedY);
                 endPosition = new Vector2(STARTING_X - (float)scale(timeSum), pressedY - LINE_WIDTH);
-                PrimitiveDrawing.DrawLineSegment(GameObjectManager.GameScreen.ScreenManager.WhitePixel, GameObjectManager.GameScreen.ScreenManager.SpriteBatch, startPosition, endPosition, Color.White, LINE_WIDTH);
+                PrimitiveDrawing.DrawLineSegment(Game.WhitePixel, SharedSpriteBatch, startPosition, endPosition, Color.Gray, LINE_WIDTH);
                 
                 timeSum += times.ElementAt(x);
             }
 
+            SharedSpriteBatch.End();
         }
 
         private double scale(double valueIn) 
@@ -129,16 +131,19 @@ namespace WheelChairCollaborativeGame
 
 
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
+            base.Update(gameTime);
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (isChanged)
+            if (lastStatus != IOnOff.isOn())
             {
                 times.Enqueue(time);
                 time = 0;
-                isChanged = false;
+                lastStatus = IOnOff.isOn();
+
+                if (times.Count() > MAX_RECORDS)
+                    times.Dequeue();
             }
 
 

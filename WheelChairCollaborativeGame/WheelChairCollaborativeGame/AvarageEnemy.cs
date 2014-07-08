@@ -7,10 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
-using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Sprites;
+using WheelChairGameLibrary.Helpers;
 
 using KinectForWheelchair;
 using KinectForWheelchair.Listeners;
@@ -23,72 +22,69 @@ namespace WheelChairCollaborativeGame
 {
     class AvarageEnemy : EnemyGameObject
     {
-        public AvarageEnemy(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public AvarageEnemy(GameEnhanced game, String tag)
+            : base(new Vector2(400, 0), game, tag)
         {
             this.maxhits = 2;
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, gameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader"),
-                    gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(400, 0), 0.5f);
-            Sprite.velocity.Y = 0.5f;
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("Space_Invader"),
+                      0.5f);
+            Velocity = new Vector2(0, 0.5f);
+
          
         }
 
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
+            base.Update(gameTime);
 
             
-            if (Sprite.position.Y == 0.10*Config.resolution.Y)
+            if (Position.Y == 0.10*Config.resolution.Y)
             {
-                Sprite.velocity.Y = 0;
-                if (Sprite.position.X > 50)
+                Velocity = new Vector2(Velocity.X, 0);
+                if (Position.X > 50)
                 {
-                    Sprite.velocity.X = -0.7f;
+                    Velocity = new Vector2(-0.7f, Velocity.Y);
                 }
                 else 
                 {
-                    Sprite.velocity.Y = 1.0f;
-                    Sprite.velocity.X = 0.0f;
+                    Velocity = new Vector2(0, 1);
                 }
             }
-            if (Sprite.position.Y == 0.20 * Config.resolution.Y)
+            if (Position.Y == 0.20 * Config.resolution.Y)
             {
-                Sprite.velocity.Y = 0;
-                if (Sprite.position.X < Config.resolution.X - 150)
+                Velocity = new Vector2(Velocity.X, 0);
+                if (Position.X < Config.resolution.X - 150)
                 {
-                    Sprite.velocity.X = 0.7f;
+                    Velocity = new Vector2(0.7f, Velocity.Y);
                 }
                 else
                 {
-                    Sprite.velocity.Y = 1.0f;
-                    Sprite.velocity.X = 0.0f;
+                    Velocity = new Vector2(0, 1);
                 }
             }
-            if (Sprite.position.Y == 0.40 * Config.resolution.Y)
+            if (Position.Y == 0.40 * Config.resolution.Y)
             {
-                Sprite.velocity.Y = 0;
-                if (Sprite.position.X > 50)
+                Velocity = new Vector2(Velocity.X, 0);
+                if (Position.X > 50)
                 {
-                    Sprite.velocity.X = -0.7f;
+                    Velocity = new Vector2(-0.7f, Velocity.Y);
                 }
                 else
                 {
-                    Sprite.velocity.Y = 1.0f;
-                    Sprite.velocity.X = 0.0f;
+                    Velocity = new Vector2(0, 1);
                 }
             }
-            if (Sprite.position.Y == 0.5 *Config.resolution.Y)
+            if (Position.Y == 0.5 *Config.resolution.Y)
             {
-                Sprite.velocity.Y = 0;
-                if (Sprite.position.X < Config.resolution.X - 150)
+                Velocity = new Vector2(Velocity.X, 0);
+                if (Position.X < Config.resolution.X - 150)
                 {
-                    Sprite.velocity.X = 0.7f;
+                    Velocity = new Vector2(0.7f, Velocity.Y);
                 }
                 else
                 {
-                    Sprite.velocity.Y = 1.0f;
-                    Sprite.velocity.X = 0.0f;
+                    Velocity = new Vector2(0, 1);
                 }
             }
 

@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
+
 using WheelChairGameLibrary.Sprites;
 
 using KinectForWheelchair;
@@ -32,23 +32,29 @@ namespace WheelChairCollaborativeGame
 
         private double time = 0;
 
-        public TankGameObject(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public TankGameObject(GameEnhanced game, String tag)
+            : base(new Vector2(200, 360), game, tag)
         {
 
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite (this, gameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader"),
-                    gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(282, DEFENCE_STANCE_Y), 1);
+            
         }
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        protected override void LoadContent()
         {
-            base.Update(gameTime, inputState);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Space_Invader"),
+                      1);
+            base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
 
 
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
 
-            Sprite.position.Y += 0.0001f;
+            //Position.Y += 0.0001f;
 
 
             if (TimeSpan.FromMilliseconds(time).TotalSeconds > 2) //more than two seconds
@@ -61,25 +67,25 @@ namespace WheelChairCollaborativeGame
 
         public void setAttackStance()
         {
-            Sprite.position.Y = ATTACK_STANCE_Y; 
+            //TODO Sprite.position.Y = ATTACK_STANCE_Y; 
 
             isAttackStance = true;
         }
 
         public void setDefenceStance()
         {
-            Sprite.position.Y = DEFENCE_STANCE_Y;
+            //TODO Sprite.position.Y = DEFENCE_STANCE_Y;
             isAttackStance = false;
         }
 
         public void slideToRight()
         {
-            Sprite.position.X += 3; 
+            //this.Position.X = new Vector2(this.Position.X +3, this.Position.Y); 
         }
 
         public void slideToLeft()
         {
-            Sprite.position.X -= 3;
+            //this.Position.X -= 3;
         }
 
 

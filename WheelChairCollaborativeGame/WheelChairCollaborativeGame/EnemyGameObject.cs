@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
+
 using WheelChairGameLibrary.Sprites;
 
 using KinectForWheelchair;
@@ -25,56 +25,64 @@ namespace WheelChairCollaborativeGame
     {
 
         private double time = 0;
-        protected int maxhits;
-        public EnemyGameObject(GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
-        {
-            
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, gameObjectManager.GameScreen.ScreenManager.Game.Content.Load<Texture2D>("Space_Invader"),
-                   gameObjectManager.GameScreen.ScreenManager.WhitePixel, new Vector2(282, 0), 0.5f);
-           
 
-            Collider = new Collider(this, new Rectangle(0, 0, (int)Sprite.size.X * 2, (int)Sprite.size.Y * 2));
+        protected int maxhits = 1;
+
+        public EnemyGameObject(Vector2 position, GameEnhanced game, String tag)
+            : base(position, game, tag)
+        {
+            Collider = new Collider(this, 100, 100);
+            Velocity = new Vector2(0, 0.5f);
+
         }
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        protected override void LoadContent()
         {
-            base.Update(gameTime, inputState);
+            base.LoadContent();
+
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Space_Invader"),
+                      0.5f);
+
+
+
+
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
 
 
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
 
             //Sprite.position.Y += 0.01f;
-            
-           
 
-            Collider.BoundingBox = new Rectangle((int)Sprite.position.X, (int)Sprite.position.Y, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
-
-            //delete if exit screen
-            if (Sprite.position.X >= Config.resolution.X || Sprite.position.X <= 0)
+            if (this.Position.Y > 300)
             {
-                GameObjectManager.removeGameObject(this);
+                Velocity = new Vector2(2, 0); 
             }
 
-            if (Sprite.position.Y >= Config.resolution.Y )
+            //Collider.BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
+
+            //delete if exit screen
+            if (Position.X > Config.resolution.X - 50)
+                this.ToBeRemoved = true;
+
+            if (Position.Y >= Config.resolution.Y )
             {
-                GameObjectManager.removeGameObject(this);
+                this.ToBeRemoved = true;
             }
         }
         // delete if destroyed
         public int hits = 0;
         public override void collisionEntered(Collider collider)
         {
-            if (collider.GameObject.GetType() == typeof(BallGameObject))
-            {
-                hits++;
+            if (collider.GameObject.GetType() == typeof (BallGameObject))
                 if (hits == maxhits)
                 {
-                    GameObjectManager.removeGameObject(this);
+                    ToBeRemoved = true;
                 }
-                
-            }
         }
 
     }

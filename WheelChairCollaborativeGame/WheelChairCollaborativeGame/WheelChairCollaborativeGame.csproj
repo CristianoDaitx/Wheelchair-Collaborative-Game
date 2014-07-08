@@ -120,6 +120,8 @@
   <ItemGroup>
     <Compile Include="AvarageEnemy.cs" />
     <Compile Include="BallGameObject.cs" />
+    <Compile Include="OnOffController.cs" />
+    <Compile Include="OnOffDouble.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EnemyGameObject.cs" />
     <Compile Include="GeometricPrimitives\BezierPrimitive.cs" />
@@ -133,13 +135,13 @@
     <Compile Include="GraphGameObject.cs" />
     <Compile Include="GUImessage.cs" />
     <Compile Include="HardEnemy.cs" />
+    <Compile Include="IOnOff.cs" />
     <Compile Include="KinectTriggers\KinectMovement.cs" />
     <Compile Include="KinectTriggers\KinectTriggerSingle.cs" />
     <Compile Include="KinectTriggers\KinectTriggerDouble.cs" />
     <Compile Include="KinectTriggers\KinectTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="SplashScreen.cs" />
+    <Compile Include="MyGame.cs" />
     <Compile Include="TankGameObject.cs" />
     <Compile Include="KinectInput.cs" />
     <Compile Include="WeakEnemy.cs" />

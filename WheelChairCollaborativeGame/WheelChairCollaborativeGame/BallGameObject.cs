@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
+using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
+
 using WheelChairGameLibrary.Sprites;
 
 #endregion
@@ -18,42 +18,50 @@ namespace WheelChairCollaborativeGame
 {
     class BallGameObject : GameObject
     {
-        private Vector2 position;
 
-        public BallGameObject(Vector2 startingPosition, GameObjectManager gameObjectManager, String tag)
-            : base(gameObjectManager, tag)
+        public BallGameObject(Vector2 startingPosition, GameEnhanced game, String tag)
+            : base(startingPosition, game, tag)
         {
-            this.position = startingPosition;
-            Collider = new Collider(this, new Rectangle((int)position.X - 4, (int)position.Y - 4, 8, 8));
+            //this.Position = startingPosition;
+            Collider = new Collider(this, 8, 8);
+
+            Velocity = new Vector2(0, -2);
         }
 
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-            base.Draw(spriteBatch, gameTime);
-            PrimitiveDrawing.DrawCircle(GameObjectManager.GameScreen.ScreenManager.WhitePixel, spriteBatch, position, 4.0f, Color.Red, 4, 7);
 
-            
+            base.Draw(gameTime);
+            SharedSpriteBatch.Begin();
+            PrimitiveDrawing.DrawCircle(Game.WhitePixel, SharedSpriteBatch, new Vector2(Position.X + 4, Position.Y + 4), 4.0f, Color.Red, 4, 7);
+            SharedSpriteBatch.End();
+
+
         }
 
-        public override void Update(GameTime gameTime, InputState inputState)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, inputState);
+            base.Update(gameTime);
 
-            if (position.Y < 10)
+            if (Position.Y < 10)
             {
-                GameObjectManager.removeGameObject(this);
+                //Game.Components.Remove(this);
+                ToBeRemoved = true;
+                //GameObjectManager.removeGameObject(this);
             }
 
 
-            position.Y -= 2;
+            //position.Y -= 2;
 
-            Collider.BoundingBox = new Rectangle(Collider.BoundingBox.X, Collider.BoundingBox.Y - 2, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
+            //Collider.BoundingBox = new Rectangle(Collider.BoundingBox.X, Collider.BoundingBox.Y - 2, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
         }
 
         public override void collisionEntered(Collider collider)
         {
-            GameObjectManager.removeGameObject(this);
+            //Game.Components.Remove(this);
+            //GameObjectManager.removeGameObject(this);
+            ToBeRemoved = true;
         }
     }
 }
