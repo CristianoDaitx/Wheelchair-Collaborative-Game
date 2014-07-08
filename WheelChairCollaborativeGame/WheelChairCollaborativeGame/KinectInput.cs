@@ -673,6 +673,7 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            movementFrontTank.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementFrontTank);
 
             // Movement side
@@ -687,7 +688,7 @@ namespace WheelChairCollaborativeGame
                 );
             movementSideTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementSideTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
-
+            movementSideTank.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementSideTank);
 
             // Movement soldier
@@ -698,6 +699,7 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            movementFrontSoldier.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementFrontSoldier);
 
             movementSideSoldier = new KinectMovement(Game, 
@@ -707,6 +709,7 @@ namespace WheelChairCollaborativeGame
                 );
             movementSideSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
             movementSideSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            movementSideSoldier.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementSideSoldier);
 
             //movement to check for side high five

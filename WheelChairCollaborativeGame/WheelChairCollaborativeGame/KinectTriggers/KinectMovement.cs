@@ -54,7 +54,10 @@ namespace WheelChairCollaborativeGame
         public delegate void MovementQuitEventHandler(object sender, KinectMovementEventArgs e);
         public event MovementQuitEventHandler MovementQuit;
 
-        private readonly int MAX_ACTIVE_TIME_MILISECONDS = 1000;
+        /// <summary>
+        /// Set a maximum active time for the movement. Zero makes it unlimited
+        /// </summary>
+        public int MaxActiveTimeMiliseconds {get; set;}
         private double time = 0;
 
         /// <summary>
@@ -66,6 +69,8 @@ namespace WheelChairCollaborativeGame
         {
             foreach (KinectTrigger trigger in kinectTriggers)
                 addTrigger(trigger);
+
+            MaxActiveTimeMiliseconds = 0;
         }
 
         public void addTrigger(KinectTrigger kinectTrigger)
@@ -102,13 +107,13 @@ namespace WheelChairCollaborativeGame
         {
             base.Update(gameTime);
 
-
             KinectMovementEventArgs args = new KinectMovementEventArgs();
             args.LastTrigger = kinectTriggers[kinectTriggers.Count() - 1];
-            //TODO: make this method be automatically called insade XNA update
 
+
+            //quit movement if active time reached maximum
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (time > MAX_ACTIVE_TIME_MILISECONDS)
+            if (MaxActiveTimeMiliseconds > 0 && time > MaxActiveTimeMiliseconds)
             {
                 if (State == MovementState.Activated)
                 {
