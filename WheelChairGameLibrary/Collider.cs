@@ -1,14 +1,12 @@
 ﻿#region Using Statements
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using WheelChairGameLibrary.Helpers;
 #endregion
 
-namespace WheelChairGameLibrary.GameObjects
+namespace WheelChairGameLibrary
 {
     public class Collider
     {
@@ -24,13 +22,18 @@ namespace WheelChairGameLibrary.GameObjects
             get { return height; }
         }
 
-
+        /// <summary>
+        /// The bounding box of the collider, based in it's gameObject position
+        /// </summary>
         public Rectangle BoundingBox
         {
             get { return new Rectangle((int)gameObject.Position.X, (int)gameObject.Position.Y, width, height); }
 
         }
 
+        /// <summary>
+        /// The game object this collider is associated to
+        /// </summary>
         private GameObject gameObject;
         public GameObject GameObject
         {

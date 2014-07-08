@@ -10,8 +10,6 @@ using Microsoft.Xna.Framework.Audio;
 
 using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
 using WheelChairGameLibrary.Sprites;
 
 using KinectForWheelchair;
@@ -25,70 +23,52 @@ namespace WheelChairCollaborativeGame
 {
     class KinectInput : GameObject
     {
-        Skeleton skeletonPlayerTank;
-        Skeleton skeletonPlayerSoldier;
-        bool kinectFrameChange;
-        int controlSelect;
-        private double time = 0;
-        private double time2 = 0;
-        private double timeSinc = 0;
-        private int actionCount = 0;
-        private int actionCount2 = 0;
-        private int actionCountSinc = 0;
+        private enum ControlSelect
+        {
+            Joystick = 0,
+            Front,
+            Side
+        }
 
 
-        bool isWireframe = true;
-        RasterizerState wireFrameState;
-
-        GeometricPrimitive currentPrimitive;
-
-        KinectMovement movementSideTank;
-        KinectMovement movementFrontTank;
-        KinectMovement movementSideSoldier;
-        KinectMovement movementFrontSoldier;
-
-        KinectMovement movementDouble;
-        KinectTriggerDouble triggerDouble;
-
-        Texture2D kinectRGBVideo;
-
-        /// <summary>
-        /// This flag ensures only request a frame once per update call
-        /// across the entire application.
-        /// </summary>
-        private static bool skeletonDrawn = true;
-
-        /// <summary>
-        /// The last frames skeleton data.
-        /// </summary>
-        private static Skeleton[] skeletons;
-
-        // Constants //
-
-        const int pwmForwardPeriod = 1000;
-        const int pwmTurningPeriod = 200;
-
-        // Readonly //
-
-        readonly WheelchairDetector wheelchairDetector;
-
-        float distance;
-        float angle;
-
-        //public EnhancedSkeletonCollection skeletons;
-
-
+        private Skeleton skeletonPlayerTank;
+        private Skeleton skeletonPlayerSoldier;
         private TankGameObject tankGameObject;
 
+        private ControlSelect controlSelect = ControlSelect.Side;
+        private double timePressed1 = 0;
+        private double timePressed2 = 0;
+        private double timePressedSync = 0;
+        private int actionCount1 = 0;
+        private int actionCount2 = 0;
+        private int actionCountSync = 0;
 
+        //drawing things
+        private bool isWireframe = true;
+        private RasterizerState wireFrameState;
+        private GeometricPrimitive currentPrimitive;
+
+        //movements
+        private KinectMovement movementSideTank;
+        private KinectMovement movementFrontTank;
+        private KinectMovement movementSideSoldier;
+        private KinectMovement movementFrontSoldier;
+        private KinectMovement movementDouble;
+        private KinectTriggerDouble triggerDouble;
+
+        GraphGameObject graph1;
+        GraphGameObject graph2;
+        GraphGameObject graphSync;
+
+        /// <summary>
+        /// The last frame skeleton data.
+        /// </summary>
+        private static Skeleton[] skeletons;
 
         //controller input handling
         OnOffController controllerOneOnOff;
         OnOffController controllerTwoOnOff;
         OnOffDouble controllerBothOnOff;
-
-        //IOnOff movementBothFront;
-        //IOnOff movementBothSide;
 
         public KinectInput(GameEnhanced game, String tag)
             : base(game, tag)
@@ -101,116 +81,73 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(controllerOneOnOff);
             Game.Components.Add(controllerTwoOnOff);
 
-
-
-
-
-
-
-
             wireFrameState = new RasterizerState()
             {
                 FillMode = FillMode.WireFrame,
                 CullMode = CullMode.None,
             };
 
-            tankGameObject = (TankGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(TankGameObject) && ((TankGameObject)x).Tag == "playerTank"); //GameObjectManager.getGameObject("playerTank");
+            // finds the tank game object
+            tankGameObject = (TankGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(TankGameObject) && ((TankGameObject)x).Tag == "playerTank");
+
+
 
         }
 
         void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
-            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
-            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
-            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-            //if (graph.IsPressed == true && graph2.IsPressed == true)
-            //graphSinc.IsPressed = true;
-            //add ball
-            actionCountSinc++;
+            actionCountSync++;
             Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
 
         }
 
         void movementDouble_MovementQuit(object sender, KinectMovementEventArgs e)
         {
-            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
             //graphSinc.IsPressed = false;
         }
 
-        void movementOne_MovementQuit(object sender, KinectMovementEventArgs e)
+
+        void movementSingle_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
-            if (skeletonPlayerTank != null)
-                if (sender.Equals(movementFrontTank) || sender.Equals(movementSideTank))
+            //count action for both movements of tank
+            if (sender.Equals(movementFrontTank))
+            {
+                actionCount1++;
+                //count and add ball if other action is also active
+                if (movementFrontSoldier.isOn())
                 {
-                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-                    //graph.IsPressed = false;
-                    //graphSinc.IsPressed = false;
-                    time = 0;
+                    actionCountSync++;
+                    Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
                 }
-            if (skeletonPlayerSoldier != null)
-                if (sender.Equals(movementFrontSoldier) || sender.Equals(movementSideSoldier))
+            }
+
+            //count action for both movements of soldier
+            if (sender.Equals(movementFrontSoldier))
+            {
+                actionCount2++;
+                //count and add ball if other action is also active
+                if (movementFrontTank.isOn())
                 {
-                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-                    //graph2.IsPressed = false;
-                    //graphSinc.IsPressed = false;
-                    time2 = 0;
+                    actionCountSync++;
+                    Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
                 }
-
-
-
+            }
         }
 
-        void movementOne_MovementCompleted(object sender, KinectMovementEventArgs e)
+        void movementSingle_MovementQuit(object sender, KinectMovementEventArgs e)
         {
             if (skeletonPlayerTank != null)
+                //reset time for both movements of tank
                 if (sender.Equals(movementFrontTank) || sender.Equals(movementSideTank))
                 {
-                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
-                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-                    //graph.IsPressed = true;
-                    actionCount++;
-
-                    /*if (graph2.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontTank)))
-                    {
-                        //graphSinc.IsPressed = true;
-                        actionCountSinc++;
-                        //add ball
-                        Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
-                    }
-                    else
-                    {
-                        //graphSinc.IsPressed = false;
-
-                    }*/
+                    timePressed1 = 0;
                 }
-
             if (skeletonPlayerSoldier != null)
+                //reset time for both movements of soldier
                 if (sender.Equals(movementFrontSoldier) || sender.Equals(movementSideSoldier))
                 {
-                    GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
-                    GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
-                    GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-                    //graph2.IsPressed = true;
-                    actionCount2++;
-
-                    /*if (graph.IsPressed == true && (movementDouble.State == KinectMovement.MovementState.Activated || sender.Equals(movementFrontSoldier)))
-                    {
-                        graphSinc.IsPressed = true;
-                        actionCountSinc++;
-                        //add ball
-                        Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
-
-                    }
-                    else
-                    {
-                        graphSinc.IsPressed = false;
-
-                    }*/
+                    timePressed2 = 0;
                 }
-
 
         }
 
@@ -221,242 +158,153 @@ namespace WheelChairCollaborativeGame
         {
             base.Update(gameTime);
 
-            // If the sensor is not found, not running, or not connected, stop now
-            if (null == this.Chooser.Sensor ||
-                false == this.Chooser.Sensor.IsRunning ||
-                KinectStatus.Connected != this.Chooser.Sensor.Status)
-            {
-                return;
-            }
-
-
-
-
-            GraphGameObject graph = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graph");
-            GraphGameObject graph2 = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphPlayer2");
-            GraphGameObject graphSinc = (GraphGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GraphGameObject) && ((GraphGameObject)x).Tag == "graphSinc");
-            PlayerIndex playerIndex = PlayerIndex.One;
-            PlayerIndex player2 = PlayerIndex.Two;
-            //bool isAction = graph.IsPressed;
-            //bool isAction2 = graph2.IsPressed;
-            //bool isActionSinc = graphSinc.IsPressed;
+            PlayerIndex playerIndex1 = PlayerIndex.One;
+            PlayerIndex playerIndex2 = PlayerIndex.Two;
 
             InputState inputState = (InputState)Game.Services.GetService(typeof(InputState));
 
 
             //Action by pressing A on gamepad.
 
-
-            if (inputState.IsKeyPressed(Keys.X, playerIndex, out playerIndex))
-            {
+            //changes control typa
+            if (inputState.IsKeyPressed(Keys.X, playerIndex1, out playerIndex1))
                 controlSelect--;
-            }
-            if (inputState.IsKeyPressed(Keys.Space, playerIndex, out playerIndex))
-            {
+            if (inputState.IsKeyPressed(Keys.Space, playerIndex1, out playerIndex1))
                 controlSelect++;
-            }
 
-
-            if (controlSelect == 3)
+            //check borders of control tipe
+            if ((int)controlSelect == 3)
             {
-                controlSelect = 2;
+                controlSelect = ControlSelect.Side;
             }
-            if (controlSelect < 0)
+            if ((int)controlSelect < 0)
             {
-                controlSelect = 0;
+                controlSelect = ControlSelect.Joystick;
             }
 
-            //set correct input for graph
+
+
+            // If the sensor is not found, not running, or not connected, stop now
+            if (!this.Chooser.IsAvailable)
+            {
+                return;
+            }
+
+
+            //set correct input for graph and activate/deactivate movements
             switch (controlSelect)
             {
-                case 0:
-                    graph.IOnOff = controllerOneOnOff;
+                case ControlSelect.Joystick:
+                    graph1.IOnOff = controllerOneOnOff;
                     graph2.IOnOff = controllerTwoOnOff;
-                    graphSinc.IOnOff = controllerBothOnOff;
+                    graphSync.IOnOff = controllerBothOnOff;
 
                     //set to draw or not
                     movementFrontTank.Enabled = false;
                     movementFrontTank.Visible = false;
                     movementFrontSoldier.Enabled = false;
-                    movementFrontSoldier.Visible = false;  
+                    movementFrontSoldier.Visible = false;
                     movementDouble.Enabled = false;
                     movementDouble.Visible = false;
 
                     break;
-                case 1:
-                    graph.IOnOff = movementFrontTank;
+                case ControlSelect.Front:
+                    graph1.IOnOff = movementFrontTank;
                     graph2.IOnOff = movementFrontSoldier;
-                    graphSinc.IOnOff = new OnOffDouble(movementFrontSoldier, movementFrontTank);
+                    graphSync.IOnOff = new OnOffDouble(movementFrontSoldier, movementFrontTank);
 
                     //set to draw or not
                     movementFrontTank.Enabled = true;
-                    movementFrontTank.Visible = true;       
+                    movementFrontTank.Visible = true;
                     movementFrontSoldier.Enabled = true;
-                    movementFrontSoldier.Visible = true;    
+                    movementFrontSoldier.Visible = true;
                     movementDouble.Enabled = false;
                     movementDouble.Visible = false;
 
+                    movementFrontTank.setTriggersTrackingSkeleton(skeletonPlayerTank);
+                    movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
 
                     break;
-                case 2:
-                    graph.IOnOff = movementSideTank;
+                case ControlSelect.Side:
+                    graph1.IOnOff = movementSideTank;
                     graph2.IOnOff = movementSideSoldier;
-                    graphSinc.IOnOff = movementDouble;
+                    graphSync.IOnOff = movementDouble;
 
                     //set to draw or not
                     movementFrontTank.Enabled = false;
                     movementFrontTank.Visible = false;
                     movementFrontSoldier.Enabled = false;
-                    movementFrontSoldier.Visible = false;   
+                    movementFrontSoldier.Visible = false;
                     movementDouble.Enabled = true;
                     movementDouble.Visible = true;
 
+                    triggerDouble.TrackingSkeletonOne = skeletonPlayerTank;
+                    triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier;
                     break;
             }
 
 
-
+            //timing counting and joystick input
             switch (controlSelect)
             {
-                case 0:
-                    if (controlSelect == 0)
-                    {
-                        if (inputState.IsButtonPressed(Buttons.A, playerIndex, out playerIndex))
+                case ControlSelect.Joystick:
+                    {//check button pressing
+                        if (inputState.IsButtonPressed(Buttons.A, playerIndex1, out playerIndex1))
                         {
-                            actionCount++;
-                            //isAction = true;
-                            //Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+                            actionCount1++;
                             controllerOneOnOff.IsOn = true;
                             if (controllerTwoOnOff.IsOn == true)
                             {
-                                //isActionSinc = true;
-                                actionCountSinc++;
+                                actionCountSync++;
                                 //add ball
                                 Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
                             }
-
                         }
 
-
-                        if (inputState.IsButtonReleased(Buttons.A, playerIndex, out playerIndex))
-                        {
+                        if (inputState.IsButtonReleased(Buttons.A, playerIndex1, out playerIndex1))
                             controllerOneOnOff.IsOn = false;
-                        }
 
-
-                        if (inputState.IsButtonPressed(Buttons.A, player2, out player2))
+                        if (inputState.IsButtonPressed(Buttons.A, playerIndex2, out playerIndex2))
                         {
                             actionCount2++;
                             controllerTwoOnOff.IsOn = true;
                             if (controllerOneOnOff.IsOn == true)
                             {
-                                actionCountSinc++;
+                                actionCountSync++;
                                 //add ball
                                 Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
                             }
                         }
-
-                        if (inputState.IsButtonReleased(Buttons.A, player2, out player2))
-                        {
+                        if (inputState.IsButtonReleased(Buttons.A, playerIndex2, out playerIndex2))
                             controllerTwoOnOff.IsOn = false;
-                        }
-
-
-                        if (controllerBothOnOff.isOn())
-                        {
-                            timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
-                        }
-                        else
-                        {
-                            timeSinc = 0;
-                        }
-
                     }
+
+                    if (controllerBothOnOff.isOn())
+                        timePressedSync += gameTime.ElapsedGameTime.TotalMilliseconds;
+                    else
+                        timePressedSync = 0;
                     break;
-                case 1:
-                    if (controlSelect == 1)
-                    {
-                        if (kinectFrameChange == true)
-                        {
-                            //kinect trigger part
-                            if (skeletonPlayerTank != null)
-                            {
-                                movementFrontTank.setTriggersTrackingSkeleton(skeletonPlayerTank);
 
+                case ControlSelect.Front:
+                    if (movementFrontTank.State == KinectMovement.MovementState.Activated)
+                        timePressed1 += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                            }
+                    if (movementFrontSoldier.State == KinectMovement.MovementState.Activated)
+                        timePressed2 += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                            if (skeletonPlayerSoldier != null)
-                            {
-                                movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
+                    if (movementFrontTank.State == KinectMovement.MovementState.Activated && movementFrontSoldier.State == KinectMovement.MovementState.Activated)
+                        timePressedSync += gameTime.ElapsedGameTime.TotalMilliseconds;
+                    else
+                        timePressedSync = 0;
 
-
-                            }
-
-                            if (movementFrontTank.State == KinectMovement.MovementState.Activated)
-                            {
-                                time += gameTime.ElapsedGameTime.TotalMilliseconds;
-                                /*if (time > 1000)
-                                {
-                                    if (mo == false)
-                                    {
-                                        isAction = false;
-                                    }
-                                }*/
-                            }
-
-                            if (movementFrontSoldier.State == KinectMovement.MovementState.Activated)
-                            {
-                                time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                                /*if (time2 > 1000)
-                                {
-                                    if (isAction == false)
-                                    {
-                                        isAction2 = false;
-                                    }
-                                }*/
-
-                            }
-
-                            if (movementFrontTank.State == KinectMovement.MovementState.Activated && movementFrontSoldier.State == KinectMovement.MovementState.Activated)
-                            {
-
-                                timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                            }
-                            else
-                            {
-                                timeSinc = 0;
-                            }
-
-                        }
-                    }
                     break;
-                case 2:
-                    if (controlSelect == 2)
-                    {
-                        // high five
-                        if (kinectFrameChange == true)
-                        {
-                            if (skeletonPlayerSoldier != null && skeletonPlayerTank != null)
-                            {
-                                triggerDouble.TrackingSkeletonOne = skeletonPlayerTank;
-                                triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier;
 
-                            }
+                case ControlSelect.Side:
+                    if (movementDouble.State == KinectMovement.MovementState.Activated)
+                        timePressedSync += gameTime.ElapsedGameTime.TotalMilliseconds;
+                    else
+                        timePressedSync = 0;
 
-                            if (movementDouble.State == KinectMovement.MovementState.Activated)
-                            {
-
-                                timeSinc += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                            }
-                            else
-                            {
-                                timeSinc = 0;
-                            }
-                        }
-                    }
                     break;
             }
 
@@ -464,29 +312,26 @@ namespace WheelChairCollaborativeGame
 
 
 
-            if (skeletonDrawn)
+
+            using (var skeletonFrame = this.Chooser.Sensor.SkeletonStream.OpenNextFrame(0))
             {
-                using (var skeletonFrame = this.Chooser.Sensor.SkeletonStream.OpenNextFrame(0))
+                // Sometimes we get a null frame back if no data is ready
+                if (null == skeletonFrame)
                 {
-                    // Sometimes we get a null frame back if no data is ready
-                    if (null == skeletonFrame)
-                    {
-                        return;
-                    }
-
-                    // Reallocate if necessary
-                    if (null == skeletons || skeletons.Length != skeletonFrame.SkeletonArrayLength)
-                    {
-                        skeletons = new Skeleton[skeletonFrame.SkeletonArrayLength];
-                    }
-
-                    skeletonFrame.CopySkeletonDataTo(skeletons);
-
-                    wheelchairDetector_SkeletonFrameReady();
-                    //skeletonDrawn = false;
-                    kinectFrameChange = true;
+                    return;
                 }
+
+                // Reallocate if necessary
+                if (null == skeletons || skeletons.Length != skeletonFrame.SkeletonArrayLength)
+                {
+                    skeletons = new Skeleton[skeletonFrame.SkeletonArrayLength];
+                }
+
+                skeletonFrame.CopySkeletonDataTo(skeletons);
+
+                determineSkeletons();
             }
+
 
 
         }
@@ -495,18 +340,7 @@ namespace WheelChairCollaborativeGame
         {
             base.Draw(gameTime);
 
-
-            /*Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
-            ScreenManager.SpriteBatch.Begin();
-            //ScreenManager.SpriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
-            ScreenManager.SpriteBatch.End();
-            */
             SharedSpriteBatch.Begin();
-            //Game.GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            //draw video
-            SharedSpriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
 
             /*if (skeletonPlayerTank != null)
             {
@@ -519,9 +353,9 @@ namespace WheelChairCollaborativeGame
             }*/
 
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                         actionCountSinc.ToString(), new Vector2(60, 40));
+                         actionCountSync.ToString(), new Vector2(60, 40));
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        TimeSpan.FromMilliseconds(timeSinc).Seconds.ToString() + "    Bullet Size", new Vector2(60, 60));
+                        TimeSpan.FromMilliseconds(timePressedSync).Seconds.ToString() + "    Bullet Size", new Vector2(60, 60));
 
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         "Input method : " + controlSelect.ToString(), new Vector2(400, 80));
@@ -533,11 +367,6 @@ namespace WheelChairCollaborativeGame
             string message = ("Actions made");
             Vector2 textPosition = new Vector2(100.0f, 35.0f);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, message, textPosition);
-
-
-
-            SharedSpriteBatch.End();
-            SharedSpriteBatch.Begin();
 
             if (isWireframe)
             {
@@ -652,42 +481,39 @@ namespace WheelChairCollaborativeGame
                 (-0.5f * position.Y + 0.5f) * Config.cameraResolution.X);
         }
 
-
         protected override void LoadContent()
         {
-            kinectRGBVideo = new Texture2D(Game.GraphicsDevice, 480, 640);
-
             currentPrimitive = new SpherePrimitive(Game.GraphicsDevice, KinectTriggerSingle.JOINT_DEFAULT_RADIUS, 8);
 
             // Movement tank
 
             // Movement front
-            Vector3 differenceFront1 = new Vector3(0.25f, -0.15f, -0.10f);
+            Vector3 differenceFront1 = new Vector3(0.25f, -0.20f, -0.10f);
             Vector3 differenceFront2 = new Vector3(0.30f, -0.10f, -0.20f);
             Vector3 differenceFront3 = new Vector3(0.30f, -0.05f, -0.45f);
 
             movementFrontTank = new KinectMovement(Game,
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
+                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.20f, 0.02f, Game.GraphicsDevice)
                 );
-            movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
-            movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementFrontTank.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementFrontTank);
 
             // Movement side
             Vector3 differenceSide1 = new Vector3(0.35f, -0.25f, -0.10f);
             Vector3 differenceSide2 = new Vector3(0.55f, -0.15f, -0.10f);
-            Vector3 differenceSide3 = new Vector3(0.75f, -0.15f, -0.10f);
+            Vector3 differenceSide3 = new Vector3(0.75f, -0.12f, -0.10f);
 
             movementSideTank = new KinectMovement(Game,
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide1, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide2, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
-            movementSideTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
-            movementSideTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            movementSideTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementSideTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementSideTank.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementSideTank);
 
@@ -697,18 +523,18 @@ namespace WheelChairCollaborativeGame
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
-            movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
-            movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementFrontSoldier.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementFrontSoldier);
 
-            movementSideSoldier = new KinectMovement(Game, 
+            movementSideSoldier = new KinectMovement(Game,
                 new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide1 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide2 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
                 new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide3 * new Vector3(-1, 1, 1), 0.25f, 0.02f, Game.GraphicsDevice)
                 );
-            movementSideSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementOne_MovementCompleted);
-            movementSideSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementOne_MovementQuit);
+            movementSideSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementSideSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementSideSoldier.MaxActiveTimeMiliseconds = 1000;
             Game.Components.Add(movementSideSoldier);
 
@@ -720,35 +546,26 @@ namespace WheelChairCollaborativeGame
             movementDouble.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementDouble_MovementCompleted);
             Game.Components.Add(movementDouble);
 
-            GraphGameObject graph = new GraphGameObject(controllerOneOnOff, Game, "graph");
-            Game.Components.Add(graph);
-            graph.PressedY = 400;
-            graph.NotPressedY = 420;
+            graph1 = new GraphGameObject(controllerOneOnOff, Game, "graph1");
+            graph1.PressedY = 400;
+            graph1.NotPressedY = 420;
+            Game.Components.Add(graph1);
 
-            GraphGameObject graph2 = new GraphGameObject(controllerTwoOnOff, Game, "graphPlayer2");
-            Game.Components.Add(graph2);
+            graph2 = new GraphGameObject(controllerTwoOnOff, Game, "graph2");
             graph2.PressedY = 300;
             graph2.NotPressedY = 320;
+            Game.Components.Add(graph2);
 
-            GraphGameObject graphSinc = new GraphGameObject(controllerBothOnOff, Game, "graphSinc");
-            Game.Components.Add(graphSinc);
-            graphSinc.PressedY = 200;
-            graphSinc.NotPressedY = 220;
+            graphSync = new GraphGameObject(controllerBothOnOff, Game, "graphSync");
+            graphSync.PressedY = 200;
+            graphSync.NotPressedY = 220;
+            Game.Components.Add(graphSync);
 
             base.LoadContent();
         }
 
-        public void wheelchairDetector_SkeletonFrameReady()
+        public void determineSkeletons()
         {
-
-
-            /*// Sometimes the frame can be null
-            if (frame == null)
-                return;
-            kinectFrameChange = true;
-            // Get skeletons
-            frame.CopySkeletonDataTo(skeletons);*/
-
             // Find and match skeletons
             IEnumerable<Skeleton> trackedSkeletons = skeletons.Where(x => x.TrackingState == SkeletonTrackingState.Tracked);
             if (trackedSkeletons.Count() == 0)
@@ -832,135 +649,6 @@ namespace WheelChairCollaborativeGame
             }
 
 
-
-            /*// Make sure skeleton has valid info for listening
-            if (skeleton == null || skeleton.Mode != Mode.Seated)
-                return;*/
-
-            if (skeletonPlayerTank == null)
-                return;
-
-            /*// Position
-            {
-                // Get distance from Kinect
-                distance = skeletonPlayerTank.SeatedInfo.Features.Position.Length();
-
-                // Normalize distance between 0 and 1
-                const float minDistance = 1;
-                const float maxDistance = 2.5f;
-                distance = (distance - minDistance) / (maxDistance - minDistance);
-
-                // Invert distance
-                //distance = 1 - distance;
-
-                // Clamp values
-                distance = MathHelper.Clamp(distance, 0, 1);
-
-                // Calculate duty cycle
-                //int newDuty = (int)(Math.Abs(distance) * forward.Period);
-                //if (newDuty < 0)
-                //    newDuty = 0;
-                //if (newDuty > forward.Period)
-                //    newDuty = forward.Period;
-
-                // Set duty cycle
-                TankGameObject playerTank = (TankGameObject)Game.Components.FirstOrDefault(x => ((GameObject)x).Tag == "playerTank");
-                //forward.Duty = newDuty;
-                Console.WriteLine("Distance: " + distance);
-                if (distance < 0.5f)
-                {
-                    playerTank.setAttackStance();
-                }
-                else
-                {
-                    playerTank.setDefenceStance();
-                }
-
-            }
-
-
-            // Angle
-            {
-
-                // Get angle
-                angle = skeletonPlayerTank.SeatedInfo.Features.Angle;
-
-                // Normalize angle between -1 and 1
-                const float maxValue = 0.008f;
-                angle /= maxValue;
-
-                // Clamp values
-                angle = MathHelper.Clamp(angle, -1, 1);
-
-                // Use a quadratic relationship
-                angle = Math.Sign(angle) * angle * angle;
-
-                // Set dead zone
-                if (Math.Abs(angle) < 0.05)
-                    angle = 0;
-
-                // Calculate duty cycle
-                int newDuty = (int)angle * pwmTurningPeriod;
-                if (newDuty < 0)
-                    newDuty = -pwmTurningPeriod;
-                if (newDuty > pwmTurningPeriod)
-                    newDuty = pwmTurningPeriod;
-
-                // Set duty cycle
-                //turning.Duty = newDuty;
-
-                //labelKey.Text = newDuty.ToString();
-                Console.WriteLine("Turn: " + newDuty.ToString());
-
-                TankGameObject playerTank = (TankGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameObject) && ((GameObject)x).Tag == "playerTank");
-
-                if (newDuty < 0)
-                {
-                    playerTank.slideToRight();
-                }
-
-                if (newDuty > 0)
-                {
-                    playerTank.slideToLeft();
-
-                }
-            }*/
-
         }
-
-
-
-
-        void kinectSensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
-        {
-            using (ColorImageFrame colorImageFrame = e.OpenColorImageFrame())
-            {
-                if (colorImageFrame != null)
-                {
-
-                    byte[] pixelsFromFrame = new byte[colorImageFrame.PixelDataLength];
-
-                    colorImageFrame.CopyPixelDataTo(pixelsFromFrame);
-
-                    Color[] color = new Color[colorImageFrame.Height * colorImageFrame.Width];
-                    kinectRGBVideo = new Texture2D(Game.GraphicsDevice, colorImageFrame.Width, colorImageFrame.Height);
-
-                    // Go through each pixel and set the bytes correctly
-                    // Remember, each pixel got a Rad, Green and Blue
-                    int index = 0;
-                    for (int y = 0; y < colorImageFrame.Height; y++)
-                    {
-                        for (int x = 0; x < colorImageFrame.Width; x++, index += 4)
-                        {
-                            color[y * colorImageFrame.Width + x] = new Color(pixelsFromFrame[index + 2], pixelsFromFrame[index + 1], pixelsFromFrame[index + 0]);
-                        }
-                    }
-
-                    // Set pixeldata from the ColorImageFrame to a Texture2D
-                    kinectRGBVideo.SetData(color);
-                }
-            }
-        }
-
     }
 }

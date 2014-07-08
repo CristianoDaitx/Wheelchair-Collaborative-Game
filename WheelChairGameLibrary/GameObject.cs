@@ -1,18 +1,14 @@
 ﻿#region Using Statements
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using WheelChairGameLibrary.Sprites;
-using WheelChairGameLibrary.Helpers;
-
-
 #endregion
 
-namespace WheelChairGameLibrary.GameObjects
+namespace WheelChairGameLibrary
 {
     public abstract class GameObject : DrawableGameComponent
     {
@@ -51,6 +47,71 @@ namespace WheelChairGameLibrary.GameObjects
         }
 
         /// <summary>
+        /// Hides original Game to return a EnhancedGame class
+        /// </summary>
+        public new GameEnhanced Game
+        {
+            get { return (GameEnhanced)base.Game; }
+        }
+
+
+        private Vector2 velocity;
+        public Vector2 Velocity
+        {
+            set { velocity = value; }
+            get { return velocity; }
+        }
+
+        private Vector2 acceleration;
+        public Vector2 Acceleration
+        {
+            set { acceleration = value; }
+            get { return acceleration; }
+        }
+
+
+        // xna example stuff
+
+        /// <summary>
+        /// Gets or sets the position of the object.
+        /// Can only be set in instantiation
+        /// </summary>
+        private Vector2 position;
+        public Vector2 Position
+        {
+            get { return position; }
+        }
+
+
+
+        /// <summary>
+        /// Gets or sets the size of the object.
+        /// </summary>
+        public Vector2 Size { get; set; }
+
+        /// <summary>
+        /// Gets the KinectChooser from the services.
+        /// </summary>
+        public KinectChooser Chooser
+        {
+            get
+            {
+                return (KinectChooser)this.Game.Services.GetService(typeof(KinectChooser));
+            }
+        }
+
+        /// <summary>
+        /// Gets the SpriteBatch from the services.
+        /// </summary>
+        public SpriteBatch SharedSpriteBatch
+        {
+            get
+            {
+                return (SpriteBatch)this.Game.Services.GetService(typeof(SpriteBatch));
+            }
+        }
+
+        /// <summary>
         /// Colliders must be instantiated inside constructor
         /// Contend must be lodade inside load content (if added before the call of Game.Initialize), otherwise, check if content is loaded (as xnaBasics example)
         /// </summary>
@@ -60,14 +121,12 @@ namespace WheelChairGameLibrary.GameObjects
             :base(game)
         {
             position = new Vector2();
-            //this.gameObjectManager = gameObjectManager;
             this.tag = tag;
         }
 
         public GameObject(Vector2 position, GameEnhanced game, String tag)
             : base(game)
         {
-            //this.gameObjectManager = gameObjectManager;
             this.position = position;
             this.tag = tag;
         }
@@ -128,6 +187,7 @@ namespace WheelChairGameLibrary.GameObjects
 
         public override void Draw(GameTime gameTime)
         {
+            //if there is a sprite, draw it
             if (sprite != null)
                 sprite.Draw(SharedSpriteBatch, gameTime);
             base.Draw(gameTime);
@@ -157,66 +217,7 @@ namespace WheelChairGameLibrary.GameObjects
 
 
 
-        public new GameEnhanced Game
-        {
-            get { return (GameEnhanced)base.Game; }
-        }
-
-
-        private Vector2 velocity;
-        public Vector2 Velocity
-        {
-            set { velocity = value; }
-            get { return velocity; }
-        }
-
-        private Vector2 acceleration;
-        public Vector2 Acceleration
-        {
-            set { acceleration = value; }
-            get { return acceleration; }
-        }
-
-
-        // xna example stuff
-
-        /// <summary>
-        /// Gets or sets the position of the object.
-        /// </summary>
-        private Vector2 position;
-        public Vector2 Position
-        {
-            get { return position; }
-        }
-
-
-
-        /// <summary>
-        /// Gets or sets the size of the object.
-        /// </summary>
-        public Vector2 Size { get; set; }
-
-        /// <summary>
-        /// Gets the KinectChooser from the services.
-        /// </summary>
-        public KinectChooser Chooser
-        {
-            get
-            {
-                return (KinectChooser)this.Game.Services.GetService(typeof(KinectChooser));
-            }
-        }
-
-        /// <summary>
-        /// Gets the SpriteBatch from the services.
-        /// </summary>
-        public SpriteBatch SharedSpriteBatch
-        {
-            get
-            {
-                return (SpriteBatch)this.Game.Services.GetService(typeof(SpriteBatch));
-            }
-        }
+        
 
         
 

@@ -9,9 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
-using WheelChairGameLibrary.Sprites;
+
 
 using KinectForWheelchair;
 using KinectForWheelchair.Listeners;
@@ -120,6 +118,7 @@ namespace WheelChairCollaborativeGame
                     state = MovementState.Wating;
                     MovementQuit(this, args);
                     invalidatedMovement = true;
+                    lastActiveTriggerIndex = -1;
                     return;
                 }
             }
@@ -167,7 +166,7 @@ namespace WheelChairCollaborativeGame
             }
 
             //check if it is a finnished movement
-            if (lastActiveTriggerIndex == kinectTriggers.Count() - 1 && !invalidatedMovement)
+            if (lastActiveTriggerIndex == kinectTriggers.Count() - 1 && !invalidatedMovement && !checkStartEndActive(triggerStatus))
             {
                 //fire event once when the movement is finished
 
@@ -196,6 +195,16 @@ namespace WheelChairCollaborativeGame
                 else
                     state = MovementState.Wating;
             }
+        }
+
+        /// <summary>
+        /// Check if first and last triggers is active at the same time. This should be off for an effective movement
+        /// </summary>
+        /// <param name="triggerStatus">The list of trigger status</param>
+        /// <returns></returns>
+        private bool checkStartEndActive(bool[] triggerStatus)
+        {
+            return (triggerStatus[0] && triggerStatus[triggerStatus.Count() - 1]);
         }
 
 

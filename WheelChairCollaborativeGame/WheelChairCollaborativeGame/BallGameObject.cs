@@ -9,8 +9,7 @@ using Microsoft.Xna.Framework.Audio;
 
 using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.GameObjects;
+
 using WheelChairGameLibrary.Sprites;
 
 #endregion

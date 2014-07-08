@@ -94,15 +94,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameEnhanced.cs" />
-    <Compile Include="GameObjects\Colliders\Collider.cs" />
-    <Compile Include="GameObjects\Colliders\CollisionManager.cs" />
-    <Compile Include="GameObjects\Manager\GameObject.cs" />
-    <Compile Include="GameObjects\Manager\GameObjectManager.cs" />
-    <Compile Include="GameObjects\Sprites\Sprite.cs" />
-    <Compile Include="GameObjects\Sprites\SpriteAnimation.cs" />
-    <Compile Include="GameObjects\Sprites\SpriteAnimationData.cs" />
+    <Compile Include="Collider.cs" />
+    <Compile Include="CollisionManager.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="Sprites\Sprite.cs" />
+    <Compile Include="Sprites\SpriteAnimation.cs" />
+    <Compile Include="Sprites\SpriteAnimationData.cs" />
     <Compile Include="Helpers\InputState.cs" />
-    <Compile Include="Helpers\KinectChooser.cs" />
+    <Compile Include="KinectChooser.cs" />
     <Compile Include="Helpers\PlayerIndexEventArgs.cs" />
     <Compile Include="Helpers\PrimitiveDrawing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,8 +110,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceFile.resx</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Manager\GameScreen.cs" />
-    <Compile Include="Screens\Manager\ScreenManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ResourceFile.resx">
@@ -124,6 +121,7 @@
     <None Include="Resources\mainFont.xnb" />
     <None Include="Resources\whitePixel.xnb" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

@@ -1,26 +1,15 @@
 ﻿#region Using Statements
 using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using WheelChairGameLibrary.Screens;
-using WheelChairGameLibrary.Helpers;
 #endregion
 
 
-namespace WheelChairGameLibrary.GameObjects
+namespace WheelChairGameLibrary
 {
     public class CollisionManager : DrawableGameComponent
     {
-        /// <summary>
-        /// represent if the program is in the foreach loop during update, so no gameobjects can be added, removed at this time
-        /// </summary>
-        //private bool isInUpdateLoop;
-
-
         /// <summary>
         /// list of active colliders
         /// </summary>

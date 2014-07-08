@@ -14,7 +14,6 @@ namespace WheelChairGameLibrary
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    using WheelChairGameLibrary.GameObjects;
 
     /// <summary>
     /// This class will pick a kinect sensor if available.
@@ -40,16 +39,32 @@ namespace WheelChairGameLibrary
         /// The chooser background texture.
         /// </summary>
         private Texture2D chooserBackground;
-        
+
         /// <summary>
         /// The SpriteBatch used for rendering.
         /// </summary>
         private SpriteBatch spriteBatch;
-        
+
         /// <summary>
         /// The font for rendering the state text.
         /// </summary>
         private SpriteFont font;
+
+        /// <summary>
+        /// Check if sensor is able to be used
+        /// </summary>
+        public bool IsAvailable
+        {
+            get
+            {
+                if (null == Sensor ||
+                    false == Sensor.IsRunning ||
+                    KinectStatus.Connected != Sensor.Status)
+                    return false;
+                else
+                    return true;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the KinectChooser class.
@@ -134,7 +149,7 @@ namespace WheelChairGameLibrary
                     0);
 
                 // Determine the text
-                string txt = "Required";
+                string txt = "Kinect Required";
                 if (this.Sensor != null)
                 {
                     txt = this.statusMap[this.LastStatus];

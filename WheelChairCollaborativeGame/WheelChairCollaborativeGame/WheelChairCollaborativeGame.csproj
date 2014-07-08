@@ -140,7 +140,6 @@
     <Compile Include="KinectTriggers\KinectTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyGame.cs" />
-    <Compile Include="SplashScreen.cs" />
     <Compile Include="TankGameObject.cs" />
     <Compile Include="KinectInput.cs" />
   </ItemGroup>

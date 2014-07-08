@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-using WheelChairGameLibrary.Screens;
+
 using WheelChairGameLibrary;
 
 using Microsoft.Kinect;
@@ -49,8 +49,7 @@ namespace WheelChairCollaborativeGame
             
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.Y;
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.X;
-            
-            //TODO: add: this.graphics.PreparingDeviceSettings += this.GraphicsDevicePreparingDeviceSettings;
+
 
 
             GameComponent enemy = new EnemyGameObject(this, "asd");
@@ -91,8 +90,6 @@ namespace WheelChairCollaborativeGame
             
 
         }
-
-        //TODO: add GraphicsDevicePreparingDeviceSettings from XnaBasicsGame
 
 
 

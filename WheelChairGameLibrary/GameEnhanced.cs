@@ -1,20 +1,14 @@
-﻿using System;
+﻿#region Using Statements
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-
-using WheelChairGameLibrary.GameObjects;
-using WheelChairGameLibrary.Screens;
 using WheelChairGameLibrary.Helpers;
 
 using Microsoft.Kinect;
-
+#endregion
 
 
 
@@ -52,7 +46,7 @@ namespace WheelChairGameLibrary
         }
 
         /// <summary>
-        /// This is the SpriteBatch used for rendering the header/footer.
+        /// This is the SpriteBatch used for SharedSpriteBatch in GameObject.
         /// </summary>
         private SpriteBatch spriteBatch;
         protected SpriteBatch SpriteBatch
@@ -67,7 +61,6 @@ namespace WheelChairGameLibrary
         public Texture2D WhitePixel
         {
             get { return whitePixel; }
-            private set { whitePixel = value; }
         }
 
         private SpriteFont defaultFont;
@@ -120,31 +113,25 @@ namespace WheelChairGameLibrary
             this.Components.ComponentAdded += new EventHandler<GameComponentCollectionEventArgs>(Components_ComponentAdded);
             this.Components.ComponentRemoved += new EventHandler<GameComponentCollectionEventArgs>(Components_ComponentRemoved);
             this.Components.Add(collisionManager);            
-
-
-            
-            
-            
-
         }
 
         
 
         void Components_ComponentAdded(object sender, GameComponentCollectionEventArgs e)
         {
+            //add collider of the object to the collider list
             if (typeof(GameObject).IsAssignableFrom(e.GameComponent.GetType()))
             {
                 GameObject gameObject = (GameObject)e.GameComponent;
                 if (gameObject.Collider != null)
                     this.CollisionManager.addCollider(gameObject.Collider);
 
-            }            
-
-
+            }
         }
 
         void Components_ComponentRemoved(object sender, GameComponentCollectionEventArgs e)
         {
+            //removes the collider from the collider list
             if (typeof(GameObject).IsAssignableFrom(e.GameComponent.GetType()))
             {
                 GameObject gameObject = (GameObject)e.GameComponent;
@@ -161,36 +148,20 @@ namespace WheelChairGameLibrary
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), this.spriteBatch);
 
-            this.WhitePixel = LibContent.Load<Texture2D>("whitePixel");
-            this.defaultFont = LibContent.Load<SpriteFont>("mainFont");
-
-            
+            this.whitePixel = LibContent.Load<Texture2D>("whitePixel");
+            this.defaultFont = LibContent.Load<SpriteFont>("mainFont");            
 
             base.LoadContent();
         }
 
-
-
-
-        /// <summary>
-        /// Add items to Components
-        /// </summary>
         protected override void Initialize()
         {
             base.Initialize();
         }
 
-        /// <summary>
-        /// This method renders the current state.
-        /// </summary>
-        /// <param name="gameTime">The elapsed game time.</param>
         protected override void Draw(GameTime gameTime)
         {
-            // Clear the screen
-            base.Draw(gameTime);
-            //GraphicsDevice.Clear(Color.White);
-
-            
+            base.Draw(gameTime);   
         }
 
         //TODO: add GraphicsDevicePreparingDeviceSettings from XnaBasicsGame
