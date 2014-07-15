@@ -255,6 +255,17 @@ namespace WheelChairCollaborativeGame
 
                     triggerDouble.TrackingSkeletonOne = skeletonPlayerTank;
                     triggerDouble.TrackingSkeletonTwo = skeletonPlayerSoldier;
+
+                    //test for sides of players:
+                    if (skeletonPlayerTank != null && skeletonPlayerSoldier != null)
+                        if ((KinectTrigger.skeletonPointToVector3(skeletonPlayerTank.Joints[JointType.Head].Position) - KinectTrigger.skeletonPointToVector3(skeletonPlayerSoldier.Joints[JointType.Head].Position)).X > 0)
+                        {
+                            //switched positions
+                            Skeleton switchSkeleton = triggerDouble.TrackingSkeletonOne;
+                            triggerDouble.TrackingSkeletonOne = triggerDouble.TrackingSkeletonTwo;
+                            triggerDouble.TrackingSkeletonTwo = switchSkeleton;
+                        }
+
                     break;
             }
 
@@ -377,7 +388,7 @@ namespace WheelChairCollaborativeGame
                         "Input method: " + controlSelect.ToString(), INPUT_METHOD_POSITION);
 
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                "Player One: " + (skeletonPlayerTank == null ? "Not Tracked": "Tracked" ), PLAYER1_TRACKING_POSITION);
+                "Player One: " + (skeletonPlayerTank == null ? "Not Tracked" : "Tracked"), PLAYER1_TRACKING_POSITION);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                 "Player Two: " + (skeletonPlayerSoldier == null ? "Not Tracked" : "Tracked"), PLAYER2_TRACKING_POSITION);
 
