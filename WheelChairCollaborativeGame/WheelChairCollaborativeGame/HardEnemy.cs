@@ -23,13 +23,13 @@ namespace WheelChairCollaborativeGame
     class HardEnemy : EnemyGameObject
     {
         public HardEnemy(GameEnhanced game, String tag)
-            : base(new Vector2(Config.resolution.X / 2, 0), game, tag)
+            : base(new Vector2(Config.resolution.X / 2 - 50, 0), game, tag)
         {
             this.maxhits = 3;
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("Space_InvaderHard"),
                      0.5f);
 
-            Velocity = new Vector2(0.7f, 0);
+            Velocity = new Vector2(0, 0.7f);
 
 
 

@@ -23,7 +23,7 @@ namespace WheelChairCollaborativeGame
     class WeakEnemy2 : EnemyGameObject
     {
         public WeakEnemy2(GameEnhanced game, String tag)
-            : base(new Vector2(480, 0), game, tag)
+            : base(new Vector2(Config.resolution.X - 50, 0), game, tag)
         {
             this.maxhits = 1;
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("Space_InvaderWeak"),

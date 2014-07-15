@@ -41,7 +41,9 @@ namespace WheelChairCollaborativeGame
     {
 
         private EnemyGameObject enemy;
-
+        public bool gameOver = false;
+        double time;
+        public TimeSpan timeSpan = TimeSpan.FromMilliseconds(120000);
       
 
         public MyGame()
@@ -90,9 +92,116 @@ namespace WheelChairCollaborativeGame
             
 
         }
+        public int X = 0;
+        protected override void Update(GameTime gameTime)
+        {
+            timeSpan -= gameTime.ElapsedGameTime;
+            Console.WriteLine("timer: " + timeSpan);
+           
+            if (timeSpan < TimeSpan.Zero && !gameOver)
+            {
+                
+                gameOver = true;
+             
+
+                // Change state
+
+            }
+            
+
+            base.Update(gameTime);
+            
+            time += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+
+            //PlayerIndex newPlayerIndex;
+            /*if (input.IsMenuSelect(null, out newPlayerIndex)){
+                ExitScreen();
+                //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
+
+                
+            }
+            */
+
+
+           if (time > 120000)
+            {
+                X = -1;
+                Console.WriteLine("Game Over!");
+              
+            }
+
+            if (X == 0)
+            {
+                //ExitScreen();
+                //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
+                // GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
+
+                this.Components.Add(new WeakEnemy(this, "weakEnemy"));
+
+                X++;
+
+
+            }
+
+            if (X < 300)
+            {
+
+                X++;
+            }
+
+            if (X == 300)
+            {
+                this.Components.Add(new WeakEnemy2(this, "weakEnemy2"));
+                X = 350;
+            }
+
+            if (X > 340 && X < 800)
+            {
+
+                X++;
+            }
+            if (X == 800)
+            {
+                
+                this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
+                X = 850;
+            }
+            if (X > 840 && X < 1500)
+            {
+
+                X++;
+            }
+
+            if (X == 1500)
+            {
+                
+                this.Components.Add(new HardEnemy(this, "hardEnemy"));
+                X = 3500;
+            }
+            if (X > 1540)
+            {
+                X--;
+
+            }
+            if (X == 1540)
+            {
+                X = 0;
+            }
+        
 
 
 
 
+
+
+
+
+
+        }
     }
 }
+
+
+
+

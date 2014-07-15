@@ -58,7 +58,7 @@ namespace WheelChairCollaborativeGame
 
             //Sprite.position.Y += 0.01f;
 
-            if (this.Position.Y > 300)
+            if (this.Position.Y > Config.resolution.Y - 150)
             {
                 Velocity = new Vector2(2, 0); 
             }
@@ -66,7 +66,7 @@ namespace WheelChairCollaborativeGame
             //Collider.BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
 
             //delete if exit screen
-            if (Position.X > Config.resolution.X - 50)
+            if (Position.X > Config.resolution.X - 150)
                 this.ToBeRemoved = true;
 
             if (Position.Y >= Config.resolution.Y )
