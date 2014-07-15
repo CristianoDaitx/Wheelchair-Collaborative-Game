@@ -151,7 +151,7 @@ namespace WheelChairCollaborativeGame
                 // GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
 
                 this.Components.Add(new WeakEnemy(this, "weakEnemy"));
-
+                this.Components.Add(new WierdEnemy(this, "wierdEnemy"));
                 X++;
 
 

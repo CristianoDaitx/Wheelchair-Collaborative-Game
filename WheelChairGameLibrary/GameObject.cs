@@ -152,7 +152,7 @@ namespace WheelChairGameLibrary
                 position -= velocity;
 
 
-            if (!isFlipped)
+            /*if (!isFlipped)
             {
                 if (velocity.X > 0 && acceleration.X > 0)
                 {
@@ -177,7 +177,7 @@ namespace WheelChairGameLibrary
                     acceleration.Y = 0;
                     velocity.Y = 0;
                 }
-            }
+            }*/
 
 
             base.Update(gameTime);
