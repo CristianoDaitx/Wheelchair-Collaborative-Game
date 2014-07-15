@@ -56,15 +56,43 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Space_InvaderWeak.bmp">
-      <Name>Space_InvaderWeak</Name>
+    <Compile Include="Player.png">
+      <Name>Player</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Space_InvaderHard.bmp">
-      <Name>Space_InvaderHard</Name>
+    <Compile Include="HardEnemyA.png">
+      <Name>HardEnemyA</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="WeakEnemy.png">
+      <Name>WeakEnemy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AvarageEnemy.png">
+      <Name>AvarageEnemy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PlayerA.png">
+      <Name>PlayerA</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="fluffyball.png">
+      <Name>fluffyball</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
