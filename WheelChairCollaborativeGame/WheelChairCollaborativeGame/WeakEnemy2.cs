@@ -23,12 +23,23 @@ namespace WheelChairCollaborativeGame
     class WeakEnemy2 : EnemyGameObject
     {
         public WeakEnemy2(GameEnhanced game, String tag)
-            : base(new Vector2(Config.resolution.X - 50, 0), game, tag)
+            : base(new Vector2(Config.resolution.X - 150, 0), game, tag)
         {
             this.maxhits = 1;
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("Space_InvaderWeak"),
-                      0.5f);
+            //120, 138
+            
+            
             this.Velocity = new Vector2(-0.95f, 0.7f);
+
+
+        }
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("WeakEnemy"), 0.5f);
+
+
 
 
         }

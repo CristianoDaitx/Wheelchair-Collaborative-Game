@@ -58,7 +58,7 @@ namespace WheelChairCollaborativeGame
 
             //Sprite.position.Y += 0.01f;
 
-            if (this.Position.Y > Config.resolution.Y - 150)
+            if (this.Position.Y > Config.resolution.Y - 250)
             {
                 Velocity = new Vector2(2, 0); 
             }

@@ -26,13 +26,19 @@ namespace WheelChairCollaborativeGame
             : base(new Vector2(Config.resolution.X / 2 - 50, 0), game, tag)
         {
             this.maxhits = 3;
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("Space_InvaderHard"),
-                     0.5f);
+            
 
             Velocity = new Vector2(0, 0.7f);
 
 
 
+        }
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("HardEnemyA"),
+                     0.5f);
         }
         public override void Update(GameTime gameTime)
         {

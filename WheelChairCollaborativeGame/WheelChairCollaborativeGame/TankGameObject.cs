@@ -41,7 +41,7 @@ namespace WheelChairCollaborativeGame
 
         protected override void LoadContent()
         {
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Player"),
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("PlayerA"),
                       1);
             base.LoadContent();
         }

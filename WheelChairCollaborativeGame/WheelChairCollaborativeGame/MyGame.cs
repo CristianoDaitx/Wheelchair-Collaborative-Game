@@ -38,7 +38,7 @@ namespace WheelChairCollaborativeGame
     public class MyGame : GameEnhanced
     {
 
-        private EnemyGameObject enemy;
+        
         public bool gameOver = false;
         double time;
         public TimeSpan timeSpan = TimeSpan.FromMilliseconds(120000);
@@ -55,6 +55,8 @@ namespace WheelChairCollaborativeGame
             GameComponent enemy = new EnemyGameObject(new Vector2(50,50), this, "asd");
             this.Components.Add(enemy);
 
+            
+
             TankGameObject playerTank = new TankGameObject(this, "playerTank");
             this.Components.Add(playerTank);
 
@@ -64,6 +66,8 @@ namespace WheelChairCollaborativeGame
             KinectInput kinectInput = new KinectInput(this, "kinectInput");
             this.Components.Add(kinectInput);
 
+            Background background = new Background(this, 100);
+            this.Components.Add(background);
         }
 
        
@@ -84,7 +88,7 @@ namespace WheelChairCollaborativeGame
         {
             
             // Clear the screen
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
 
             
@@ -93,6 +97,9 @@ namespace WheelChairCollaborativeGame
         public int X = 0;
         protected override void Update(GameTime gameTime)
         {
+            
+            
+            
             timeSpan -= gameTime.ElapsedGameTime;
             Console.WriteLine("timer: " + timeSpan);
            
@@ -108,6 +115,14 @@ namespace WheelChairCollaborativeGame
             
 
             base.Update(gameTime);
+            InputState inputState = (InputState)Services.GetService(typeof(InputState));
+
+            PlayerIndex playerIndex;
+              if (inputState.IsKeyPressed(Keys.D, null, out playerIndex))
+            {
+                IsDebugMode = !IsDebugMode;
+            }
+
             
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -154,28 +169,13 @@ namespace WheelChairCollaborativeGame
                 X = 350;
             }
 
-<<<<<<< HEAD
+
             if (X > 340 && X < 800)
             {
-=======
-        protected override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-
-            InputState inputState = (InputState)Services.GetService(typeof(InputState));
-
-            PlayerIndex playerIndex;
-
-            if (inputState.IsKeyPressed(Keys.D, null, out playerIndex)){
-                IsDebugMode = !IsDebugMode;
+                     X++;
             }
 
-        }
-
->>>>>>> 285adc98c81caea4a8f110f847c964dbfd7c7411
-
-                X++;
-            }
+           
             if (X == 800)
             {
                 
@@ -214,8 +214,12 @@ namespace WheelChairCollaborativeGame
 
 
         }
+    
     }
+
 }
+
+
 
 
 
