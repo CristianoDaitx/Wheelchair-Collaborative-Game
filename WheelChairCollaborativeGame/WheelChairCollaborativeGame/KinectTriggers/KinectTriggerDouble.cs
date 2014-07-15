@@ -11,6 +11,62 @@ namespace WheelChairCollaborativeGame
 {
     class KinectTriggerDouble : KinectTrigger
     {
+        private double activationVelocity = 1.0f;
+        public double ActivationVelocity
+        {
+            get { return activationVelocity; }
+            set { activationVelocity = value; }
+        }
+        private static readonly int MAX_DATAS = 10;
+
+        private Queue<PositionTime> jointOneDatas = new Queue<PositionTime>(MAX_DATAS);
+        private Queue<PositionTime> jointTwoDatas = new Queue<PositionTime>(MAX_DATAS);
+        // Sum time between updates that have been called withoud a skeleton change
+        private double helperTime = 0;
+
+        /// <summary>
+        /// TODO: I think its measuerd as meters per second
+        /// </summary>
+        public double JointOneVelocity
+        {
+            get
+            {
+                double sumation = 0;
+                int x = 1;
+                while (x < jointOneDatas.Count)
+                {
+                    Vector3 distance = (jointOneDatas.ElementAt(x).Position - jointOneDatas.ElementAt(x - 1).Position);
+                    sumation += distance.Length() / jointOneDatas.ElementAt(x).Time;
+                    x++;
+                }
+
+                if (sumation == 0)
+                    return 0;
+                else
+                    return (sumation / x) * 1000.0f;
+            }
+        }
+
+        public double JointTwoVelocity
+        {
+            get
+            {
+                double sumation = 0;
+                int x = 1;
+                while (x < jointTwoDatas.Count)
+                {
+                    Vector3 distance = (jointTwoDatas.ElementAt(x).Position - jointTwoDatas.ElementAt(x - 1).Position);
+                    sumation += distance.Length() / jointTwoDatas.ElementAt(x).Time;
+                    x++;
+                }
+
+                if (sumation == 0)
+                    return 0;
+                else
+                    return (sumation / x) * 1000.0f;
+            }
+        }
+
 
         public Skeleton TrackingSkeletonOne
         {
@@ -27,7 +83,7 @@ namespace WheelChairCollaborativeGame
         private Skeleton trackingSkeletonTwo;
 
         private JointType baseJointOne;
-        private JointType triggerJointOne;        
+        private JointType triggerJointOne;
         private JointType baseJointTwo;
         private JointType triggerJointTwo;
 
@@ -48,11 +104,46 @@ namespace WheelChairCollaborativeGame
             return ((skeletonPointToVector3(TrackingSkeletonOne.Joints[baseJointOne]) + skeletonPointToVector3(TrackingSkeletonTwo.Joints[baseJointTwo])) / 2);
         }
 
-        public override sealed bool checkIsTriggered()
+        public override sealed bool checkIsTriggered(GameTime gameTime)
         {
+
+
             //TODO: should be autamatically used in the xna update method
             if (TrackingSkeletonOne == null || TrackingSkeletonTwo == null)
                 return false;
+
+            // adding data to velocity test
+            {
+                //testing only at one skeleton, because at this point, both skeletons have the same sizes and are not null
+                if (jointOneDatas.Count < 1)
+                {
+                    jointOneDatas.Enqueue(new PositionTime(KinectTrigger.skeletonPointToVector3(TrackingSkeletonOne.Joints[triggerJointOne].Position), gameTime.ElapsedGameTime.TotalMilliseconds));
+                    jointTwoDatas.Enqueue(new PositionTime(KinectTrigger.skeletonPointToVector3(TrackingSkeletonOne.Joints[triggerJointTwo].Position), gameTime.ElapsedGameTime.TotalMilliseconds));
+                }
+                //do not add if position is the same as before
+                if (jointOneDatas.Last().Position != KinectTrigger.skeletonPointToVector3(TrackingSkeletonOne.Joints[triggerJointOne].Position) &&
+                    jointTwoDatas.Last().Position != KinectTrigger.skeletonPointToVector3(TrackingSkeletonTwo.Joints[triggerJointTwo].Position))
+                {
+                    helperTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+                    //add data to calculate velocity
+                    jointOneDatas.Enqueue(new PositionTime(KinectTrigger.skeletonPointToVector3(TrackingSkeletonOne.Joints[triggerJointOne].Position), helperTime));
+                    jointTwoDatas.Enqueue(new PositionTime(KinectTrigger.skeletonPointToVector3(TrackingSkeletonTwo.Joints[triggerJointTwo].Position), helperTime));
+
+                    //limit size of data sample
+                    if (jointOneDatas.Count >= MAX_DATAS)
+                    {
+                        jointOneDatas.Dequeue();
+                        jointTwoDatas.Dequeue();
+                    }
+
+                    helperTime = 0;
+                }
+                else
+                {
+                    helperTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+                }
+            }
+
 
             float testingRadius = Radius;
             if (State == TriggerState.Inside)
@@ -62,7 +153,9 @@ namespace WheelChairCollaborativeGame
             BoundingSphere sphereJoint = new BoundingSphere(skeletonPointToVector3(TrackingSkeletonOne.Joints[triggerJointOne]), JOINT_DEFAULT_RADIUS);
             BoundingSphere sphereJointTwo = new BoundingSphere(skeletonPointToVector3(TrackingSkeletonTwo.Joints[triggerJointTwo]), JOINT_DEFAULT_RADIUS);
 
-            if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo))
+            //tests for velocity. If already inside, velocity isn't taken into account (as result of the OR)
+            if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo)
+                && ((JointOneVelocity > 1f && JointTwoVelocity > 1f) || State == TriggerState.Inside))
             {
                 State = TriggerState.Inside;
                 return true;
@@ -74,5 +167,17 @@ namespace WheelChairCollaborativeGame
             }
         }
 
+    }
+
+    class PositionTime
+    {
+        public Vector3 Position { get; set; }
+        public double Time { get; set; }
+
+        public PositionTime(Vector3 position, double time)
+        {
+            this.Position = position;
+            this.Time = time;
+        }
     }
 }

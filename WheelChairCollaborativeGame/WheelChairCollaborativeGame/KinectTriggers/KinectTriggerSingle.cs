@@ -66,7 +66,7 @@ namespace WheelChairCollaborativeGame
         /// Check if the triggerJoint is inside the trigger zone. 
         /// </summary>
         /// <returns>True if triggerJoint is intersecting trigger zone, false otherwise.</returns>
-        public override bool checkIsTriggered()
+        public override bool checkIsTriggered(GameTime gameTime)
         {
             //TODO: should be autamatically used in the xna update method
             if (trackingSkeleton == null)

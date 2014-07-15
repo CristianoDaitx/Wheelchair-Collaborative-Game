@@ -59,6 +59,12 @@ namespace WheelChairCollaborativeGame
         public int MaxActiveTimeMiliseconds {get; set;}
         private double time = 0;
 
+        private RasterizerState wireFrameState = new RasterizerState()
+            {
+                FillMode = FillMode.WireFrame,
+                CullMode = CullMode.None,
+            };
+
         /// <summary>
         /// 
         /// </summary>
@@ -93,12 +99,20 @@ namespace WheelChairCollaborativeGame
         /// 
         public override void Draw(GameTime gameTime)
         {
+            base.Draw(gameTime);
             if (!((GameEnhanced)Game).IsDebugMode)
                 return;
 
-            base.Draw(gameTime);
+
+            RasterizerState previousRasterizeState = Game.GraphicsDevice.RasterizerState;
+            Game.GraphicsDevice.RasterizerState = wireFrameState;
+
+                    
             foreach (KinectTrigger trigger in kinectTriggers)
                 trigger.draw();
+
+            Game.GraphicsDevice.RasterizerState = previousRasterizeState;
+
         }
 
         /// <summary>
@@ -131,7 +145,7 @@ namespace WheelChairCollaborativeGame
             // create and populate the status of the triggers
             bool[] triggerStatus = new bool[kinectTriggers.Count()];
             for (int x = 0; x < kinectTriggers.Count(); x++)
-                triggerStatus[x] = kinectTriggers[x].checkIsTriggered();
+                triggerStatus[x] = kinectTriggers[x].checkIsTriggered(gameTime);
 
 
 
@@ -208,6 +222,10 @@ namespace WheelChairCollaborativeGame
         /// <returns></returns>
         private bool checkStartEndActive(bool[] triggerStatus)
         {
+            // ignore if triggers size is one
+            if (triggerStatus.Count() == 1)            
+                return false;
+            
             return (triggerStatus[0] && triggerStatus[triggerStatus.Count() - 1]);
         }
 

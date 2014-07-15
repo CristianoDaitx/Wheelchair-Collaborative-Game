@@ -381,6 +381,14 @@ namespace WheelChairCollaborativeGame
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                 "Player Two: " + (skeletonPlayerSoldier == null ? "Not Tracked" : "Tracked"), PLAYER2_TRACKING_POSITION);
 
+            if (controlSelect == ControlSelect.Side && Game.IsDebugMode)
+            {
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                    "Joint One Velocity (m/s): " + triggerDouble.JointOneVelocity, new Vector2(30, 200));
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                    "Joint Two Velocity (m/s): " + triggerDouble.JointTwoVelocity, new Vector2(30, 230));
+            }
+
             if (Game.IsDebugMode)
             {
                 if (isWireframe)

@@ -72,7 +72,7 @@ namespace WheelChairCollaborativeGame
         /// Should return true if the trigger is triggered
         /// </summary>
         /// <returns>the trigger position or a zero trigger if no position is currently available</returns>
-        public abstract bool checkIsTriggered();
+        public abstract bool checkIsTriggered(GameTime gameTime);
 
 
         /// <summary>
