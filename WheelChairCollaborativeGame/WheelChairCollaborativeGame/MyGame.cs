@@ -141,7 +141,6 @@ namespace WheelChairCollaborativeGame
             {
                 X = -1;
                 Console.WriteLine("Game Over!");
-              
             }
 
             if (X == 0)
@@ -153,13 +152,10 @@ namespace WheelChairCollaborativeGame
                 this.Components.Add(new WeakEnemy(this, "weakEnemy"));
 
                 X++;
-
-
             }
 
             if (X < 300)
             {
-
                 X++;
             }
 
@@ -169,7 +165,6 @@ namespace WheelChairCollaborativeGame
                 X = 350;
             }
 
-
             if (X > 340 && X < 800)
             {
                      X++;
@@ -177,42 +172,29 @@ namespace WheelChairCollaborativeGame
 
            
             if (X == 800)
-            {
-                
+            {   
                 this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
                 X = 850;
             }
             if (X > 840 && X < 1500)
             {
-
                 X++;
             }
 
             if (X == 1500)
-            {
-                
+            {   
                 this.Components.Add(new HardEnemy(this, "hardEnemy"));
                 X = 3500;
             }
             if (X > 1540)
             {
                 X--;
-
             }
             if (X == 1540)
             {
                 X = 0;
             }
         
-
-
-
-
-
-
-
-
-
         }
     
     }

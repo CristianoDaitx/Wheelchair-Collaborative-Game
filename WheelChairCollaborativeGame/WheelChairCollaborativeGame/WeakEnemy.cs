@@ -36,9 +36,6 @@ namespace WheelChairCollaborativeGame
 
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("WeakEnemy"), 0.5f);
 
-
-
-
         }
     }
 }

@@ -61,7 +61,12 @@ namespace WheelChairCollaborativeGame
 
             if (this.Position.Y > Config.resolution.Y - 250)
             {
-                Velocity = new Vector2(2, 0); 
+                if (this.Position.X > 600)
+                {
+                    Velocity = new Vector2(2, 0);
+                }
+                else
+                    Velocity = new Vector2(-2, 0);
             }
 
             //Collider.BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Collider.BoundingBox.Width, Collider.BoundingBox.Height);

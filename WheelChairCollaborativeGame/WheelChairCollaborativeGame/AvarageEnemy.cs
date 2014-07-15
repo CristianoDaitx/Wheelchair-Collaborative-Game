@@ -23,7 +23,7 @@ namespace WheelChairCollaborativeGame
     class AvarageEnemy : EnemyGameObject
     {
         public AvarageEnemy(GameEnhanced game, String tag)
-            : base(new Vector2(400, 0), game, tag)
+            : base(new Vector2(600, 0), game, tag)
         {
             this.maxhits = 2;
           
@@ -45,61 +45,77 @@ namespace WheelChairCollaborativeGame
         {
             base.Update(gameTime);
 
-            
             if (Position.Y == 0.10*Config.resolution.Y)
             {
-                Velocity = new Vector2(Velocity.X, 0);
-                if (Position.X > 50)
-                {
-                    Velocity = new Vector2(-0.7f, Velocity.Y);
-                }
-                else 
-                {
-                    Velocity = new Vector2(0, 1);
-                }
+                Velocity = new Vector2(-1f, 0.5f);
             }
-            if (Position.Y == 0.20 * Config.resolution.Y)
-            {
-                Velocity = new Vector2(Velocity.X, 0);
-                if (Position.X < Config.resolution.X - 150)
-                {
-                    Velocity = new Vector2(0.7f, Velocity.Y);
-                }
-                else
-                {
-                    Velocity = new Vector2(0, 1);
-                }
-            }
-            if (Position.Y == 0.40 * Config.resolution.Y)
-            {
-                Velocity = new Vector2(Velocity.X, 0);
-                if (Position.X > 50)
-                {
-                    Velocity = new Vector2(-0.7f, Velocity.Y);
-                }
-                else
-                {
-                    Velocity = new Vector2(0, 1);
-                }
-            }
-            if (Position.Y == 0.5 *Config.resolution.Y)
-            {
-                Velocity = new Vector2(Velocity.X, 0);
-                if (Position.X < Config.resolution.X - 150)
-                {
-                    Velocity = new Vector2(0.7f, Velocity.Y);
-                }
-                else
-                {
-                    Velocity = new Vector2(0, 1);
-                }
-            }
+            if (Position.X < 500)
+                Velocity = new Vector2(1f, 0.5f);
+            if (Position.X > 700 && Position.Y < Config.resolution.Y -250)
+                Velocity = new Vector2(-1f, 0.5f);
+            //if (Position.X >= 700)
+            //{
+              //  Velocity = new Vector2(-0.7f, 0.5f);
+            //}
+                            //if (Position.X > 800)
+                //{
+                //    Velocity = new Vector2(Velocity.X, 0.3f);
+                //}
+            
 
 
-           
+
+
+            /* if (Position.Y == 0.20*Config.resolution.Y)
+             {
+                 Velocity = new Vector2(Velocity.X, 0.3f);
+                 if (Position.X > 50)
+                 {
+                     Velocity = new Vector2(-0.7f, Velocity.Y);
+                 }
+                 else 
+                 {
+                     Velocity = new Vector2(0, 1);
+                 }
+             }
+             if (Position.Y == 0.40 * Config.resolution.Y)
+             {
+                 Velocity = new Vector2(Velocity.X, 0.3f);
+                 if (Position.X < Config.resolution.X - 150)
+                 {
+                     Velocity = new Vector2(0.7f, Velocity.Y);
+                 }
+                 else
+                 {
+                     Velocity = new Vector2(0, 0.3f);
+                 }
+             }
+             if (Position.Y == 0.60 * Config.resolution.Y)
+             {
+                 Velocity = new Vector2(Velocity.X, 0.3f);
+                 if (Position.X > 50)
+                 {
+                     Velocity = new Vector2(-0.7f, Velocity.Y);
+                 }
+                 else
+                 {
+                     Velocity = new Vector2(0, 1);
+                 }
+             }
+             if (Position.Y == 0.8 *Config.resolution.Y)
+             {
+                 Velocity = new Vector2(Velocity.X, 0.3f);
+                 if (Position.X < Config.resolution.X - 150)
+                 {
+                     Velocity = new Vector2(0.7f, Velocity.Y);
+                 }
+                 else
+                 {
+                     Velocity = new Vector2(0, 1);
+                 }
+             
+             } 
+             */
         }
-        
-     
-
     }
 }

@@ -29,9 +29,7 @@ namespace WheelChairCollaborativeGame
             
 
             Velocity = new Vector2(0, 0.7f);
-
-
-
+            
         }
         protected override void LoadContent()
         {
