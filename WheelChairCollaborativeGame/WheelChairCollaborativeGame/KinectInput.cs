@@ -34,6 +34,9 @@ namespace WheelChairCollaborativeGame
         private readonly Vector2 ACTION_COUNT_POSITION = new Vector2(30, 20);
         private readonly Vector2 ACTION_TIME_POSITION = new Vector2(30, 50);
         private readonly Vector2 INPUT_METHOD_POSITION = new Vector2(30, 80);
+        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(30, 110);
+        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(30, 140);
+
 
         private enum ControlSelect
         {
@@ -372,6 +375,11 @@ namespace WheelChairCollaborativeGame
                         "Bullet Size:" + TimeSpan.FromMilliseconds(timePressedSync).Seconds.ToString(), ACTION_TIME_POSITION);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         "Input method: " + controlSelect.ToString(), INPUT_METHOD_POSITION);
+
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                "Player One: " + (skeletonPlayerTank == null ? "Not Tracked": "Tracked" ), PLAYER1_TRACKING_POSITION);
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                "Player Two: " + (skeletonPlayerSoldier == null ? "Not Tracked" : "Tracked"), PLAYER2_TRACKING_POSITION);
 
             if (Game.IsDebugMode)
             {
