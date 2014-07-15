@@ -78,6 +78,14 @@ namespace WheelChairGameLibrary
         private readonly ContentManager LibContent;
 
 
+        private bool isDebugMode = true;
+        public bool IsDebugMode
+        {
+            get { return isDebugMode; }
+            set { isDebugMode = value; }
+        }
+
+
         public GameEnhanced()
         {
             Content.RootDirectory = "Content";

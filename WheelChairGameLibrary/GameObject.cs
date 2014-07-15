@@ -12,8 +12,6 @@ namespace WheelChairGameLibrary
 {
     public abstract class GameObject : DrawableGameComponent
     {
-        private readonly bool DEBUG_GAME_OBJECT = true;
-
         public bool isFlipped { get; set; }            // has the sprite been flipped?
 
         //used to remove objects, it will be removed in next update

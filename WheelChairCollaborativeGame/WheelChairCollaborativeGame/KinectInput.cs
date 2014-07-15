@@ -23,6 +23,18 @@ namespace WheelChairCollaborativeGame
 {
     class KinectInput : GameObject
     {
+
+        // Position constants
+        private readonly int GRAPH1_PRESSED_Y = 700;
+        private readonly int GRAPH1_NOT_PRESSED_Y = 710;
+        private readonly int GRAPH2_PRESSED_Y = 685;
+        private readonly int GRAPH2_NOT_PRESSED_Y = 695;
+        private readonly int GRAPH3_PRESSED_Y = 670;
+        private readonly int GRAPH3_NOT_PRESSED_Y = 680;
+        private readonly Vector2 ACTION_COUNT_POSITION = new Vector2(30, 20);
+        private readonly Vector2 ACTION_TIME_POSITION = new Vector2(30, 50);
+        private readonly Vector2 INPUT_METHOD_POSITION = new Vector2(30, 80);
+
         private enum ControlSelect
         {
             Joystick = 0,
@@ -352,38 +364,33 @@ namespace WheelChairCollaborativeGame
                 DrawSkeleton(skeletonPlayerSoldier.Skeleton, Color.Red);
             }*/
 
+
+            //draw GUI text
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                         actionCountSync.ToString(), new Vector2(60, 40));
+                        "Actions made:" + actionCountSync.ToString(), ACTION_COUNT_POSITION);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        TimeSpan.FromMilliseconds(timePressedSync).Seconds.ToString() + "    Bullet Size", new Vector2(60, 60));
-
+                        "Bullet Size:" + TimeSpan.FromMilliseconds(timePressedSync).Seconds.ToString(), ACTION_TIME_POSITION);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "Input method : " + controlSelect.ToString(), new Vector2(400, 80));
+                        "Input method: " + controlSelect.ToString(), INPUT_METHOD_POSITION);
 
-            //GUImessage.MessageDraw(SharedSpriteBatch, Game.Game.Content,
-            //            movementDouble.State.ToString(), new Vector2(60, 80));
-
-
-            string message = ("Actions made");
-            Vector2 textPosition = new Vector2(100.0f, 35.0f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, message, textPosition);
-
-            if (isWireframe)
+            if (Game.IsDebugMode)
             {
-                Game.GraphicsDevice.RasterizerState = wireFrameState;
+                if (isWireframe)
+                {
+                    Game.GraphicsDevice.RasterizerState = wireFrameState;
+                }
+                else
+                {
+                    Game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                }
+
+
+                if (skeletonPlayerTank != null)
+                    DrawPrimitiveSkeleton(skeletonPlayerTank, currentPrimitive, Color.YellowGreen);
+
+                if (skeletonPlayerSoldier != null)
+                    DrawPrimitiveSkeleton(skeletonPlayerSoldier, currentPrimitive, Color.Honeydew);
             }
-            else
-            {
-                Game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-            }
-
-
-            if (skeletonPlayerTank != null)
-                DrawPrimitiveSkeleton(skeletonPlayerTank, currentPrimitive, Color.YellowGreen);
-
-            if (skeletonPlayerSoldier != null)
-                DrawPrimitiveSkeleton(skeletonPlayerSoldier, currentPrimitive, Color.Honeydew);
-
 
 
             SharedSpriteBatch.End();
@@ -547,18 +554,18 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(movementDouble);
 
             graph1 = new GraphGameObject(controllerOneOnOff, Game, "graph1");
-            graph1.PressedY = 400;
-            graph1.NotPressedY = 420;
+            graph1.PressedY = GRAPH1_PRESSED_Y;
+            graph1.NotPressedY = GRAPH1_NOT_PRESSED_Y;
             Game.Components.Add(graph1);
 
             graph2 = new GraphGameObject(controllerTwoOnOff, Game, "graph2");
-            graph2.PressedY = 300;
-            graph2.NotPressedY = 320;
+            graph2.PressedY = GRAPH2_PRESSED_Y;
+            graph2.NotPressedY = GRAPH2_NOT_PRESSED_Y;
             Game.Components.Add(graph2);
 
             graphSync = new GraphGameObject(controllerBothOnOff, Game, "graphSync");
-            graphSync.PressedY = 200;
-            graphSync.NotPressedY = 220;
+            graphSync.PressedY = GRAPH3_PRESSED_Y;
+            graphSync.NotPressedY = GRAPH3_NOT_PRESSED_Y;
             Game.Components.Add(graphSync);
 
             base.LoadContent();
