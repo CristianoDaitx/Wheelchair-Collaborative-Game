@@ -146,7 +146,14 @@ namespace WheelChairGameLibrary.Sprites
             }
             else
             {
-                Draw(spriteBatch, GameObject.Position);
+                //Draw(spriteBatch, GameObject.Position);
+                spriteBatch.Begin();
+                spriteBatch.Draw(texture,
+                    new Rectangle(
+                        (int)GameObject.Position.X,
+                        (int)GameObject.Position.Y, (int)(GameObject.Size.X), (int)(GameObject.Size.Y)),
+                        Color.White);
+                spriteBatch.End();
             }
         }
 

@@ -23,7 +23,8 @@ namespace WheelChairCollaborativeGame
             : base(startingPosition, game, tag)
         {
             //this.Position = startingPosition;
-            Collider = new Collider(this, 8, 8);
+            this.Size = new Vector2(8, 8);
+            Collider = new Collider(this);
 
             Velocity = new Vector2(0, -2);
         }
