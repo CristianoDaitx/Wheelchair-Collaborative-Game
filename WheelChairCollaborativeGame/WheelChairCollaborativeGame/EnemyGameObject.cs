@@ -27,6 +27,7 @@ namespace WheelChairCollaborativeGame
         private double time = 0;
 
         protected int maxhits = 1;
+        public int hits = 0;
 
         public EnemyGameObject(Vector2 position, GameEnhanced game, String tag)
             : base(position, game, tag)
@@ -75,14 +76,17 @@ namespace WheelChairCollaborativeGame
             }
         }
         // delete if destroyed
-        public int hits = 0;
+        
         public override void collisionEntered(Collider collider)
         {
-            if (collider.GameObject.GetType() == typeof (BallGameObject))
+            if (collider.GameObject.GetType() == typeof(BallGameObject))
+            {
                 if (hits == maxhits)
                 {
                     ToBeRemoved = true;
                 }
+                hits++;
+            }
         }
 
     }
