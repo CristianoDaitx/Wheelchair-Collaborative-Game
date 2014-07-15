@@ -10,24 +10,13 @@ namespace WheelChairGameLibrary
 {
     public class Collider
     {
-        private int width;
-        public int Width
-        {
-            get { return width; }
-        }
-
-        private int height;
-        public int Height
-        {
-            get { return height; }
-        }
 
         /// <summary>
         /// The bounding box of the collider, based in it's gameObject position
         /// </summary>
         public Rectangle BoundingBox
         {
-            get { return new Rectangle((int)gameObject.Position.X, (int)gameObject.Position.Y, width, height); }
+            get { return new Rectangle((int)gameObject.Position.X, (int)gameObject.Position.Y, (int)gameObject.Size.X, (int)gameObject.Size.Y); }
 
         }
 
@@ -40,11 +29,9 @@ namespace WheelChairGameLibrary
             get { return gameObject; }
         }
 
-        public Collider(GameObject gameObject, int width, int height)
+        public Collider(GameObject gameObject)
         {
             this.gameObject = gameObject;
-            this.width = width;
-            this.height = height;
         }
 
         public void Draw()

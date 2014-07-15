@@ -32,7 +32,7 @@ namespace WheelChairCollaborativeGame
         public EnemyGameObject(Vector2 position, GameEnhanced game, String tag)
             : base(position, game, tag)
         {
-            Collider = new Collider(this, 100, 100);
+            Collider = new Collider(this);
             Velocity = new Vector2(0, 0.5f);
 
         }
