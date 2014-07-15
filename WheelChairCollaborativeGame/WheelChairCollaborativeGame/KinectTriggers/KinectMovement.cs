@@ -8,11 +8,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
-using WheelChairGameLibrary.Helpers;
+using WheelChairGameLibrary;
 
 
-using KinectForWheelchair;
-using KinectForWheelchair.Listeners;
+//using KinectForWheelchair;
+//using KinectForWheelchair.Listeners;
+
 
 using Microsoft.Kinect;
 
@@ -62,7 +63,7 @@ namespace WheelChairCollaborativeGame
         /// 
         /// </summary>
         /// <param name="kinectTriggers">A list of triggers to be used in this movement</param>
-        public KinectMovement(Game game, params KinectTrigger[] kinectTriggers)
+        public KinectMovement(GameEnhanced game, params KinectTrigger[] kinectTriggers)
             : base(game)
         {
             foreach (KinectTrigger trigger in kinectTriggers)
@@ -92,6 +93,9 @@ namespace WheelChairCollaborativeGame
         /// 
         public override void Draw(GameTime gameTime)
         {
+            if (!((GameEnhanced)Game).IsDebugMode)
+                return;
+
             base.Draw(gameTime);
             foreach (KinectTrigger trigger in kinectTriggers)
                 trigger.draw();

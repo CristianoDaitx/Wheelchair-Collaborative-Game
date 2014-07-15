@@ -27,7 +27,7 @@ namespace WheelChairCollaborativeGame
     class GraphGameObject : GameObject
     {
 
-        private readonly int STARTING_X = 640;
+        private readonly int STARTING_X = (int)Config.resolution.X;
         private int pressedY = 450;
         private int notPressedY = 470;
         private readonly int MAX_RECORDS = 10;
@@ -90,6 +90,9 @@ namespace WheelChairCollaborativeGame
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
+
+            if (!Game.IsDebugMode)
+                return;
 
             bool isUp = IOnOff.isOn();
             /*// fix for one time delay

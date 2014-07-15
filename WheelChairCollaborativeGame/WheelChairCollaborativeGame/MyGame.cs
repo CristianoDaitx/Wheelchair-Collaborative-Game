@@ -11,12 +11,10 @@ using Microsoft.Xna.Framework.Media;
 
 
 using WheelChairGameLibrary;
+using WheelChairGameLibrary.Helpers;
 
 using Microsoft.Kinect;
 
-using KinectForWheelchair;
-using KinectForWheelchair.Listeners;
-using KeyMessaging;
 
 namespace WheelChairCollaborativeGame
 {
@@ -156,8 +154,25 @@ namespace WheelChairCollaborativeGame
                 X = 350;
             }
 
+<<<<<<< HEAD
             if (X > 340 && X < 800)
             {
+=======
+        protected override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            InputState inputState = (InputState)Services.GetService(typeof(InputState));
+
+            PlayerIndex playerIndex;
+
+            if (inputState.IsKeyPressed(Keys.D, null, out playerIndex)){
+                IsDebugMode = !IsDebugMode;
+            }
+
+        }
+
+>>>>>>> 285adc98c81caea4a8f110f847c964dbfd7c7411
 
                 X++;
             }
