@@ -522,14 +522,14 @@ namespace WheelChairCollaborativeGame
             // Movement tank
 
             // Movement front
-            Vector3 differenceFront1 = new Vector3(0.25f, -0.20f, -0.10f);
-            Vector3 differenceFront2 = new Vector3(0.30f, -0.10f, -0.20f);
-            Vector3 differenceFront3 = new Vector3(0.30f, -0.05f, -0.45f);
+            Vector3 differenceFront1 = new Vector3(0.25f, -0.25f, -0.20f);
+            //Vector3 differenceFront2 = new Vector3(0.30f, -0.10f, -0.20f);
+            Vector3 differenceFront3 = new Vector3(0.30f, 0.10f, -0.55f);
 
             movementFrontTank = new KinectMovement(Game,
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.20f, 0.02f, Game.GraphicsDevice)
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront1, 0.20f, 0.02f, Game.GraphicsDevice),
+                //new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
@@ -553,9 +553,9 @@ namespace WheelChairCollaborativeGame
 
             // Movement soldier
             movementFrontSoldier = new KinectMovement(Game,
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
+                //new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
             movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
