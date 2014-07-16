@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using WheelChairGameLibrary.Sprites;
+using WheelChairGameLibrary.Helpers;
 #endregion
 
 namespace WheelChairGameLibrary
@@ -106,6 +107,14 @@ namespace WheelChairGameLibrary
             get
             {
                 return (SpriteBatch)this.Game.Services.GetService(typeof(SpriteBatch));
+            }
+        }
+
+        public InputState InputState
+        {
+            get
+            {
+                return (InputState)Game.Services.GetService(typeof(InputState));
             }
         }
 

@@ -50,17 +50,8 @@ namespace WheelChairCollaborativeGame
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
 
-
-
-            GameComponent enemy = new EnemyGameObject(new Vector2(50,50), this, "asd");
-            this.Components.Add(enemy);
-
-            
-
             TankGameObject playerTank = new TankGameObject(this, "playerTank");
             this.Components.Add(playerTank);
-
-
             
 
             KinectInput kinectInput = new KinectInput(this, "kinectInput");

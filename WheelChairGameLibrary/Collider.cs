@@ -36,6 +36,8 @@ namespace WheelChairGameLibrary
 
         public void Draw()
         {
+            if (!GameObject.Game.IsDebugMode)
+                return;
             GameObject.SharedSpriteBatch.Begin();
             PrimitiveDrawing.DrawRectangle(GameObject.Game.WhitePixel, GameObject.SharedSpriteBatch, BoundingBox, Color.Gray);
             GameObject.SharedSpriteBatch.End();

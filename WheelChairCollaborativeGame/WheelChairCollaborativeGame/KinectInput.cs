@@ -176,15 +176,12 @@ namespace WheelChairCollaborativeGame
             PlayerIndex playerIndex1 = PlayerIndex.One;
             PlayerIndex playerIndex2 = PlayerIndex.Two;
 
-            InputState inputState = (InputState)Game.Services.GetService(typeof(InputState));
+            InputState inputState = this.InputState;
 
-
-            //Action by pressing A on gamepad.
-
-            //changes control typa
-            if (inputState.IsKeyPressed(Keys.X, playerIndex1, out playerIndex1))
+            //changes control type
+            if (inputState.IsKeyPressed(Keys.Z, playerIndex1, out playerIndex1))
                 controlSelect--;
-            if (inputState.IsKeyPressed(Keys.Space, playerIndex1, out playerIndex1))
+            if (inputState.IsKeyPressed(Keys.X, playerIndex1, out playerIndex1))
                 controlSelect++;
 
             //check borders of control tipe
@@ -196,6 +193,14 @@ namespace WheelChairCollaborativeGame
             {
                 controlSelect = ControlSelect.Joystick;
             }
+
+
+            //allow to shot with spacebar if in debug mode
+            if (Game.IsDebugMode)
+                if (inputState.IsKeyPressed(Keys.Space, playerIndex1, out playerIndex1))
+                {
+                    Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+                }
 
 
 
