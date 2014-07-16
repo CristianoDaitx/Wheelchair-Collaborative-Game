@@ -83,7 +83,7 @@ namespace WheelChairCollaborativeGame
 
             SpriteBatch.Begin();
             GUImessage.MessageDraw(SpriteBatch, Content,
-                        "Timer: " + string.Format(@"mm\\:ss", countdown), new Vector2(30, 300));
+                        "Timer" + string.Format("{0:mm\\:ss}", countdown), new Vector2(30, 300));
             SpriteBatch.End();
 
             base.Draw(gameTime);
@@ -114,6 +114,7 @@ namespace WheelChairCollaborativeGame
             {
                 gameOver = true;
                 Console.WriteLine("Game Over!");
+                
                 return;
                 // Change state
             }
@@ -141,59 +142,6 @@ namespace WheelChairCollaborativeGame
                 }
 
                 if (timeRan.Seconds == 20)
-                {
-                    this.Components.Add(new HardEnemy(this, "hardEnemy"));
-                }
-
-                if (timeRan.Seconds == 28)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
-                    this.Components.Add(new WierdEnemy(this, "wierdEnemy"));
-                }
-
-                if (timeRan.Seconds == 30)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 31)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 35)
-                {
-                    this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
-                }
-
-                if (timeRan.Seconds == 36)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 37)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
-                }
-                if (timeRan.Seconds == 38)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 39)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Left));
-                }
-                if (timeRan.Seconds == 40)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Left));
-                }
-                if (timeRan.Seconds == 41)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 50)
                 {
                     this.Components.Add(new HardEnemy(this, "hardEnemy"));
                 }

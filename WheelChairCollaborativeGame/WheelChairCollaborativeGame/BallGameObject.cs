@@ -26,21 +26,15 @@ namespace WheelChairCollaborativeGame
             this.Size = new Vector2(8, 8);
             Collider = new Collider(this);
 
-            Velocity = new Vector2(0, -2);
+            Velocity = new Vector2(0, -3);
         }
 
-
-        public override void Draw(GameTime gameTime)
+        protected override void LoadContent()
         {
-
-            base.Draw(gameTime);
-            SharedSpriteBatch.Begin();
-            PrimitiveDrawing.DrawCircle(Game.WhitePixel, SharedSpriteBatch, new Vector2(Position.X + 4, Position.Y + 4), 4.0f, Color.Red, 4, 7);
-            SharedSpriteBatch.End();
-
-
+            base.LoadContent();
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("fire"), 1.5f);
         }
-
+        
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
