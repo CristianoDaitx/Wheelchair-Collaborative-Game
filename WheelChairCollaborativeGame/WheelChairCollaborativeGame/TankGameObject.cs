@@ -33,16 +33,17 @@ namespace WheelChairCollaborativeGame
         private double time = 0;
 
         public TankGameObject(GameEnhanced game, String tag)
-            : base(new Vector2(Config.resolution.X/2 - 30, Config.resolution.Y - 100), game, tag)
+            : base( game, tag)
         {
-
+            
             
         }
 
         protected override void LoadContent()
         {
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("PlayerA"),
-                      1);
+                      0.5f);
+            Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, Config.resolution.Y - 100);
             base.LoadContent();
         }
 

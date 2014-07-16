@@ -21,76 +21,59 @@ using Microsoft.Kinect;
 
 namespace WheelChairCollaborativeGame
 {
-    class EnemyGameObject : GameObject
+    abstract class EnemyGameObject : GameObject
     {
+        protected static readonly int BORDER_STARTING_POSITION_Y = 20;
+        private static readonly int REAMINING_Y_TO_LEAVE = 250;
 
-        private double time = 0;
+        protected bool isLeaving = false;
 
-        protected int maxhits = 1;
-        public int hits = 0;
+        protected int life = 1;
 
         public EnemyGameObject(Vector2 position, GameEnhanced game, String tag)
             : base(position, game, tag)
         {
             Collider = new Collider(this);
-            Velocity = new Vector2(0, 0.5f);
-
         }
-
-        protected override void LoadContent()
+        public EnemyGameObject(GameEnhanced game, String tag)
+            : base(game, tag)
         {
-            base.LoadContent();
-
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Space_Invader"),
-                      0.5f);
-
-
-
-
+            Collider = new Collider(this);
         }
+
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-
-            time += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-
-            //Sprite.position.Y += 0.01f;
-
-            if (this.Position.Y > Config.resolution.Y - 250)
+            //test to start leaving
+            if (this.PositionBottomY > Config.resolution.Y - REAMINING_Y_TO_LEAVE)
             {
-                if (this.Position.X > 600)
-                {
-                    Velocity = new Vector2(2, 0);
-                }
+                isLeaving = true;
+                if (this.PositionCenterX > Config.resolution.X / 2)
+                    Acceleration = new Vector2(0.2f, 0);
                 else
-                    Velocity = new Vector2(-2, 0);
+                    Acceleration = new Vector2(-0.2f, 0);
             }
 
-            //Collider.BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Collider.BoundingBox.Width, Collider.BoundingBox.Height);
 
             //delete if exit screen
-            if (Position.X > Config.resolution.X - 150)
+            if (Position.X > Config.resolution.X ||
+                PositionRightX < 0 ||
+                Position.Y > Config.resolution.Y ||
+                PositionBottomY < 0)
                 this.ToBeRemoved = true;
 
-            if (Position.Y >= Config.resolution.Y )
-            {
-                this.ToBeRemoved = true;
-            }
         }
-        // delete if destroyed
-        
+
+
         public override void collisionEntered(Collider collider)
         {
             if (collider.GameObject.GetType() == typeof(BallGameObject))
             {
-                if (hits == maxhits)
-                {
+                if (0 == life)
                     ToBeRemoved = true;
-                }
-                hits++;
+                life--;
             }
         }
 

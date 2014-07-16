@@ -79,6 +79,7 @@ namespace WheelChairGameLibrary
         public Vector2 Position
         {
             get { return position; }
+            set { position = value; }
         }
 
 
@@ -115,6 +116,58 @@ namespace WheelChairGameLibrary
             get
             {
                 return (InputState)Game.Services.GetService(typeof(InputState));
+            }
+        }
+
+        /// <summary>
+        /// return centerd position X or 0 if no spirte
+        /// </summary>
+        public float PositionCenterX
+        {
+            get
+            {
+                if (Sprite == null)
+                    return 0;
+                return Position.X + Size.X / 2;
+            }
+        }
+
+        /// <summary>
+        /// return centered positon y or 0 if no spirte
+        /// </summary>
+        public float PositionCenterY
+        {
+            get
+            {
+                if (Sprite == null)
+                    return 0;
+                return Position.Y + Size.Y / 2;
+            }
+        }
+
+        /// <summary>
+        /// return the ending X or 0 if no spirte
+        /// </summary>
+        public float PositionRightX
+        {
+            get
+            {
+                if (Sprite == null)
+                    return 0;
+                return Position.X + Size.X;
+            }
+        }
+
+        /// <summary>
+        /// return the ending Y or 0 if no spirte
+        /// </summary>
+        public float PositionBottomY
+        {
+            get
+            {
+                if (Sprite == null)
+                    return 0;
+                return Position.Y + Size.Y;
             }
         }
 

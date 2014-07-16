@@ -23,28 +23,25 @@ namespace WheelChairCollaborativeGame
     class HardEnemy : EnemyGameObject
     {
         public HardEnemy(GameEnhanced game, String tag)
-            : base(new Vector2(Config.resolution.X / 2 - 50, 0), game, tag)
+            : base( game, tag)
         {
-            this.maxhits = 3;
+            this.life = 3;
             
-
-            Velocity = new Vector2(0, 0.7f);
-            
+            Velocity = new Vector2(0, 0.7f);            
         }
+
         protected override void LoadContent()
         {
             base.LoadContent();
-
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("HardEnemyA"),
-                     0.5f);
+                     2f);
+            Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, 0);
         }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (Position.Y > Config.resolution.Y - 150)
-            {
-                Velocity = new Vector2(0.7f, 0);
-            }
+            
         }
     }
 }

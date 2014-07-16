@@ -22,19 +22,41 @@ namespace WheelChairCollaborativeGame
 {
     class WeakEnemy : EnemyGameObject
     {
-        public WeakEnemy(GameEnhanced game, String tag)
-            : base(new Vector2(0,0), game, tag)
+        public enum Type
         {
-            this.maxhits = 1;
+            Left,
+            Right
+        }
+
+        private int BORDER_STARTING_POSITION_X = 200;
+        private Type type;
+
+        public WeakEnemy(GameEnhanced game, String tag, Type type)
+            : base( game, tag)
+        {
+            this.life = 1;
+
+            this.type = type;
+
+            if (type == Type.Right)                        
+                this.Velocity = new Vector2(0.95f, 0.7f);            
+            else            
+                this.Velocity = new Vector2(-0.95f, 0.7f);
             
-            this.Velocity = new Vector2(0.95f, 0.7f);
 
         }
+
         protected override void LoadContent()
         {
             base.LoadContent();
-
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("WeakEnemy"), 0.5f);
+
+            if (type == Type.Right)            
+                this.Position = new Vector2(BORDER_STARTING_POSITION_X, BORDER_STARTING_POSITION_Y);
+            else            
+                this.Position = new Vector2(Config.resolution.X - Size.X - BORDER_STARTING_POSITION_X, BORDER_STARTING_POSITION_Y);
+
+            
 
         }
     }

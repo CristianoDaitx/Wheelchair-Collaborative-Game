@@ -51,7 +51,7 @@ namespace WheelChairGameLibrary
         private SpriteBatch spriteBatch;
         protected SpriteBatch SpriteBatch
         {
-            get { return SpriteBatch; }
+            get { return spriteBatch; }
         }
 
         private Texture2D whitePixel;

@@ -146,7 +146,6 @@
     <Compile Include="TankGameObject.cs" />
     <Compile Include="KinectInput.cs" />
     <Compile Include="WeakEnemy.cs" />
-    <Compile Include="WeakEnemy2.cs" />
     <Compile Include="WierdEnemy.cs" />
   </ItemGroup>
   <ItemGroup>

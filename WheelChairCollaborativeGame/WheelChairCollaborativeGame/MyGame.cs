@@ -38,21 +38,22 @@ namespace WheelChairCollaborativeGame
     public class MyGame : GameEnhanced
     {
 
-        
-        public bool gameOver = false;
-        double time;
-        public TimeSpan timeSpan = TimeSpan.FromMilliseconds(120000);
-      
+
+        private bool gameOver = false;
+        private TimeSpan timeRan;
+        private TimeSpan maxTime = TimeSpan.FromMilliseconds(120000);
+
+        private int updateCounts = 0;
 
         public MyGame()
         {
-            
+
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
 
             TankGameObject playerTank = new TankGameObject(this, "playerTank");
             this.Components.Add(playerTank);
-            
+
 
             KinectInput kinectInput = new KinectInput(this, "kinectInput");
             this.Components.Add(kinectInput);
@@ -61,7 +62,7 @@ namespace WheelChairCollaborativeGame
             this.Components.Add(background);
         }
 
-       
+
 
         /// <summary>
         /// Add items to Components
@@ -77,117 +78,74 @@ namespace WheelChairCollaborativeGame
         /// <param name="gameTime">The elapsed game time.</param>
         protected override void Draw(GameTime gameTime)
         {
-            
+
             // Clear the screen
             GraphicsDevice.Clear(Color.Black);
+
+            SpriteBatch.Begin();
+            GUImessage.MessageDraw(SpriteBatch, Content,
+                        "Timer: " + (maxTime - timeRan), new Vector2(30,300));
+            SpriteBatch.End();
+
             base.Draw(gameTime);
 
-            
+
 
         }
-        public int X = 0;
+
         protected override void Update(GameTime gameTime)
         {
-            
-            
-            
-            timeSpan -= gameTime.ElapsedGameTime;
-            Console.WriteLine("timer: " + timeSpan);
-           
-            if (timeSpan < TimeSpan.Zero && !gameOver)
-            {
-                
-                gameOver = true;
-             
-
-                // Change state
-
-            }
-            
-
             base.Update(gameTime);
+
+            timeRan += gameTime.ElapsedGameTime;
+
             InputState inputState = (InputState)Services.GetService(typeof(InputState));
 
             PlayerIndex playerIndex;
-              if (inputState.IsKeyPressed(Keys.D, null, out playerIndex))
+            if (inputState.IsKeyPressed(Keys.D, null, out playerIndex))
             {
                 IsDebugMode = !IsDebugMode;
             }
 
-            
-            time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
+            //session time
 
-            //PlayerIndex newPlayerIndex;
-            /*if (input.IsMenuSelect(null, out newPlayerIndex)){
-                ExitScreen();
-                //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
-
-                
-            }
-            */
-
-
-           if (time > 120000)
+            if (timeRan > maxTime && !gameOver)
             {
-                X = -1;
+                gameOver = true;
                 Console.WriteLine("Game Over!");
+                return;
+                // Change state
             }
 
-            if (X == 0)
-            {
-                //ExitScreen();
-                //ScreenManager.AddScreen(new FighterChoose(), PlayerIndex.One);
-                // GameObjectManager.addGameObject(new EnemyGameObject(GameObjectManager,"enemy"));
 
-                this.Components.Add(new WeakEnemy(this, "weakEnemy"));
+            
+
+            //scripted add of enemies
+            if (updateCounts == 0)
+            {
+                this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
+            }
+
+            if (updateCounts == 300)
+            {
+                this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
                 this.Components.Add(new WierdEnemy(this, "wierdEnemy"));
-                X++;
             }
 
-            if (X < 300)
+            if (updateCounts == 800)
             {
-                X++;
-            }
-
-            if (X == 300)
-            {
-                this.Components.Add(new WeakEnemy2(this, "weakEnemy2"));
-                X = 350;
-            }
-
-            if (X > 340 && X < 800)
-            {
-                     X++;
-            }
-
-           
-            if (X == 800)
-            {   
                 this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
-                X = 850;
-            }
-            if (X > 840 && X < 1500)
-            {
-                X++;
             }
 
-            if (X == 1500)
-            {   
+            if (updateCounts == 1500)
+            {
                 this.Components.Add(new HardEnemy(this, "hardEnemy"));
-                X = 3500;
             }
-            if (X > 1540)
-            {
-                X--;
-            }
-            if (X == 1540)
-            {
-                X = 0;
-            }
-        
+
+            updateCounts++;
         }
-    
+
     }
 
 }

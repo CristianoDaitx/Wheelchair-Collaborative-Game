@@ -25,9 +25,9 @@ namespace WheelChairCollaborativeGame
     {
 
         public WierdEnemy(GameEnhanced game, String tag)
-            : base(new Vector2(Config.resolution.X /2, 0), game, tag)
+            : base(game, tag)
         {
-            this.maxhits = 2;
+            this.life = 2;
             this.Velocity = new Vector2(2, 0.5f);
             this.Acceleration = new Vector2(0.02f, 0);
 
@@ -38,15 +38,16 @@ namespace WheelChairCollaborativeGame
             base.LoadContent();
 
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("AvarageEnemy"), 1f);
-
+            Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, 0);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            if (Math.Abs(Velocity.X) > 2)
-                this.Acceleration = new Vector2(-this.Acceleration.X, 0);
+            if (!isLeaving)
+                if (Math.Abs(Velocity.X) > 2)
+                    this.Acceleration = new Vector2(-this.Acceleration.X, 0);
         }
     }
 }
