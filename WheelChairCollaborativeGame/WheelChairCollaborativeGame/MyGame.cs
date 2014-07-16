@@ -43,7 +43,7 @@ namespace WheelChairCollaborativeGame
         private TimeSpan timeRan;
         private TimeSpan maxTime = TimeSpan.FromMilliseconds(120000);
         private int lastSecond = -1;
-
+        private TimeSpan countdown;
         public MyGame()
         {
 
@@ -83,12 +83,12 @@ namespace WheelChairCollaborativeGame
 
             SpriteBatch.Begin();
             GUImessage.MessageDraw(SpriteBatch, Content,
-                        "Timer: " + (maxTime - timeRan), new Vector2(30,300));
+                        "Timer: " + string.Format(@"mm\\:ss", countdown), new Vector2(30, 300));
             SpriteBatch.End();
 
             base.Draw(gameTime);
 
-
+            
 
         }
 
@@ -97,6 +97,7 @@ namespace WheelChairCollaborativeGame
             base.Update(gameTime);
 
             timeRan += gameTime.ElapsedGameTime;
+            countdown = (maxTime - timeRan);
 
             InputState inputState = (InputState)Services.GetService(typeof(InputState));
 
