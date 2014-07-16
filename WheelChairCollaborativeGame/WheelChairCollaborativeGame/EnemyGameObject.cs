@@ -71,9 +71,10 @@ namespace WheelChairCollaborativeGame
         {
             if (collider.GameObject.GetType() == typeof(BallGameObject))
             {
+                life--;
                 if (0 == life)
                     ToBeRemoved = true;
-                life--;
+                
             }
         }
 

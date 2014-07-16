@@ -42,8 +42,7 @@ namespace WheelChairCollaborativeGame
         private bool gameOver = false;
         private TimeSpan timeRan;
         private TimeSpan maxTime = TimeSpan.FromMilliseconds(120000);
-
-        private int updateCounts = 0;
+        private int lastSecond = -1;
 
         public MyGame()
         {
@@ -122,28 +121,32 @@ namespace WheelChairCollaborativeGame
             
 
             //scripted add of enemies
-            if (updateCounts == 0)
+            if (timeRan.Seconds != lastSecond) // the second has changed
             {
-                this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
+                if (timeRan.Seconds == 0)
+                {
+                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
+                }
+
+                if (timeRan.Seconds == 2)
+                {
+                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
+                    this.Components.Add(new WierdEnemy(this, "wierdEnemy"));
+                }
+
+                if (timeRan.Seconds == 5)
+                {
+                    this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
+                }
+
+                if (timeRan.Seconds == 20)
+                {
+                    this.Components.Add(new HardEnemy(this, "hardEnemy"));
+                }
+
+                lastSecond = timeRan.Seconds;
             }
 
-            if (updateCounts == 300)
-            {
-                this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
-                this.Components.Add(new WierdEnemy(this, "wierdEnemy"));
-            }
-
-            if (updateCounts == 800)
-            {
-                this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
-            }
-
-            if (updateCounts == 1500)
-            {
-                this.Components.Add(new HardEnemy(this, "hardEnemy"));
-            }
-
-            updateCounts++;
         }
 
     }
