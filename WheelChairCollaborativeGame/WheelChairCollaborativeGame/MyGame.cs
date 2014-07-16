@@ -83,7 +83,7 @@ namespace WheelChairCollaborativeGame
 
             SpriteBatch.Begin();
             GUImessage.MessageDraw(SpriteBatch, Content,
-                        "Timer: " + string.Format(@"mm\\:ss", countdown), new Vector2(30, 300));
+                        "Timer: " + string.Format("{0:mm\\:ss}", countdown), new Vector2(30, 300));
             SpriteBatch.End();
 
             base.Draw(gameTime);
