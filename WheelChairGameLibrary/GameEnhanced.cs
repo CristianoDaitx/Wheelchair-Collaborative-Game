@@ -100,27 +100,30 @@ namespace WheelChairGameLibrary
             this.graphics = new GraphicsDeviceManager(this);
             
             //TODO: add: this.graphics.PreparingDeviceSettings += this.GraphicsDevicePreparingDeviceSettings;
-
-
             // The Kinect sensor will use 640x480 for both streams
             // To make your app handle multiple Kinects and other scenarios,
             // it is recommended to use KinectSensorChooser provided in Microsoft.Kinect.Toolkit (See components in Toolkit Browser).
             this.chooser = new KinectChooser(this, ColorImageFormat.RgbResolution640x480Fps30, DepthImageFormat.Resolution640x480Fps30);
+            this.Services.RemoveService(typeof(KinectChooser));
             this.Services.AddService(typeof(KinectChooser), this.chooser);
             this.Components.Add(this.chooser);
 
 
             // start input service
             InputState inputState = new InputState(this);
+            this.Services.RemoveService(typeof(InputState));
             this.Services.AddService(typeof(InputState), inputState);
             this.Components.Add(inputState);
-            
+
             // start collision manager service
             this.collisionManager = new CollisionManager(this);
+            this.Services.RemoveService(typeof(CollisionManager));
             this.Services.AddService(typeof(CollisionManager), collisionManager);
             this.Components.ComponentAdded += new EventHandler<GameComponentCollectionEventArgs>(Components_ComponentAdded);
             this.Components.ComponentRemoved += new EventHandler<GameComponentCollectionEventArgs>(Components_ComponentRemoved);
-            this.Components.Add(collisionManager);            
+            this.Components.Add(collisionManager);   
+
+                     
         }
 
         
@@ -154,10 +157,15 @@ namespace WheelChairGameLibrary
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            this.Services.RemoveService(typeof(SpriteBatch));
             this.Services.AddService(typeof(SpriteBatch), this.spriteBatch);
 
             this.whitePixel = LibContent.Load<Texture2D>("whitePixel");
-            this.defaultFont = LibContent.Load<SpriteFont>("mainFont");            
+            this.defaultFont = LibContent.Load<SpriteFont>("mainFont");
+
+
+            
+
 
             base.LoadContent();
         }

@@ -12,7 +12,7 @@ namespace WheelChairGameLibrary.Helpers
     /// methods for high level input actions such as "move up through the menu"
     /// or "pause the game".
     /// </summary>
-    public class InputState : GameObject
+    public class InputState : GameComponent
     {
 
         Keys p1HighPunch = Keys.W;
@@ -65,7 +65,7 @@ namespace WheelChairGameLibrary.Helpers
         /// Constructs a new input state.
         /// </summary>
         public InputState(GameEnhanced game)
-            :base (game, "input")
+            :base (game)
         {
             CurrentKeyboardStates = new KeyboardState[MaxInputs];
             CurrentGamePadStates = new GamePadState[MaxInputs];

@@ -25,7 +25,7 @@ namespace WheelChairCollaborativeGame
             }
             // TODO: Add your drawing code here
             //Message goes here
-            Vector2 textSize = spriteFont.MeasureString("0000");
+            //Vector2 textSize = spriteFont.MeasureString("0000");
             //spriteBatch.DrawString(spriteFont, ("this"), textPosition - textSize / 2, Color.White);
             spriteBatch.DrawString(spriteFont, message, textPosition, Color.White);
         }

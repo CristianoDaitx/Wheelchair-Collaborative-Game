@@ -38,6 +38,14 @@ namespace WheelChairCollaborativeGame
     public class MyGame : GameEnhanced
     {
 
+        private enum Screen
+        {
+            MainMenu,
+            Play
+        }
+
+        private Screen activeScreen = Screen.MainMenu;
+
 
         private bool gameOver = false;
         private TimeSpan timeRan;
@@ -52,15 +60,8 @@ namespace WheelChairCollaborativeGame
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
 
-            TankGameObject playerTank = new TankGameObject(this, "playerTank");
-            this.Components.Add(playerTank);
-
-
-            KinectInput kinectInput = new KinectInput(this, "kinectInput");
-            this.Components.Add(kinectInput);
-
-            Background background = new Background(this, 100);
-            this.Components.Add(background);
+            
+            
         }
 
         protected override void LoadContent()
@@ -90,25 +91,38 @@ namespace WheelChairCollaborativeGame
             // Clear the screen
             GraphicsDevice.Clear(Color.Black);
 
-            SpriteBatch.Begin();
-            GUImessage.MessageDraw(SpriteBatch, Content,
 
-                        "Timer: " + string.Format("{0:mm\\:ss}", countdown), new Vector2(30, 300));
+            switch (activeScreen)
+            {
+                case Screen.Play:
+                    SpriteBatch.Begin();
+                    GUImessage.MessageDraw(SpriteBatch, Content,
 
-            SpriteBatch.End();
+                                "Timer: " + string.Format("{0:mm\\:ss}", countdown), new Vector2(30, 300));
+
+                    SpriteBatch.End();
+                    break;
+                case Screen.MainMenu:
+                    SpriteBatch.Begin();
+                    GUImessage.MessageDraw(SpriteBatch, Content,
+
+                                "Press enter to play ", new Vector2(30, 300));
+                    
+                    SpriteBatch.End();
+                    break;
+
+            }
+
 
             base.Draw(gameTime);
 
-            
+
 
         }
 
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            timeRan += gameTime.ElapsedGameTime;
-            countdown = (maxTime - timeRan);
 
             InputState inputState = (InputState)Services.GetService(typeof(InputState));
 
@@ -119,21 +133,67 @@ namespace WheelChairCollaborativeGame
             }
 
 
-            //session time
-
-            if (timeRan > maxTime && !gameOver)
+            switch (activeScreen)
             {
-                gameOver = true;
-                Console.WriteLine("Game Over!");
-                
-                return;
-                // Change state
+                case Screen.Play:
+
+                    timeRan += gameTime.ElapsedGameTime;
+                    countdown = (maxTime - timeRan);
+
+                    //session time
+
+                    if (timeRan > maxTime && !gameOver)
+                    {
+                        gameOver = true;
+                        Console.WriteLine("Game Over!");
+
+                        return;
+                        // Change state
+                    }
+
+                    addEnemies();
+
+
+                    if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
+                    {
+                        IEnumerable<IGameComponent> components = Components.Where(x => (typeof(GameObject).IsAssignableFrom(x.GetType()) && ((GameObject)x).Tag != "kinect") || typeof(IOnOff).IsAssignableFrom(x.GetType()));
+                        while (components.Count() > 0)
+                        {
+                            //((GameComponent)components.ElementAt(0)).Dispose();
+                            Components.Remove(components.ElementAt(0));
+                            
+                        }
+                        activeScreen = Screen.MainMenu;
+                    }
+
+                    break;
+
+                case Screen.MainMenu:
+                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
+                    {
+                        TankGameObject playerTank = new TankGameObject(this, "playerTank");
+                        this.Components.Add(playerTank);
+
+                        KinectInput kinectInput = new KinectInput(this, "kinectInput");
+                        this.Components.Add(kinectInput);
+
+                        
+
+                        Background background = new Background(this, 100);
+                        this.Components.Add(background);
+
+                        activeScreen = Screen.Play;
+                    }
+                    break;
             }
 
+        }
 
-            
-
-            //scripted add of enemies
+        /// <summary>
+        /// scripted add of enemies
+        /// </summary>
+        private void addEnemies()
+        {
             if (timeRan.Seconds != lastSecond) // the second has changed
             {
                 if (timeRan.Seconds == 0)
@@ -211,8 +271,8 @@ namespace WheelChairCollaborativeGame
                 }
 
                 lastSecond = timeRan.Seconds;
-            }
 
+            }
         }
 
     }
