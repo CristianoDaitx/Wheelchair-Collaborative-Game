@@ -28,7 +28,7 @@ namespace WheelChairCollaborativeGame
         {
             base.LoadContent();
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("explosions"), 1.5f);
-            Sprite.setActiveSpriteAnimation(new SpriteAnimation( 20,
+            Sprite.ActiveSpriteAnimation = (new SpriteAnimation( 20,
                     new SpriteAnimationData[] {
                         new SpriteAnimationData(72, 84, 12, 14, 0, 0),
                         new SpriteAnimationData(84, 84, 12, 14, 0, 0),

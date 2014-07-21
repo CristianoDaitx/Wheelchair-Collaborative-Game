@@ -31,7 +31,7 @@ namespace WheelChairCollaborativeGame
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("explosions"), 3f);
 
             //TODO adjust spritesheet
-            Sprite.setActiveSpriteAnimation(new SpriteAnimation(20,
+            Sprite.ActiveSpriteAnimation = (new SpriteAnimation(20,
                     new SpriteAnimationData[] {
                         new SpriteAnimationData(0, 0, 24, 28, 0, 0),
                         new SpriteAnimationData(0, 28, 24, 28, 0, 0),

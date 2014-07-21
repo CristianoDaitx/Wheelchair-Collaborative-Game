@@ -200,9 +200,6 @@ namespace WheelChairGameLibrary
                 return;
             }
 
-            if (sprite != null)
-                sprite.Update();
-
 
             //Calculate physics
 
