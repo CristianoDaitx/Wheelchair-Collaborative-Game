@@ -26,6 +26,8 @@ namespace WheelChairCollaborativeGame
         protected static readonly int BORDER_STARTING_POSITION_Y = 20;
         private static readonly int REAMINING_Y_TO_LEAVE = 250;
 
+        private SoundEffect explosionSound;
+
         protected bool isLeaving = false;
 
         protected int life = 1;
@@ -39,6 +41,12 @@ namespace WheelChairCollaborativeGame
             : base(game, tag)
         {
             Collider = new Collider(this);
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+            explosionSound = Game.Content.Load<SoundEffect>("explosion");
         }
 
 
@@ -75,8 +83,11 @@ namespace WheelChairCollaborativeGame
                 if (0 == life)
                 {
                     ToBeRemoved = true;
+                    
+                    Game.Components.Add(new BigExplosionGameObject(new Vector2(PositionCenterX,this.PositionCenterY  ), Game));
 
-                    Game.Components.Add(new BigExplosionGameObject(this.Position, Game));
+                    
+                    explosionSound.Play();
                 }
                 
             }

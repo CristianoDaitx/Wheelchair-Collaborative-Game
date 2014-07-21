@@ -19,6 +19,8 @@ namespace WheelChairCollaborativeGame
     class BallGameObject : GameObject
     {
 
+        SoundEffect hit;
+
         public BallGameObject(Vector2 startingPosition, GameEnhanced game, String tag)
             : base(startingPosition, game, tag)
         {
@@ -33,6 +35,7 @@ namespace WheelChairCollaborativeGame
         {
             base.LoadContent();
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("fire"), 1.5f);
+            hit = Game.Content.Load<SoundEffect>("hit");
         }
         
         public override void Update(GameTime gameTime)
@@ -57,7 +60,7 @@ namespace WheelChairCollaborativeGame
             //Game.Components.Remove(this);
             //GameObjectManager.removeGameObject(this);
             ToBeRemoved = true;
-
+            hit.Play();
             Game.Components.Add(new ExplosionGameObject(this.Position, Game));
         }
 

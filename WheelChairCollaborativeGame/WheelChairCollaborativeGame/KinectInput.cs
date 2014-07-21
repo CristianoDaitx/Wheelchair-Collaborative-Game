@@ -24,6 +24,8 @@ namespace WheelChairCollaborativeGame
     class KinectInput : GameObject
     {
 
+        private SoundEffect fireSoundEffect;
+
         // Position constants
         private readonly int GRAPH1_PRESSED_Y = 700;
         private readonly int GRAPH1_NOT_PRESSED_Y = 710;
@@ -198,11 +200,12 @@ namespace WheelChairCollaborativeGame
 
 
             //allow to shot with spacebar if in debug mode
-            if (Game.IsDebugMode)
-                if (inputState.IsKeyPressed(Keys.Space, playerIndex1, out playerIndex1))
-                {
-                    Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
-                }
+            //if (Game.IsDebugMode)
+            if (inputState.IsKeyPressed(Keys.Space, playerIndex1, out playerIndex1))
+            {
+                fireSoundEffect.Play();
+                Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+            }
 
 
 
@@ -541,6 +544,8 @@ namespace WheelChairCollaborativeGame
 
         protected override void LoadContent()
         {
+            fireSoundEffect = Game.Content.Load<SoundEffect>("shoot");
+
             currentPrimitive = new SpherePrimitive(Game.GraphicsDevice, KinectTriggerSingle.JOINT_DEFAULT_RADIUS, 8);
 
             // Movement tank
