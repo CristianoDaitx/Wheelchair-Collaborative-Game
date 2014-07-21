@@ -57,6 +57,10 @@ namespace WheelChairCollaborativeGame
             //Game.Components.Remove(this);
             //GameObjectManager.removeGameObject(this);
             ToBeRemoved = true;
+
+            Game.Components.Add(new ExplosionGameObject(this.Position, Game));
         }
+
+      
     }
 }

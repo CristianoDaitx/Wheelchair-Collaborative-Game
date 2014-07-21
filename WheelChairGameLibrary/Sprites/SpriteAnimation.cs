@@ -13,6 +13,8 @@ namespace WheelChairGameLibrary.Sprites
 {
     public class SpriteAnimation
     {
+        public static readonly double DEFAULT_TIME_INTERVAL = 80f;
+
         private GameTime gameTime;
 
         private SpriteAnimationData[] animationDatas;
@@ -27,7 +29,7 @@ namespace WheelChairGameLibrary.Sprites
         
 
         private double timer = 0;
-        public static readonly double TIME_INTERVAL = 80f;
+        private readonly double timeInterval = DEFAULT_TIME_INTERVAL;
 
         public SpriteAnimation(SpriteAnimationData[] animationDatas)
         {
@@ -36,6 +38,17 @@ namespace WheelChairGameLibrary.Sprites
             isActive = true;
             actualState = 0;
         }
+
+        public SpriteAnimation( double timeInterval, SpriteAnimationData[] animationDatas)
+        {
+            this.animationDatas = animationDatas;
+            this.states = animationDatas.GetLength(0);
+            isActive = true;
+            actualState = 0;
+            this.timeInterval = timeInterval;
+        }
+
+
 
         public SpriteAnimationData getAnimationData()
         {
@@ -92,7 +105,7 @@ namespace WheelChairGameLibrary.Sprites
             if (isActive)
             {
                 timer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (timer >= TIME_INTERVAL)
+                if (timer >= timeInterval)
                 {
                     timer = 0;
                     changeState = true;

@@ -73,7 +73,11 @@ namespace WheelChairCollaborativeGame
             {
                 life--;
                 if (0 == life)
+                {
                     ToBeRemoved = true;
+
+                    Game.Components.Add(new BigExplosionGameObject(this.Position, Game));
+                }
                 
             }
         }

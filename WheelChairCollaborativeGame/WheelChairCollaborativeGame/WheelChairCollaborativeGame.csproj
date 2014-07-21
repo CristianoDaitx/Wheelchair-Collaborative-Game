@@ -121,6 +121,8 @@
     <Compile Include="AvarageEnemy.cs" />
     <Compile Include="Background.cs" />
     <Compile Include="BallGameObject.cs" />
+    <Compile Include="BigExplosionGameObject.cs" />
+    <Compile Include="ExplosionGameObject.cs" />
     <Compile Include="OnOffController.cs" />
     <Compile Include="OnOffDouble.cs" />
     <Compile Include="Config.cs" />

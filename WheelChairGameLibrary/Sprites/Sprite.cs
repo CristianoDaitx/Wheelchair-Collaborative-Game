@@ -127,6 +127,7 @@ namespace WheelChairGameLibrary.Sprites
                     offsetX = (80 - spriteAnimationData.offsetX - spriteAnimationData.sourceRectangle.Width);
                 }
 
+                spriteBatch.Begin();
 
                 spriteBatch.Draw(texture,
                     new Rectangle(
@@ -135,9 +136,11 @@ namespace WheelChairGameLibrary.Sprites
                     spriteAnimationData.sourceRectangle,
                     Color.White, 0.0f, new Vector2(), spriteEffect, 0.0f);
 
+                
+
                 PrimitiveDrawing.DrawRectangle(GameObject.Game.WhitePixel, spriteBatch, getBoundingBox2(), 1, Color.Yellow);
                 //PrimitiveDrawing.DrawRectangle(whitePixel, spriteBatch, getBoundingBox());
-
+                spriteBatch.End();
                 //Vector2 origin = new Vector2(0, font.LineSpacing / 2);
                 //spriteBatch.DrawString(font, life.ToString(), position, Color.White, 0,
                 //                       origin, 1, SpriteEffects.None, 0);

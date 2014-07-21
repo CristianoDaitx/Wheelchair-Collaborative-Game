@@ -17,22 +17,22 @@ namespace WheelChairGameLibrary.Sprites
         public Rectangle sourceRectangle { get; set; }
         public int offsetX { get; set; }
         public int offsetY { get; set; }
-        public bool isStrike { get; set; }
+        public bool isFlag { get; set; }
 
         public SpriteAnimationData(Rectangle sourceRectangle, int offsetX, int offsetY)
         {
             this.sourceRectangle = sourceRectangle;
             this.offsetX = offsetX;
             this.offsetY = offsetY;
-            this.isStrike = false;
+            this.isFlag = false;
         }
 
-        public SpriteAnimationData(Rectangle sourceRectangle, int offsetX, int offsetY, bool isStrike)
+        public SpriteAnimationData(Rectangle sourceRectangle, int offsetX, int offsetY, bool isFlag)
         {
             this.sourceRectangle = sourceRectangle;
             this.offsetX = offsetX;
             this.offsetY = offsetY;
-            this.isStrike = isStrike;
+            this.isFlag = isFlag;
         }
 
         public SpriteAnimationData(int x, int y, int width, int height, int offsetX, int offsetY)
@@ -40,14 +40,15 @@ namespace WheelChairGameLibrary.Sprites
             this.sourceRectangle = new Rectangle(x, y, width, height);
             this.offsetX = offsetX;
             this.offsetY = offsetY;
-            this.isStrike = false;
+            this.isFlag = false;
         }
-        public SpriteAnimationData(int x, int y, int width, int height, int offsetX, int offsetY, bool isStrike)
+
+        public SpriteAnimationData(int x, int y, int width, int height, int offsetX, int offsetY, bool isFlag)
         {
             this.sourceRectangle = new Rectangle(x, y, width, height);
             this.offsetX = offsetX;
             this.offsetY = offsetY;
-            this.isStrike = isStrike;
+            this.isFlag = isFlag;
         }
 
     }
