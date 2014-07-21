@@ -97,6 +97,7 @@
     <Compile Include="Collider.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="Screen.cs" />
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteAnimation.cs" />
     <Compile Include="Sprites\SpriteAnimationData.cs" />

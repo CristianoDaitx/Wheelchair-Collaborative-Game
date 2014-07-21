@@ -38,22 +38,12 @@ namespace WheelChairCollaborativeGame
     public class MyGame : GameEnhanced
     {
 
-        private enum Screen
-        {
-            MainMenu,
-            Play
-        }
-
-        private Screen activeScreen = Screen.MainMenu;
+        
 
 
-        private bool gameOver = false;
-        private TimeSpan timeRan;
-        private TimeSpan maxTime = TimeSpan.FromMilliseconds(120000);
-        private int lastSecond = -1;
-        private TimeSpan countdown;
+        
 
-        private Song backgroundSong;
+        
         public MyGame()
         {
 
@@ -67,7 +57,7 @@ namespace WheelChairCollaborativeGame
         protected override void LoadContent()
         {
             base.LoadContent();
-            backgroundSong = Content.Load<Song>("AsteroidDance");
+            
         }
 
 
@@ -77,8 +67,9 @@ namespace WheelChairCollaborativeGame
         protected override void Initialize()
         {
             base.Initialize();
-            MediaPlayer.Play(backgroundSong);
-            MediaPlayer.IsRepeating = true;
+            
+
+            ActiveScreen = new SplashScreen(this, "SplashScreen");
         }
 
         /// <summary>
@@ -92,31 +83,33 @@ namespace WheelChairCollaborativeGame
             GraphicsDevice.Clear(Color.Black);
 
 
-            switch (activeScreen)
+            /*switch (activeScreen)
             {
-                case Screen.Play:
-                    SpriteBatch.Begin();
-                    GUImessage.MessageDraw(SpriteBatch, Content,
 
-                                "Timer: " + string.Format("{0:mm\\:ss}", countdown), new Vector2(30, 300));
-
-                    SpriteBatch.End();
-                    break;
-                case Screen.MainMenu:
-                    SpriteBatch.Begin();
-                    GUImessage.MessageDraw(SpriteBatch, Content,
-
-                                "Press enter to play ", new Vector2(30, 300));
                     
+                case Screen.Play:
+                    
+                case Screen.GameOver:
+                    
+                    break;
+                case Screen.Tutorial:
+                    SpriteBatch.Begin();
+                    GUImessage.MessageDraw(SpriteBatch, Content,
+
+                                "Tutorial", new Vector2(30, 300));
                     SpriteBatch.End();
                     break;
+                case Screen.Settings:
+                    SpriteBatch.Begin();
+                    GUImessage.MessageDraw(SpriteBatch, Content,
 
-            }
+                                "Settings", new Vector2(30, 300));
+                    SpriteBatch.End();
+                    break;
+            }*/
 
 
             base.Draw(gameTime);
-
-
 
         }
 
@@ -133,38 +126,25 @@ namespace WheelChairCollaborativeGame
             }
 
 
-            switch (activeScreen)
+            /*switch (activeScreen)
             {
-                case Screen.Play:
-
-                    timeRan += gameTime.ElapsedGameTime;
-                    countdown = (maxTime - timeRan);
-
-                    //session time
-
-                    if (timeRan > maxTime && !gameOver)
+                case Screen.WelcomeSplash:
+                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
                     {
-                        gameOver = true;
-                        Console.WriteLine("Game Over!");
-
-                        return;
-                        // Change state
+                        RemoveSpecificComponents();
+                        activeScreen = Screen.Intro;
                     }
-
-                    addEnemies();
-
-
-                    if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
+                    break;
+                case Screen.Intro:
+                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
                     {
-                        IEnumerable<IGameComponent> components = Components.Where(x => (typeof(GameObject).IsAssignableFrom(x.GetType()) && ((GameObject)x).Tag != "kinect") || typeof(IOnOff).IsAssignableFrom(x.GetType()));
-                        while (components.Count() > 0)
-                        {
-                            //((GameComponent)components.ElementAt(0)).Dispose();
-                            Components.Remove(components.ElementAt(0));
-                            
-                        }
+                        RemoveSpecificComponents();
                         activeScreen = Screen.MainMenu;
                     }
+                    break;          
+                case Screen.Play:
+
+                    
 
                     break;
 
@@ -185,95 +165,18 @@ namespace WheelChairCollaborativeGame
                         activeScreen = Screen.Play;
                     }
                     break;
-            }
+                case Screen.GameOver:
+                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
+                    {
+                        RemoveSpecificComponents();
+                        activeScreen = Screen.MainMenu;
+                    }
+                    break;
+            }*/
 
         }
 
-        /// <summary>
-        /// scripted add of enemies
-        /// </summary>
-        private void addEnemies()
-        {
-            if (timeRan.Seconds != lastSecond) // the second has changed
-            {
-                if (timeRan.Seconds == 0)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 2)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
-                    this.Components.Add(new WierdEnemy(this, "wierdEnemy"));
-                }
-
-                if (timeRan.Seconds == 5)
-                {
-                    this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
-                }
-
-                if (timeRan.Seconds == 20)
-                {
-                    this.Components.Add(new HardEnemy(this, "hardEnemy"));
-                }
-
-                if (timeRan.Seconds == 28)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
-                    this.Components.Add(new WierdEnemy(this, "wierdEnemy"));
-                }
-
-                if (timeRan.Seconds == 30)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 31)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy2", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 35)
-                {
-                    this.Components.Add(new AvarageEnemy(this, "avarageEnemy"));
-                }
-
-                if (timeRan.Seconds == 36)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 37)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
-                }
-                if (timeRan.Seconds == 38)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 39)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Left));
-                }
-                if (timeRan.Seconds == 40)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Left));
-                }
-                if (timeRan.Seconds == 41)
-                {
-                    this.Components.Add(new WeakEnemy(this, "weakEnemy", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 50)
-                {
-                    this.Components.Add(new HardEnemy(this, "hardEnemy"));
-                }
-
-                lastSecond = timeRan.Seconds;
-
-            }
-        }
+        
 
     }
 

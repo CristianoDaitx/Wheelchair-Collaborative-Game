@@ -17,6 +17,25 @@ namespace WheelChairGameLibrary
 
     public class GameEnhanced : Microsoft.Xna.Framework.Game
     {
+
+        /// <summary>
+        /// Correctively manage the active single screen. It automatically removes the previous screen and call it's ExitScreen()
+        /// </summary>
+        private Screen activeScreen;
+        public Screen ActiveScreen
+        {
+            set
+            {
+                if (activeScreen != null)
+                {
+                    activeScreen.ExitScreen();
+                    Components.Remove(activeScreen);
+                }
+                activeScreen = value;
+                Components.Add(activeScreen);
+            }
+        }
+
         /// <summary>
         /// The graphics device manager provided by Xna.
         /// </summary>
@@ -149,6 +168,7 @@ namespace WheelChairGameLibrary
                 if (gameObject.Collider != null)
                     this.CollisionManager.removeCollider(gameObject.Collider);
             }
+
         }
 
         /// <summary>
