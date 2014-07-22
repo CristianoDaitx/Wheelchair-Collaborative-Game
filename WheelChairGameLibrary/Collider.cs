@@ -23,13 +23,13 @@ namespace WheelChairGameLibrary
         /// <summary>
         /// The game object this collider is associated to
         /// </summary>
-        private GameObject gameObject;
-        public GameObject GameObject
+        private GameObject2D gameObject;
+        public GameObject2D GameObject
         {
             get { return gameObject; }
         }
 
-        public Collider(GameObject gameObject)
+        public Collider(GameObject2D gameObject)
         {
             this.gameObject = gameObject;
         }

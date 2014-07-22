@@ -16,7 +16,7 @@ using WheelChairGameLibrary.Sprites;
 
 namespace WheelChairCollaborativeGame
 {
-    class BallGameObject : GameObject
+    class BallGameObject : GameObject2D
     {
 
         SoundEffect hit;

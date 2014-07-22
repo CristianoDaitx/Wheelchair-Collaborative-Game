@@ -24,7 +24,7 @@ using Microsoft.Kinect;
 
 namespace WheelChairCollaborativeGame
 {
-    class GraphGameObject : GameObject
+    class GraphGameObject : GameObject2D
     {
 
         private readonly int STARTING_X = (int)Config.resolution.X;

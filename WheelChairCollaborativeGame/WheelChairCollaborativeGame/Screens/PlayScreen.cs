@@ -182,13 +182,7 @@ namespace WheelChairCollaborativeGame
 
         public override void ExitScreen()
         {
-            IEnumerable<IGameComponent> components = Game.Components.Where(x => (typeof(GameObject).IsAssignableFrom(x.GetType()) && ((GameObject)x).Tag != "kinect") || typeof(IOnOff).IsAssignableFrom(x.GetType()));
-            while (components.Count() > 0)
-            {
-                Game.Components.Remove(components.ElementAt(0));
-
-            }
-
+            Game.RemoveAllButEssentialComponents();
             MediaPlayer.Stop();
         }
     }

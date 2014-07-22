@@ -21,7 +21,7 @@ using Microsoft.Kinect;
 
 namespace WheelChairCollaborativeGame
 {
-    class TankGameObject : GameObject
+    class TankGameObject : GameObject2D
     {
         
 

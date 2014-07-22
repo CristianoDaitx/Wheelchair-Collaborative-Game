@@ -23,7 +23,7 @@ using Microsoft.Kinect;
 // Credits http://www.syntaxwarriors.com/2012/xna-2d-infinite-scrolling-space-background/
 namespace WheelChairCollaborativeGame
 {
-    class Background : GameObject
+    class Background : GameObject2D
     {
         private Texture2D _StarTexture;
         private Texture2D _CloudTexture;

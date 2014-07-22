@@ -35,31 +35,18 @@ namespace WheelChairCollaborativeGame
     }
     #endregion
 
+
+    /// <summary>
+    /// This class can be used for things to be drawn or updated troghout all the game.
+    /// </summary>
     public class MyGame : GameEnhanced
     {
-
-        
-
-
-        
-
-        
+    
         public MyGame()
         {
-
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
-            this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
-
-            
-            
+            this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;           
         }
-
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-            
-        }
-
 
         /// <summary>
         /// Add items to Components
@@ -67,8 +54,6 @@ namespace WheelChairCollaborativeGame
         protected override void Initialize()
         {
             base.Initialize();
-            
-
             ActiveScreen = new SplashScreen(this, "SplashScreen");
         }
 
@@ -78,39 +63,9 @@ namespace WheelChairCollaborativeGame
         /// <param name="gameTime">The elapsed game time.</param>
         protected override void Draw(GameTime gameTime)
         {
-
             // Clear the screen
             GraphicsDevice.Clear(Color.Black);
-
-
-            /*switch (activeScreen)
-            {
-
-                    
-                case Screen.Play:
-                    
-                case Screen.GameOver:
-                    
-                    break;
-                case Screen.Tutorial:
-                    SpriteBatch.Begin();
-                    GUImessage.MessageDraw(SpriteBatch, Content,
-
-                                "Tutorial", new Vector2(30, 300));
-                    SpriteBatch.End();
-                    break;
-                case Screen.Settings:
-                    SpriteBatch.Begin();
-                    GUImessage.MessageDraw(SpriteBatch, Content,
-
-                                "Settings", new Vector2(30, 300));
-                    SpriteBatch.End();
-                    break;
-            }*/
-
-
             base.Draw(gameTime);
-
         }
 
         protected override void Update(GameTime gameTime)
@@ -124,59 +79,7 @@ namespace WheelChairCollaborativeGame
             {
                 IsDebugMode = !IsDebugMode;
             }
-
-
-            /*switch (activeScreen)
-            {
-                case Screen.WelcomeSplash:
-                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
-                    {
-                        RemoveSpecificComponents();
-                        activeScreen = Screen.Intro;
-                    }
-                    break;
-                case Screen.Intro:
-                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
-                    {
-                        RemoveSpecificComponents();
-                        activeScreen = Screen.MainMenu;
-                    }
-                    break;          
-                case Screen.Play:
-
-                    
-
-                    break;
-
-                case Screen.MainMenu:
-                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
-                    {
-                        TankGameObject playerTank = new TankGameObject(this, "playerTank");
-                        this.Components.Add(playerTank);
-
-                        KinectInput kinectInput = new KinectInput(this, "kinectInput");
-                        this.Components.Add(kinectInput);
-
-                        
-
-                        Background background = new Background(this, 100);
-                        this.Components.Add(background);
-
-                        activeScreen = Screen.Play;
-                    }
-                    break;
-                case Screen.GameOver:
-                    if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
-                    {
-                        RemoveSpecificComponents();
-                        activeScreen = Screen.MainMenu;
-                    }
-                    break;
-            }*/
-
-        }
-
-        
+        }       
 
     }
 

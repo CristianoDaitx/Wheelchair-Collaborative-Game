@@ -21,7 +21,7 @@ using Microsoft.Kinect;
 
 namespace WheelChairCollaborativeGame
 {
-    abstract class EnemyGameObject : GameObject
+    abstract class EnemyGameObject : GameObject2D
     {
         protected static readonly int BORDER_STARTING_POSITION_Y = 20;
         private static readonly int REAMINING_Y_TO_LEAVE = 250;

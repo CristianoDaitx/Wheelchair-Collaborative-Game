@@ -16,7 +16,7 @@ using WheelChairGameLibrary.Sprites;
 
 namespace WheelChairCollaborativeGame
 {
-    class BigExplosionGameObject : GameObject
+    class BigExplosionGameObject : GameObject2D
     {
 
         public BigExplosionGameObject(Vector2 startingPosition, GameEnhanced game)

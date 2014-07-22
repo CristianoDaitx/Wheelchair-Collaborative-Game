@@ -15,8 +15,8 @@ namespace WheelChairGameLibrary.Sprites
 {
     public class Sprite
     {
-        private GameObject gameObject;
-        public GameObject GameObject
+        private GameObject2D gameObject;
+        public GameObject2D GameObject
         {
             get { return gameObject; }
         }
@@ -39,7 +39,7 @@ namespace WheelChairGameLibrary.Sprites
         }
 
 
-        public Sprite(GameObject gameObject, Texture2D newTexture, float newScale)
+        public Sprite(GameObject2D gameObject, Texture2D newTexture, float newScale)
         {
             this.gameObject = gameObject;
             this.texture = newTexture;

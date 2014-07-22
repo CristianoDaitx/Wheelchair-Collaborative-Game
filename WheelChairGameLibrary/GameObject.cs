@@ -13,37 +13,6 @@ namespace WheelChairGameLibrary
 {
     public abstract class GameObject : DrawableGameComponent
     {
-        public bool isFlipped { get; set; }            // has the sprite been flipped?
-
-        //used to remove objects, it will be removed in next update
-        private bool toBeRemoved = false;
-        public bool ToBeRemoved
-        {
-            set { toBeRemoved = value; }
-        }
-
-        private String tag;
-        public String Tag
-        {
-            get { return tag; }
-
-        }
-
-        private Sprite sprite;
-        public Sprite Sprite
-        {
-            get { return sprite; }
-            set { sprite = value; }
-
-        }
-
-        private Collider collider;
-        public Collider Collider
-        {
-            get { return collider; }
-            set { collider = value; }
-
-        }
 
         /// <summary>
         /// Hides original Game to return a EnhancedGame class
@@ -53,51 +22,18 @@ namespace WheelChairGameLibrary
             get { return (GameEnhanced)base.Game; }
         }
 
-
-        private Vector2 velocity;
-        public Vector2 Velocity
+        private String tag;
+        public String Tag
         {
-            set { velocity = value; }
-            get { return velocity; }
+            get { return tag; }
+
         }
 
-        private Vector2 acceleration;
-        public Vector2 Acceleration
+        //used to remove objects, it will be removed in next update
+        private bool toBeRemoved = false;
+        public bool ToBeRemoved
         {
-            set { acceleration = value; }
-            get { return acceleration; }
-        }
-
-
-        // xna example stuff
-
-        /// <summary>
-        /// Gets or sets the position of the object.
-        /// Can only be set in instantiation
-        /// </summary>
-        private Vector2 position;
-        public Vector2 Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-
-
-
-        /// <summary>
-        /// Gets or sets the size of the object.
-        /// </summary>
-        public Vector2 Size { get; set; }
-
-        /// <summary>
-        /// Gets the KinectChooser from the services.
-        /// </summary>
-        public KinectChooser Chooser
-        {
-            get
-            {
-                return (KinectChooser)this.Game.Services.GetService(typeof(KinectChooser));
-            }
+            set { toBeRemoved = value; }
         }
 
         /// <summary>
@@ -120,74 +56,20 @@ namespace WheelChairGameLibrary
         }
 
         /// <summary>
-        /// return centerd position X or 0 if no spirte
+        /// Gets the KinectChooser from the services.
         /// </summary>
-        public float PositionCenterX
+        public KinectChooser Chooser
         {
             get
             {
-                if (Sprite == null)
-                    return 0;
-                return Position.X + Size.X / 2;
+                return (KinectChooser)this.Game.Services.GetService(typeof(KinectChooser));
             }
         }
 
-        /// <summary>
-        /// return centered positon y or 0 if no spirte
-        /// </summary>
-        public float PositionCenterY
-        {
-            get
-            {
-                if (Sprite == null)
-                    return 0;
-                return Position.Y + Size.Y / 2;
-            }
-        }
 
-        /// <summary>
-        /// return the ending X or 0 if no spirte
-        /// </summary>
-        public float PositionRightX
-        {
-            get
-            {
-                if (Sprite == null)
-                    return 0;
-                return Position.X + Size.X;
-            }
-        }
-
-        /// <summary>
-        /// return the ending Y or 0 if no spirte
-        /// </summary>
-        public float PositionBottomY
-        {
-            get
-            {
-                if (Sprite == null)
-                    return 0;
-                return Position.Y + Size.Y;
-            }
-        }
-
-        /// <summary>
-        /// Colliders must be instantiated inside constructor
-        /// Contend must be lodade inside load content (if added before the call of Game.Initialize), otherwise, check if content is loaded (as xnaBasics example)
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="tag"></param>
         public GameObject(GameEnhanced game, String tag)
             :base(game)
         {
-            position = new Vector2();
-            this.tag = tag;
-        }
-
-        public GameObject(Vector2 position, GameEnhanced game, String tag)
-            : base(game)
-        {
-            this.position = position;
             this.tag = tag;
         }
 
@@ -199,84 +81,6 @@ namespace WheelChairGameLibrary
                 Game.Components.Remove(this);
                 return;
             }
-
-
-            //Calculate physics
-
-            velocity += acceleration;
-
-            if (!isFlipped)
-                position += velocity;
-            else
-                position -= velocity;
-
-
-            /*if (!isFlipped)
-            {
-                if (velocity.X > 0 && acceleration.X > 0)
-                {
-                    acceleration.X = 0;
-                    velocity.X = 0;
-                }
-                if (velocity.Y > 0 && acceleration.Y > 0)
-                {
-                    acceleration.Y = 0;
-                    velocity.Y = 0;
-                }
-            }
-            else
-            {
-                if (velocity.X > 0 && acceleration.X > 0)
-                {
-                    acceleration.X = 0;
-                    velocity.X = 0;
-                }
-                if (velocity.Y > 0 && acceleration.Y > 0)
-                {
-                    acceleration.Y = 0;
-                    velocity.Y = 0;
-                }
-            }*/
-
-
-            base.Update(gameTime);
         }
-
-        public override void Draw(GameTime gameTime)
-        {
-            //if there is a sprite, draw it
-            if (sprite != null)
-                sprite.Draw(SharedSpriteBatch, gameTime);
-            base.Draw(gameTime);
-        }
-
-
-
-        /// <summary>
-        /// Called when an aniation in the Sprite reached it's end
-        /// </summary>
-        public virtual void endedAnimation() { }
-
-        
-        /// <summary>
-        /// Called when an Collider is inside it's collider element
-        /// </summary>
-        /// <param name="collider">The other collider</param>
-        public virtual void collisionEntered(Collider collider) { }
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        
-
     }
 }

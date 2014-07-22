@@ -150,9 +150,9 @@ namespace WheelChairGameLibrary
         void Components_ComponentAdded(object sender, GameComponentCollectionEventArgs e)
         {
             //add collider of the object to the collider list
-            if (typeof(GameObject).IsAssignableFrom(e.GameComponent.GetType()))
+            if (typeof(GameObject2D).IsAssignableFrom(e.GameComponent.GetType()))
             {
-                GameObject gameObject = (GameObject)e.GameComponent;
+                GameObject2D gameObject = (GameObject2D)e.GameComponent;
                 if (gameObject.Collider != null)
                     this.CollisionManager.addCollider(gameObject.Collider);
 
@@ -162,9 +162,9 @@ namespace WheelChairGameLibrary
         void Components_ComponentRemoved(object sender, GameComponentCollectionEventArgs e)
         {
             //removes the collider from the collider list
-            if (typeof(GameObject).IsAssignableFrom(e.GameComponent.GetType()))
+            if (typeof(GameObject2D).IsAssignableFrom(e.GameComponent.GetType()))
             {
-                GameObject gameObject = (GameObject)e.GameComponent;
+                GameObject2D gameObject = (GameObject2D)e.GameComponent;
                 if (gameObject.Collider != null)
                     this.CollisionManager.removeCollider(gameObject.Collider);
             }
@@ -183,10 +183,6 @@ namespace WheelChairGameLibrary
             this.whitePixel = LibContent.Load<Texture2D>("whitePixel");
             this.defaultFont = LibContent.Load<SpriteFont>("mainFont");
 
-
-            
-
-
             base.LoadContent();
         }
 
@@ -203,6 +199,17 @@ namespace WheelChairGameLibrary
         //TODO: add GraphicsDevicePreparingDeviceSettings from XnaBasicsGame
 
 
+        /// <summary>
+        /// Used to clean the components list when changing screens
+        /// </summary>
+        public void RemoveAllButEssentialComponents()
+        {
+            IEnumerable<IGameComponent> components = Components.Where(x => !typeof(CollisionManager).IsAssignableFrom(x.GetType()) && !typeof(KinectChooser).IsAssignableFrom(x.GetType()) && !typeof(InputState).IsAssignableFrom(x.GetType()));
+            while (components.Count() > 0)
+            {
+                Components.Remove(components.ElementAt(0));
 
+            }            
+        }
     }
 }
