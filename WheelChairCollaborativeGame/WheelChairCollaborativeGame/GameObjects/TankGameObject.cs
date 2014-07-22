@@ -25,8 +25,8 @@ namespace WheelChairCollaborativeGame
     {
         
 
-        private readonly int ATTACK_STANCE_Y = 360;
-        private readonly int DEFENCE_STANCE_Y = 380;
+        private readonly int ATTACK_STANCE_Y = 330;
+        private readonly int DEFENCE_STANCE_Y = 350;
 
         private bool isAttackStance = false;
 
@@ -43,7 +43,7 @@ namespace WheelChairCollaborativeGame
         {
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("PlayerA"),
                       0.5f);
-            Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, Config.resolution.Y - 100);
+            Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, Config.resolution.Y - 120);
 
             
 

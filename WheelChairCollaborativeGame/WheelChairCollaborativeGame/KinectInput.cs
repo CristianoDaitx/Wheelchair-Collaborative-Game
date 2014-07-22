@@ -33,11 +33,11 @@ namespace WheelChairCollaborativeGame
         private readonly int GRAPH2_NOT_PRESSED_Y = 695;
         private readonly int GRAPH3_PRESSED_Y = 670;
         private readonly int GRAPH3_NOT_PRESSED_Y = 680;
-        private readonly Vector2 ACTION_COUNT_POSITION = new Vector2(30, 20);
-        private readonly Vector2 ACTION_TIME_POSITION = new Vector2(30, 50);
-        private readonly Vector2 INPUT_METHOD_POSITION = new Vector2(30, 80);
-        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(30, 110);
-        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(30, 140);
+        private readonly Vector2 ACTION_COUNT_POSITION = new Vector2(30, 170);
+        private readonly Vector2 ACTION_TIME_POSITION = new Vector2(30, 200);
+        private readonly Vector2 INPUT_METHOD_POSITION = new Vector2(30, 230);
+        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(30, 280);
+        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(30, 310);
 
 
         private enum ControlSelect
@@ -407,12 +407,15 @@ namespace WheelChairCollaborativeGame
 
 
             //draw GUI text
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "Actions made:" + actionCountSync.ToString(), ACTION_COUNT_POSITION);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "Bullet Size:" + TimeSpan.FromMilliseconds(timePressedSync).Seconds.ToString(), ACTION_TIME_POSITION);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "Input method: " + controlSelect.ToString(), INPUT_METHOD_POSITION);
+            if (Game.IsDebugMode)
+            {
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                            "Actions made:" + actionCountSync.ToString(), ACTION_COUNT_POSITION);
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                            "Bullet Size:" + TimeSpan.FromMilliseconds(timePressedSync).Seconds.ToString(), ACTION_TIME_POSITION);
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                            "Input method: " + controlSelect.ToString(), INPUT_METHOD_POSITION);
+            }
 
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                 "Player One: " + (skeletonPlayerTank == null ? "Not Tracked" : "Tracked"), PLAYER1_TRACKING_POSITION);
@@ -422,9 +425,9 @@ namespace WheelChairCollaborativeGame
             if (controlSelect == ControlSelect.Side && Game.IsDebugMode)
             {
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Joint One Velocity (m/s): " + triggerDouble.JointOneVelocity, new Vector2(30, 200));
+                    "Joint One Velocity (m/s): " + triggerDouble.JointOneVelocity, new Vector2(30, 350));
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Joint Two Velocity (m/s): " + triggerDouble.JointTwoVelocity, new Vector2(30, 230));
+                    "Joint Two Velocity (m/s): " + triggerDouble.JointTwoVelocity, new Vector2(30, 380));
             }
 
             if (Game.IsDebugMode)

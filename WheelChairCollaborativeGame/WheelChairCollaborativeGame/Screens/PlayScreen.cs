@@ -7,6 +7,7 @@ using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using WheelChairCollaborativeGame.GameObjects;
 
 namespace WheelChairCollaborativeGame
 {
@@ -36,16 +37,24 @@ namespace WheelChairCollaborativeGame
 
         protected override void LoadContent()
         {
+            Game.Components.Add(new Planet(Game, "Planet"));
+
             TankGameObject playerTank = new TankGameObject(Game, "playerTank");
             Game.Components.Add(playerTank);
 
             KinectInput kinectInput = new KinectInput(Game, "kinectInput");
             Game.Components.Add(kinectInput);
 
-
-
             Background background = new Background(Game, 100);
             Game.Components.Add(background);
+
+            HumanCharacter humanCharacter = new HumanCharacter(Game, "HumanCharacter");
+            Game.Components.Add(humanCharacter);
+            AlienCharacter alienCharacter = new AlienCharacter(Game, "AlienCharacter");
+            Game.Components.Add(alienCharacter);
+
+            
+
 
             backgroundSong = Game.Content.Load<Song>("AsteroidDance");
             base.LoadContent();
@@ -56,7 +65,7 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
 
-                        "Timer: " + string.Format("{0:mm\\:ss}", countdown), new Vector2(30, 300));
+                        string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30));
 
             SharedSpriteBatch.End();
             base.Draw(gameTime);

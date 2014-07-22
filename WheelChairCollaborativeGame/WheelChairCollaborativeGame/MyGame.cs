@@ -45,16 +45,10 @@ namespace WheelChairCollaborativeGame
         public MyGame()
         {
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
-            this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;           
-        }
+            this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
 
-        /// <summary>
-        /// Add items to Components
-        /// </summary>
-        protected override void Initialize()
-        {
-            base.Initialize();
-            ActiveScreen = new SplashScreen(this, "SplashScreen");
+            //ActiveScreen = new SplashScreen(this, "SplashScreen");
+            ActiveScreen = new PlayScreen(this, "PlayScreen");
         }
 
         /// <summary>

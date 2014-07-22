@@ -25,10 +25,12 @@ namespace WheelChairCollaborativeGame
             : base(startingPosition, game, tag)
         {
             //this.Position = startingPosition;
-            this.Size = new Vector2(8, 8);
+            //this.Size = new Vector2(8, 8);
             Collider = new Collider(this);
 
             Velocity = new Vector2(0, -3);
+
+            Position = new Vector2(Position.X - 6, Position.Y - 10);
         }
 
         protected override void LoadContent()

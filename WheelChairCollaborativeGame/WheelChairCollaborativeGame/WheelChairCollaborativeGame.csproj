@@ -118,10 +118,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\AlienCharacter.cs" />
+    <Compile Include="GameObjects\Planet.cs" />
     <Compile Include="GameObjects\Enemies\AvarageEnemy.cs" />
     <Compile Include="GameObjects\Background.cs" />
     <Compile Include="GameObjects\BallGameObject.cs" />
     <Compile Include="GameObjects\Explosions\BigExplosionGameObject.cs" />
+    <Compile Include="GameObjects\HumanCharacter.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\IntroScreen.cs" />
