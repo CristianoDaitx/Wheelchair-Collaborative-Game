@@ -105,7 +105,6 @@ namespace WheelChairCollaborativeGame
             {
                 if (timeRan.Seconds == 0)
                 {
-                    Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
                 }
 
