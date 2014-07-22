@@ -35,24 +35,25 @@ namespace WheelChairCollaborativeGame
             //TODO adjust spritesheet
             Sprite.ActiveSpriteAnimation = (new SpriteAnimation(20,
                     new SpriteAnimationData[] {
-                        new SpriteAnimationData(0, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(0, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(24, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(24, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(48, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(48, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(72, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(72, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(96, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(96, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(120, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(120, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(144, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(144, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(168, 0, 24, 28, 0, 0),
-                        new SpriteAnimationData(168, 28, 24, 28, 0, 0),
-                        new SpriteAnimationData(192, 0, 24, 28, 0, 0)}
+                        new SpriteAnimationData(0, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(0, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(24, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(24, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(48, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(48, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(72, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(72, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(96, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(96, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(120, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(120, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(144, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(144, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(168, 0, 23, 27, 0, 0),
+                        new SpriteAnimationData(168, 28, 23, 27, 0, 0),
+                        new SpriteAnimationData(192, 0, 23, 27, 0, 0)}
                 ));
+
 
             this.Position = new Vector2(this.Position.X - base.Size.X/2, this.Position.Y - base.Size.Y / 2);
 

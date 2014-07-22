@@ -44,6 +44,7 @@ namespace WheelChairCollaborativeGame
                         new SpriteAnimationData(204, 84, 12, 14, 0, 0),
                         new SpriteAnimationData(216, 84, 12, 14, 0, 0)}
                 ));
+            this.Position = new Vector2(this.Position.X - 3, this.Position.Y);
         }
 
         public override void endedAnimation()
