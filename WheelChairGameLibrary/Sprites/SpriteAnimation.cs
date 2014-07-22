@@ -22,10 +22,15 @@ namespace WheelChairGameLibrary.Sprites
 
         private int states;
         private int actualState;
+        public int ActualState
+        {
+            get { return actualState; }
+        }
+        public bool AutoChangeState {get;set;}
 
         private bool changeState = false;
 
-        private bool isActive;
+        //private bool isActive;
         
 
         private double timer = 0;
@@ -35,17 +40,19 @@ namespace WheelChairGameLibrary.Sprites
         {
             this.animationDatas = animationDatas;
             this.states = animationDatas.GetLength(0);
-            isActive = true;
+            //isActive = true;
             actualState = 0;
+            AutoChangeState = true;
         }
 
         public SpriteAnimation( double timeInterval, SpriteAnimationData[] animationDatas)
         {
             this.animationDatas = animationDatas;
             this.states = animationDatas.GetLength(0);
-            isActive = true;
+            //isActive = true;
             actualState = 0;
             this.timeInterval = timeInterval;
+            AutoChangeState = true;
         }
 
 
@@ -74,11 +81,8 @@ namespace WheelChairGameLibrary.Sprites
                 return animationDatas[states-1];
                 
             }
-            isNextState();
-            /*if (isNextState())
-                endedAnimation = true;
-            else
-                endedAnimation = false;*/
+            if (AutoChangeState)
+                isNextState();
             
             return animationDatas[actualState];
         }
@@ -102,8 +106,8 @@ namespace WheelChairGameLibrary.Sprites
         {
             //bool endedAnimation = false;
 
-            if (isActive)
-            {
+            //if (isActive)
+            //{
                 timer += gameTime.ElapsedGameTime.TotalMilliseconds;
                 if (timer >= timeInterval)
                 {
@@ -112,7 +116,7 @@ namespace WheelChairGameLibrary.Sprites
                     //actualState++;
                 }
                 
-            }
+            //}
 
             //return endedAnimation;
         }
@@ -130,17 +134,17 @@ namespace WheelChairGameLibrary.Sprites
                 actualState += states;
         }
 
-        public bool getIsActive() {return isActive;}
+        //public bool getIsActive() {return isActive;}
 
-        public void setIsActive(bool active)
+        /*public void setIsActive(bool active)
         {
             /*if (!isActive && active)
             {
                 timer = 0;
                 actualState = 0;
-            }*/
+            }* /
             isActive = active;
-           }
+           }**/
         
     }
 }

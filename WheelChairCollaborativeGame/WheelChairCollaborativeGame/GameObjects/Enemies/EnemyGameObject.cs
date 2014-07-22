@@ -84,15 +84,16 @@ namespace WheelChairCollaborativeGame
                 if (0 == life)
                 {
                     ToBeRemoved = true;
-                    
-                    Game.Components.Add(new BigExplosionGameObject(new Vector2(PositionCenterX,this.PositionCenterY  ), Game));
 
+                    die();
                     
                     explosionSound.Play();
                 }
                 
             }
         }
+
+        protected abstract void die();
 
     }
 }

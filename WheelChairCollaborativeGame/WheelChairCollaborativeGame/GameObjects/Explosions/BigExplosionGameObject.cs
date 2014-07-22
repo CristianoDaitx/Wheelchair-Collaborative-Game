@@ -18,17 +18,19 @@ namespace WheelChairCollaborativeGame
 {
     class BigExplosionGameObject : GameObject2D
     {
+        private float scale;
 
-        public BigExplosionGameObject(Vector2 startingPosition, GameEnhanced game)
+        public BigExplosionGameObject(Vector2 startingPosition, GameEnhanced game, float scale)
             : base(startingPosition, game, "Explosion")
         {
-
+            this.scale = scale;
         }
+
 
         protected override void LoadContent()
         {
             base.LoadContent();
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("explosions"), 3f);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("explosions"), scale);
 
             //TODO adjust spritesheet
             Sprite.ActiveSpriteAnimation = (new SpriteAnimation(20,
@@ -52,9 +54,7 @@ namespace WheelChairCollaborativeGame
                         new SpriteAnimationData(192, 0, 24, 28, 0, 0)}
                 ));
 
-
-            //TODO it should not be hardcoded
-            this.Position = new Vector2(this.Position.X - 12 * 3, this.Position.Y - 14 * 3);
+            this.Position = new Vector2(this.Position.X - base.Size.X/2, this.Position.Y - base.Size.Y / 2);
 
         }
 

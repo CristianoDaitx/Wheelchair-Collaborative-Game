@@ -58,14 +58,28 @@ namespace WheelChairGameLibrary
             get { return position; }
             set { position = value; }
         }
-        
+
 
         /// <summary>
         /// Gets or sets the size of the object.
         /// </summary>
-        public Vector2 Size { get; set; }
+        private Vector2 size;
+        public Vector2 Size
+        {
+            get
+            {
+                if (Sprite.ActiveSpriteAnimation != null)
+                {
+                    SpriteAnimationData spriteAnimationData = Sprite.ActiveSpriteAnimation.getAnimationData();
+                    return new Vector2(spriteAnimationData.sourceRectangle.Width * Sprite.scale, spriteAnimationData.sourceRectangle.Height * Sprite.scale);
+                }
+                else
+                    return size;
+            }
+            set { size = value; }
+        }
 
-        
+
         /// <summary>
         /// return centerd position X or 0 if no spirte
         /// </summary>

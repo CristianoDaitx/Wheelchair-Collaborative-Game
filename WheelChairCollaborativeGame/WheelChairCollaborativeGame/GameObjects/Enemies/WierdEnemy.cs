@@ -49,5 +49,10 @@ namespace WheelChairCollaborativeGame
                 if (Math.Abs(Velocity.X) > 2)
                     this.Acceleration = new Vector2(-this.Acceleration.X, 0);
         }
+
+        protected override void die()
+        {
+            Game.Components.Add(new BigExplosionGameObject(new Vector2(PositionCenterX, this.PositionCenterY), Game, 3));
+        }
     }
 }
