@@ -35,7 +35,7 @@ namespace WheelChairCollaborativeGame
             base.LoadContent();
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("HardEnemyA"),
                      2f);
-            Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, 0);
+            Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, - Size.Y);
         }
 
         public override void Update(GameTime gameTime)

@@ -40,6 +40,8 @@ namespace WheelChairCollaborativeGame
         public Background(GameEnhanced game, int Intensity)
             : base(game, "background")
         {
+            DrawOrder--;
+            DrawOrder--;
             _Intensity = Intensity;
             _Stars = new List<Star>();
             _Random = new Random(DateTime.Now.Millisecond);

@@ -32,7 +32,7 @@ namespace WheelChairCollaborativeGame.GameObjects
             base.Draw(gameTime);
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "Shields will be\nup at 1:30!", new Vector2(900, 50));
+                        "Shields will be\nup at 1:30!", new Vector2(900, 75));
             SharedSpriteBatch.End();
         }
     }

@@ -31,7 +31,7 @@ namespace WheelChairCollaborativeGame.GameObjects
             base.Draw(gameTime);
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "Look!\nBaby aliens!", new Vector2(200, 50));
+                        "Look!\nBaby aliens!", new Vector2(200, 75));
             SharedSpriteBatch.End();
         }
     }

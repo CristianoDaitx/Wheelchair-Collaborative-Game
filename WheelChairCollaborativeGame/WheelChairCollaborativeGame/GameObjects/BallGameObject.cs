@@ -18,6 +18,7 @@ namespace WheelChairCollaborativeGame
 {
     class BallGameObject : GameObject2D
     {
+        private readonly int MAX_Y_TO_SURVIVE = 100;
 
         SoundEffect hit;
 
@@ -44,7 +45,7 @@ namespace WheelChairCollaborativeGame
         {
             base.Update(gameTime);
 
-            if (Position.Y < 10)
+            if (Position.Y < MAX_Y_TO_SURVIVE)
             {
                 //Game.Components.Remove(this);
                 ToBeRemoved = true;

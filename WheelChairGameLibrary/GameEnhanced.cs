@@ -97,7 +97,7 @@ namespace WheelChairGameLibrary
         private readonly ContentManager LibContent;
 
 
-        private bool isDebugMode = true;
+        private bool isDebugMode = false;
         public bool IsDebugMode
         {
             get { return isDebugMode; }

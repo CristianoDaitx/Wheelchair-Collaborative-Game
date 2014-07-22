@@ -36,8 +36,10 @@ namespace WheelChairCollaborativeGame
         private readonly Vector2 ACTION_COUNT_POSITION = new Vector2(30, 170);
         private readonly Vector2 ACTION_TIME_POSITION = new Vector2(30, 200);
         private readonly Vector2 INPUT_METHOD_POSITION = new Vector2(30, 230);
-        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(30, 280);
-        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(30, 310);
+        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(30, 500);
+        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(1000, 500);
+        private readonly Vector2 JOINT_ONE_VELOCITY_POSITION = new Vector2(30, 350);
+        private readonly Vector2 JOINT_TWO_VELOCITY_POSITION = new Vector2(30, 380);
 
 
         private enum ControlSelect
@@ -108,8 +110,6 @@ namespace WheelChairCollaborativeGame
             // finds the tank game object
             tankGameObject = (TankGameObject)Game.Components.FirstOrDefault(x => x.GetType() == typeof(TankGameObject) && ((TankGameObject)x).Tag == "playerTank");
 
-
-
         }
 
         void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
@@ -176,7 +176,7 @@ namespace WheelChairCollaborativeGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
+            
             PlayerIndex playerIndex1 = PlayerIndex.One;
             PlayerIndex playerIndex2 = PlayerIndex.Two;
 
@@ -416,18 +416,19 @@ namespace WheelChairCollaborativeGame
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                             "Input method: " + controlSelect.ToString(), INPUT_METHOD_POSITION);
             }
-
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                "Player One: " + (skeletonPlayerTank == null ? "Not Tracked" : "Tracked"), PLAYER1_TRACKING_POSITION);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                "Player Two: " + (skeletonPlayerSoldier == null ? "Not Tracked" : "Tracked"), PLAYER2_TRACKING_POSITION);
+            if (skeletonPlayerTank == null && controlSelect != ControlSelect.Joystick)
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                    "Player One not tracked!", PLAYER1_TRACKING_POSITION);
+            if (skeletonPlayerSoldier == null && controlSelect != ControlSelect.Joystick)
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                    "Player Two not tracked!", PLAYER2_TRACKING_POSITION);
 
             if (controlSelect == ControlSelect.Side && Game.IsDebugMode)
             {
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Joint One Velocity (m/s): " + triggerDouble.JointOneVelocity, new Vector2(30, 350));
+                    "Joint One Velocity (m/s): " + triggerDouble.JointOneVelocity, JOINT_ONE_VELOCITY_POSITION);
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Joint Two Velocity (m/s): " + triggerDouble.JointTwoVelocity, new Vector2(30, 380));
+                    "Joint Two Velocity (m/s): " + triggerDouble.JointTwoVelocity, JOINT_TWO_VELOCITY_POSITION);
             }
 
             if (Game.IsDebugMode)

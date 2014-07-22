@@ -15,16 +15,16 @@ namespace WheelChairCollaborativeGame
     {
         private Song backgroundSong;
 
-        private bool gameOver = false;
         private TimeSpan timeRan;
-        private TimeSpan maxTime = TimeSpan.FromMilliseconds(120000);
+        private TimeSpan maxTime = TimeSpan.FromSeconds(120);
         private int lastSecond = -1;
         private TimeSpan countdown;
 
         public PlayScreen(GameEnhanced game, string tag)
             : base(game, tag)
         {
-
+            DrawOrder++;
+            timeRan = new TimeSpan();
         }
 
         public override void Initialize()
@@ -37,24 +37,21 @@ namespace WheelChairCollaborativeGame
 
         protected override void LoadContent()
         {
+            Background background = new Background(Game, 100);
+            Game.Components.Add(background);
+
             Game.Components.Add(new Planet(Game, "Planet"));
 
             TankGameObject playerTank = new TankGameObject(Game, "playerTank");
             Game.Components.Add(playerTank);
 
             KinectInput kinectInput = new KinectInput(Game, "kinectInput");
-            Game.Components.Add(kinectInput);
-
-            Background background = new Background(Game, 100);
-            Game.Components.Add(background);
+            Game.Components.Add(kinectInput);       
 
             HumanCharacter humanCharacter = new HumanCharacter(Game, "HumanCharacter");
             Game.Components.Add(humanCharacter);
             AlienCharacter alienCharacter = new AlienCharacter(Game, "AlienCharacter");
             Game.Components.Add(alienCharacter);
-
-            
-
 
             backgroundSong = Game.Content.Load<Song>("AsteroidDance");
             base.LoadContent();
@@ -64,8 +61,7 @@ namespace WheelChairCollaborativeGame
         {
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-
-                        string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30));
+                        string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30), 1.5f);
 
             SharedSpriteBatch.End();
             base.Draw(gameTime);
@@ -84,13 +80,10 @@ namespace WheelChairCollaborativeGame
 
             //session time
 
-            if (timeRan > maxTime && !gameOver)
+            if (timeRan > maxTime)
             {
-                gameOver = true;
-                Console.WriteLine("Game Over!");
-
+                Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
                 return;
-                // Change state
             }
 
             addEnemies();

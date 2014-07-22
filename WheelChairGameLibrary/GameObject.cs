@@ -71,6 +71,7 @@ namespace WheelChairGameLibrary
             :base(game)
         {
             this.tag = tag;
+            DrawOrder = 10;
         }
 
         public override void Update(GameTime gameTime)

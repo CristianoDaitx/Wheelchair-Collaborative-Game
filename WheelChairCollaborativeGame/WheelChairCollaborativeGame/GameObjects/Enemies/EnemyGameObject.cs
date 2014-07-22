@@ -23,7 +23,6 @@ namespace WheelChairCollaborativeGame
 {
     abstract class EnemyGameObject : GameObject2D
     {
-        protected static readonly int BORDER_STARTING_POSITION_Y = 20;
         private static readonly int REAMINING_Y_TO_LEAVE = 250;
 
         private SoundEffect explosionSound;
@@ -36,11 +35,13 @@ namespace WheelChairCollaborativeGame
             : base(position, game, tag)
         {
             Collider = new Collider(this);
+            DrawOrder--;
         }
         public EnemyGameObject(GameEnhanced game, String tag)
             : base(game, tag)
         {
             Collider = new Collider(this);
+            DrawOrder--;
         }
 
         protected override void LoadContent()
