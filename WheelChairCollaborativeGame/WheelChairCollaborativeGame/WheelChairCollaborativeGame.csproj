@@ -119,6 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameObjects\AlienCharacter.cs" />
+    <Compile Include="GameObjects\Enemies\MenuEnemy.cs" />
+    <Compile Include="GameObjects\MainMenuAlien.cs" />
     <Compile Include="GameObjects\Planet.cs" />
     <Compile Include="GameObjects\Enemies\AvarageEnemy.cs" />
     <Compile Include="GameObjects\Background.cs" />

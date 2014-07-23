@@ -75,7 +75,7 @@ namespace WheelChairCollaborativeGame
 
             PlayerIndex playerIndex;
 
-            timeRan += gameTime.ElapsedGameTime;
+            
             countdown = (maxTime - timeRan);
 
             //session time
@@ -86,7 +86,7 @@ namespace WheelChairCollaborativeGame
                 return;
             }
 
-            addEnemies();
+            addEnemies(gameTime);
 
 
             if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
@@ -99,8 +99,10 @@ namespace WheelChairCollaborativeGame
         /// <summary>
         /// scripted add of enemies
         /// </summary>
-        private void addEnemies()
+        private void addEnemies(GameTime gameTime)
         {
+            timeRan += gameTime.ElapsedGameTime;
+
             if (timeRan.Seconds != lastSecond) // the second has changed
             {
                 if (timeRan.Seconds == 0)

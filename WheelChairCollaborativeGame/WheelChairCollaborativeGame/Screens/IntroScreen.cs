@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using Microsoft.Xna.Framework.Input;
+using WheelChairCollaborativeGame.GameObjects;
 
 namespace WheelChairCollaborativeGame
 {
@@ -17,14 +18,24 @@ namespace WheelChairCollaborativeGame
         {
         }
 
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+            Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
+        }
+
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
 
-                        "Fellow aliens!\n Humans have wrecked their planet and are now coming for us!\nWe mus keep them from landing on our planet, \n but security shields are dwon\n" +
-                        "\n You have armed space-ships, use them wisely to protect our loved families!", new Vector2(30, 30));
+                        "Fellow aliens!"+
+                        "\nHumans have wrecked their planet and are now coming for us!"+
+                        "\nWe must keep them from landing on our planet,"+
+                        "\nbut security shields are dwon" +
+                        "\nYou have armed space-ships,"+
+                        "\nuse them wisely to protect our loved families!", new Vector2(450, 300));
             SharedSpriteBatch.End();
         }
 

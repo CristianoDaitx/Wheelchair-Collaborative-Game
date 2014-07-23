@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using Microsoft.Xna.Framework.Input;
+using WheelChairCollaborativeGame.GameObjects;
 
 namespace WheelChairCollaborativeGame
 {
@@ -17,13 +18,20 @@ namespace WheelChairCollaborativeGame
         {
         }
 
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+            Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
+        }
+
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-
-                        "Fellow aliens!\n We have successgully defended...", new Vector2(30, 300));
+                        "        Fellow aliens!\nWe have successgully defended"+
+            "\nour civilization and have caugth X humans"+
+            "\nthaks to your support.", new Vector2(450, 300));
             SharedSpriteBatch.End();
         }
 
