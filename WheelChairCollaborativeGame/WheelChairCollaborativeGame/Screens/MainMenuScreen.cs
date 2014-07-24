@@ -23,6 +23,7 @@ namespace WheelChairCollaborativeGame
         private int lastSecond = -1;
 
         private static SpriteFont spriteFont;
+        private static SpriteFont spriteFont2;
 
         public MainMenuScreen(GameEnhanced game, string tag)
             : base(game, tag)
@@ -36,7 +37,8 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(new Background(Game, 50));
 
             Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
-            spriteFont = Game.Content.Load<SpriteFont>(@"SpriteFont1");
+            spriteFont = Game.Content.Load<SpriteFont>(@"SpriteFont2");
+            spriteFont2 = Game.Content.Load<SpriteFont>(@"SpriteFont3");
         }
 
         public override void Draw(GameTime gameTime)
@@ -44,12 +46,12 @@ namespace WheelChairCollaborativeGame
             base.Draw(gameTime);
             SharedSpriteBatch.Begin();
 
-            SharedSpriteBatch.DrawString(spriteFont, "Human\nInvasion", new Vector2(550, 200), Color.White, MathHelper.ToRadians(-10), new Vector2(0, 0), 2, SpriteEffects.None, 0);
+            SharedSpriteBatch.DrawString(spriteFont, "Human\nInvasion", new Vector2(450, 200), Color.White, MathHelper.ToRadians(-10), new Vector2(0, 0), 1, SpriteEffects.None, 0);
 
-            SharedSpriteBatch.DrawString(spriteFont, "Start", MENU_START_POSTION, (0 == menuSelected ? Color.Yellow : Color.White));
-            SharedSpriteBatch.DrawString(spriteFont, "Tutorial", MENU_START_POSTION + MENU_SPACING, (1 == menuSelected ? Color.Yellow : Color.White));
-            SharedSpriteBatch.DrawString(spriteFont, "Settings", MENU_START_POSTION + MENU_SPACING * 2, (2 == menuSelected ? Color.Yellow : Color.White));
-            SharedSpriteBatch.DrawString(spriteFont, "Exit", MENU_START_POSTION + MENU_SPACING * 3, (3 == menuSelected ? Color.Yellow : Color.White));
+            SharedSpriteBatch.DrawString(spriteFont2, "Start", MENU_START_POSTION, (0 == menuSelected ? Color.Yellow : Color.White));
+            SharedSpriteBatch.DrawString(spriteFont2, "Tutorial", MENU_START_POSTION + MENU_SPACING, (1 == menuSelected ? Color.Yellow : Color.White));
+            SharedSpriteBatch.DrawString(spriteFont2, "Settings", MENU_START_POSTION + MENU_SPACING * 2, (2 == menuSelected ? Color.Yellow : Color.White));
+            SharedSpriteBatch.DrawString(spriteFont2, "Exit", MENU_START_POSTION + MENU_SPACING * 3, (3 == menuSelected ? Color.Yellow : Color.White));
 
             SharedSpriteBatch.End();
         }

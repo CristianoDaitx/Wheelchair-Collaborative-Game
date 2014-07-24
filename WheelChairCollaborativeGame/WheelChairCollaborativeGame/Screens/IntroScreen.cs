@@ -33,7 +33,7 @@ namespace WheelChairCollaborativeGame
                         "Fellow aliens!"+
                         "\nHumans have wrecked their planet and are now coming for us!"+
                         "\nWe must keep them from landing on our planet,"+
-                        "\nbut security shields are dwon" +
+                        "\nbut security shields are down" +
                         "\nYou have armed space-ships,"+
                         "\nuse them wisely to protect our loved families!", new Vector2(450, 300));
             SharedSpriteBatch.End();

@@ -566,7 +566,7 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
-            movementFrontTank.MaxActiveTimeMiliseconds = 1000;
+            movementFrontTank.MaxActiveTimeMiliseconds = 150;
             Game.Components.Add(movementFrontTank);
 
             // Movement side
@@ -592,7 +592,7 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
-            movementFrontSoldier.MaxActiveTimeMiliseconds = 1000;
+            movementFrontSoldier.MaxActiveTimeMiliseconds = 150;
             Game.Components.Add(movementFrontSoldier);
 
             movementSideSoldier = new KinectMovement(Game,
