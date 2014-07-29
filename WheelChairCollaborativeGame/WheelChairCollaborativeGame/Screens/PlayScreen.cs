@@ -18,6 +18,7 @@ namespace WheelChairCollaborativeGame
         private TimeSpan timeRan;
         private TimeSpan maxTime = TimeSpan.FromSeconds(120);
         private int lastSecond = -1;
+        private int lastSecond2 = -1;
         private TimeSpan countdown;
         public int Score;
         public int Invaders;
@@ -108,7 +109,10 @@ namespace WheelChairCollaborativeGame
 
 
             if (!timeExpired)
+            {
+                addExplosion(gameTime);
                 addEnemies(gameTime);
+            }
             else
             {
                 timeRanInExpiredTime += gameTime.ElapsedGameTime;
@@ -174,7 +178,7 @@ namespace WheelChairCollaborativeGame
                 if (timeRan.Seconds == 5)
                 {
                     Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
-                    Game.Components.Add(new AlienCharacter("Lets defend\nwhile auto-pilot is\nnot fixed!", Game, "AlienCharacter"));
+                    Game.Components.Add(new AlienCharacter("Lets defend\nwhile the shields is\nnot fixed!", Game, "AlienCharacter"));
                 }
 
                 if (timeRan.Seconds == 20)
@@ -191,7 +195,7 @@ namespace WheelChairCollaborativeGame
 
                 if (timeRan.Seconds == 29)
                 {
-                    Game.Components.Add(new AlienCharacter("Shields will be\nup at 1:30!", Game, "AlienCharacter"));
+                    Game.Components.Add(new AlienCharacter("Shields will be\nup in 1:30!", Game, "AlienCharacter"));
                 }
 
                 if (timeRan.Seconds == 30)
@@ -244,6 +248,98 @@ namespace WheelChairCollaborativeGame
 
 
                 lastSecond = timeRan.Seconds;
+
+            }
+        }
+
+        private void addExplosion(GameTime gameTime)
+        {
+            
+
+            if (timeRan.Seconds != lastSecond2) // the second has changed
+            {
+
+                if (timeRan.Seconds == 20)
+                {
+                    if(Invaders > 50)
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(550,650), Game, 2));
+                }
+                
+                if (timeRan.Seconds == 35)
+                {
+                    if(Invaders > 100){
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(500,680), Game, 2));
+                    }
+                }
+                if (timeRan.Seconds == 38)
+                {
+                    if (Invaders > 100)
+                    {
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(500, 680), Game, 2));
+                    }
+                }
+               
+                if (timeRan.Seconds == 55)
+                {
+                    if (Invaders > 150)
+                    {
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(550, 660), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(500, 680), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(600, 675), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(450, 680), Game, 2));
+                    }
+                }
+                /*
+               if (timeRan.Seconds == 30)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
+               }
+
+               if (timeRan.Seconds == 31)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
+               }
+
+               if (timeRan.Seconds == 35)
+               {
+                   Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
+               }
+
+               if (timeRan.Seconds == 36)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+               }
+
+               if (timeRan.Seconds == 37)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+               }
+               if (timeRan.Seconds == 38)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+               }
+
+               if (timeRan.Seconds == 39)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                   Game.Components.Add(new HumanCharacter("Keep going!", Game, "HumanCharacter"));
+               }
+               if (timeRan.Seconds == 40)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+               }
+               if (timeRan.Seconds == 41)
+               {
+                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+               }
+
+               if (timeRan.Seconds == 53)
+               {
+                   Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
+               }
+              */
+
+                lastSecond2 = timeRan.Seconds;
 
             }
         }
