@@ -62,6 +62,8 @@ namespace WheelChairCollaborativeGame
         {
             //Game.Components.Remove(this);
             //GameObjectManager.removeGameObject(this);
+            if (collider.GameObject.GetType() ==  typeof(BallGameObject))
+                return;
             ToBeRemoved = true;
             hit.Play();
             Game.Components.Add(new ExplosionGameObject(this.Position, Game));

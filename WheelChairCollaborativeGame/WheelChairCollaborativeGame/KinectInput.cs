@@ -24,7 +24,7 @@ namespace WheelChairCollaborativeGame
     class KinectInput : GameObject
     {
 
-        private SoundEffect fireSoundEffect;
+        
 
         // Position constants
         private readonly int GRAPH1_PRESSED_Y = 700;
@@ -115,7 +115,8 @@ namespace WheelChairCollaborativeGame
         void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
             actionCountSync++;
-            Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+            tankGameObject.fire();
+
 
         }
 
@@ -136,7 +137,7 @@ namespace WheelChairCollaborativeGame
                 if (movementFrontSoldier.isOn() || controlSelect == ControlSelect.FrontAssyncronous)
                 {
                     actionCountSync++;
-                    Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+                    tankGameObject.fire();
                 }
             }
 
@@ -148,7 +149,7 @@ namespace WheelChairCollaborativeGame
                 if (movementFrontTank.isOn() || controlSelect == ControlSelect.FrontAssyncronous)
                 {
                     actionCountSync++;
-                    Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+                    tankGameObject.fire();
                 }
             }
         }
@@ -202,9 +203,8 @@ namespace WheelChairCollaborativeGame
             //allow to shot with spacebar if in debug mode
             //if (Game.IsDebugMode)
             if (inputState.IsKeyPressed(Keys.Space, playerIndex1, out playerIndex1))
-            {
-                fireSoundEffect.Play();
-                Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+            {                
+                tankGameObject.fire();
             }
 
 
@@ -310,7 +310,7 @@ namespace WheelChairCollaborativeGame
                             {
                                 actionCountSync++;
                                 //add ball
-                                Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+                                tankGameObject.fire();
                             }
                         }
 
@@ -325,7 +325,7 @@ namespace WheelChairCollaborativeGame
                             {
                                 actionCountSync++;
                                 //add ball
-                                Game.Components.Add(new BallGameObject(tankGameObject.Position + new Vector2(tankGameObject.Size.X / 2, 0), Game, "ball"));
+                                tankGameObject.fire();
                             }
                         }
                         if (inputState.IsButtonReleased(Buttons.A, playerIndex2, out playerIndex2))
@@ -547,9 +547,7 @@ namespace WheelChairCollaborativeGame
         }
 
         protected override void LoadContent()
-        {
-            fireSoundEffect = Game.Content.Load<SoundEffect>("shoot");
-
+        {       
             currentPrimitive = new SpherePrimitive(Game.GraphicsDevice, KinectTriggerSingle.JOINT_DEFAULT_RADIUS, 8);
 
             // Movement tank

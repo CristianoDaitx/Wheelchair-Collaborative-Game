@@ -23,6 +23,14 @@ namespace WheelChairCollaborativeGame
 {
     class TankGameObject : GameObject2D
     {
+        private readonly int POSITION_ENERGY_X = 30;
+        private readonly int POSITION_ENERGY_Y = 690;
+        private readonly int HEIGHT_ENERGY_X = 20;
+        private readonly int WIDTH_ENERGY_X = 250;
+
+        private readonly int MAX_ENERGY = 100;
+        private readonly int SHOT_COST = 10;
+        private readonly float ENERGY_RECHARGE = 0.15f;
 
         private readonly Vector2 MAX_VELOCITY = new Vector2(1, 0.5f);
         private readonly float ACCELERATION_X = 0.015f;
@@ -37,13 +45,19 @@ namespace WheelChairCollaborativeGame
             get { return Config.resolution.X / 2 + WIDTH_POSITION_CONSTANT_SPEED; }
         }
 
+        private SoundEffect fireSoundEffect;
+
+        private float energy;
+
+
         private double time = 0;
 
         public TankGameObject(GameEnhanced game, String tag)
-            : base( game, tag)
+            : base(game, tag)
         {
             Velocity = MAX_VELOCITY;
             Acceleration = new Vector2(0, -0.005f);
+            energy = 100;
         }
 
         protected override void LoadContent()
@@ -51,9 +65,20 @@ namespace WheelChairCollaborativeGame
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("PlayerA"), 0.5f);
             Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, Config.resolution.Y - 120);
 
-            
+            fireSoundEffect = Game.Content.Load<SoundEffect>("shoot");
 
             base.LoadContent();
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);            
+            SharedSpriteBatch.Begin();
+            
+            PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, WIDTH_ENERGY_X, HEIGHT_ENERGY_X), Color.Black, true);
+            PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.CornflowerBlue, true);
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Energy", new Vector2(POSITION_ENERGY_X, POSITION_ENERGY_Y));
+            SharedSpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
@@ -63,11 +88,14 @@ namespace WheelChairCollaborativeGame
 
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
 
+            energy += ENERGY_RECHARGE;
+            if (energy > MAX_ENERGY)
+                energy = MAX_ENERGY;
 
             //Position.Y += 0.0001f;
 
 
-            if (Math.Abs(Velocity.Y) >MAX_VELOCITY.Y)
+            if (Math.Abs(Velocity.Y) > MAX_VELOCITY.Y)
             {
                 Acceleration = new Vector2(Acceleration.X, -Acceleration.Y);
             }
@@ -84,6 +112,17 @@ namespace WheelChairCollaborativeGame
             if (PositionCenterX > MaxRight)
             {
                 Acceleration = new Vector2(-ACCELERATION_X, Acceleration.Y);
+            }
+        }
+
+
+        public void fire()
+        {
+            if (energy >= SHOT_COST)
+            {
+                Game.Components.Add(new BallGameObject(Position + new Vector2(Size.X / 2, 0), Game, "ball"));
+                fireSoundEffect.Play();
+                energy -= SHOT_COST;
             }
         }
 
