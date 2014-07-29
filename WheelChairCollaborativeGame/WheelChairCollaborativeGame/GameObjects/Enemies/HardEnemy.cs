@@ -24,11 +24,13 @@ namespace WheelChairCollaborativeGame
     {
         private readonly int TRESHOLD_LIFE = 5;
 
+        
 
         public HardEnemy(GameEnhanced game, String tag)
             : base( game, tag)
         {
             this.life = 10;
+            this.HUMANS = 50;
             
             Velocity = new Vector2(0, 0.7f);            
         }

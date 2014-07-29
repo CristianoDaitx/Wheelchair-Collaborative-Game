@@ -19,6 +19,8 @@ namespace WheelChairCollaborativeGame
         private TimeSpan maxTime = TimeSpan.FromSeconds(120);
         private int lastSecond = -1;
         private TimeSpan countdown;
+        public int Score;
+        public int Invaders; 
 
         public PlayScreen(GameEnhanced game, string tag)
             : base(game, tag)
@@ -62,9 +64,17 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30), 1.5f);
-
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                       Invaders.ToString(), new Vector2(Config.resolution.X - 60, 650), 1.5f);
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                       "Invaders", new Vector2(Config.resolution.X - 150, 600), 1.5f);
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                     Score.ToString(), new Vector2(60, 650), 1.5f);
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                       "Score", new Vector2(0, 600), 1.5f);
             SharedSpriteBatch.End();
             base.Draw(gameTime);
+            
 
         }
 
@@ -74,6 +84,8 @@ namespace WheelChairCollaborativeGame
             InputState inputState = (InputState)Game.Services.GetService(typeof(InputState));
 
             PlayerIndex playerIndex;
+
+            
 
             
             countdown = (maxTime - timeRan);
@@ -102,7 +114,7 @@ namespace WheelChairCollaborativeGame
         private void addEnemies(GameTime gameTime)
         {
             timeRan += gameTime.ElapsedGameTime;
-
+            
             if (timeRan.Seconds != lastSecond) // the second has changed
             {
                 if (timeRan.Seconds == 0)
@@ -178,7 +190,7 @@ namespace WheelChairCollaborativeGame
                 {
                     Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
                 }
-
+                
                 lastSecond = timeRan.Seconds;
 
             }

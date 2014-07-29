@@ -1,5 +1,6 @@
 ﻿#region Using Statements
 using System;
+using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -30,6 +31,7 @@ namespace WheelChairCollaborativeGame
         protected bool isLeaving = false;
 
         protected int life = 1;
+        protected int HUMANS = 5;
 
         public EnemyGameObject(Vector2 position, GameEnhanced game, String tag)
             : base(position, game, tag)
@@ -59,8 +61,12 @@ namespace WheelChairCollaborativeGame
             if (this.PositionBottomY > Config.resolution.Y - REAMINING_Y_TO_LEAVE)
             {
                 isLeaving = true;
+
+
                 if (this.PositionCenterX > Config.resolution.X / 2)
                     Acceleration = new Vector2(0.2f, 0);
+                
+
                 else
                     Acceleration = new Vector2(-0.2f, 0);
             }
@@ -71,7 +77,11 @@ namespace WheelChairCollaborativeGame
                 PositionRightX < 0 ||
                 Position.Y > Config.resolution.Y ||
                 PositionBottomY < 0)
+            {
+                PlayScreen playScreen = (PlayScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(PlayScreen));
+                playScreen.Invaders += this.HUMANS;
                 this.ToBeRemoved = true;
+            }
 
         }
 
@@ -84,6 +94,8 @@ namespace WheelChairCollaborativeGame
                 if (0 == life)
                 {
                     ToBeRemoved = true;
+                    PlayScreen playScreen = (PlayScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(PlayScreen));
+                    playScreen.Score += this.HUMANS;
 
                     die();
                     

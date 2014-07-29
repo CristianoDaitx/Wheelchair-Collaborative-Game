@@ -25,7 +25,9 @@ namespace WheelChairCollaborativeGame
         public AvarageEnemy(GameEnhanced game, String tag)
             : base(game, tag)
         {
+            
             this.life = 2;
+            this.HUMANS = 10;
             Velocity = new Vector2(0, 0.5f);
             
         }
