@@ -9,12 +9,13 @@ using WheelChairGameLibrary.Sprites;
 
 namespace WheelChairCollaborativeGame.GameObjects
 {
-    class AlienCharacter : GameObject2D
+    class AlienCharacter : MessageCharacter
     {
-        public AlienCharacter(GameEnhanced game, string tag)
-            : base(game, tag)
+
+        public AlienCharacter(String message, GameEnhanced game, string tag)
+            : base(message, game, tag)
         {
-            Position = new Vector2(Config.resolution.X - 50 - 125, 50);
+            Position = new Vector2(50, 50);
         }
 
         protected override void LoadContent()
@@ -29,10 +30,8 @@ namespace WheelChairCollaborativeGame.GameObjects
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            base.Draw(gameTime);
             SharedSpriteBatch.Begin();
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "Shields will be\nup at 1:30!", new Vector2(900, 75));
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, message, new Vector2(200, 75));
             SharedSpriteBatch.End();
         }
     }

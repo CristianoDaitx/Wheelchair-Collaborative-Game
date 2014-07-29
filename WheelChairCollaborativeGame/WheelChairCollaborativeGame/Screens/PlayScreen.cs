@@ -50,10 +50,8 @@ namespace WheelChairCollaborativeGame
             KinectInput kinectInput = new KinectInput(Game, "kinectInput");
             Game.Components.Add(kinectInput);       
 
-            HumanCharacter humanCharacter = new HumanCharacter(Game, "HumanCharacter");
-            Game.Components.Add(humanCharacter);
-            AlienCharacter alienCharacter = new AlienCharacter(Game, "AlienCharacter");
-            Game.Components.Add(alienCharacter);
+            
+            
 
             backgroundSong = Game.Content.Load<Song>("AsteroidDance");
             base.LoadContent();
@@ -122,6 +120,11 @@ namespace WheelChairCollaborativeGame
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
                 }
 
+                if (timeRan.Seconds == 1)
+                {
+                    Game.Components.Add(new HumanCharacter("Look!\nBaby aliens!", Game, "HumanCharacter"));
+                }
+
                 if (timeRan.Seconds == 2)
                 {
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
@@ -131,11 +134,13 @@ namespace WheelChairCollaborativeGame
                 if (timeRan.Seconds == 5)
                 {
                     Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
+                    Game.Components.Add(new AlienCharacter("Lets defend\nwhile auto-pilot is\nnot fixed!", Game, "AlienCharacter"));
                 }
 
                 if (timeRan.Seconds == 20)
                 {
                     Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
+                    Game.Components.Add(new HumanCharacter("We will study\nyour planet!", Game, "HumanCharacter"));
                 }
 
                 if (timeRan.Seconds == 28)
@@ -144,9 +149,14 @@ namespace WheelChairCollaborativeGame
                     Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
                 }
 
+                if (timeRan.Seconds == 29)
+                {
+                    Game.Components.Add(new AlienCharacter("Shields will be\nup at 1:30!", Game, "AlienCharacter"));
+                }
+
                 if (timeRan.Seconds == 30)
                 {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
+                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));                    
                 }
 
                 if (timeRan.Seconds == 31)
