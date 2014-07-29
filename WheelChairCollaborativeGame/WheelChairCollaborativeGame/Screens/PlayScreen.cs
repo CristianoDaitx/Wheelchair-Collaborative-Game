@@ -30,6 +30,7 @@ namespace WheelChairCollaborativeGame
         private bool exploded = false;
 
         TankGameObject playerTank;
+        SmallHuman smallHuman;
 
         public PlayScreen(GameEnhanced game, string tag)
             : base(game, tag)
@@ -59,8 +60,8 @@ namespace WheelChairCollaborativeGame
             KinectInput kinectInput = new KinectInput(Game, "kinectInput");
             Game.Components.Add(kinectInput);
 
-
-            Game.Components.Add(new SmallHuman(Game, "smallHuman"));
+            smallHuman = new SmallHuman(Game, "smallHuman");
+            Game.Components.Add(smallHuman);
 
             backgroundSong = Game.Content.Load<Song>("AsteroidDance");
             base.LoadContent();
@@ -93,7 +94,8 @@ namespace WheelChairCollaborativeGame
             PlayerIndex playerIndex;
 
 
-
+            //adjust representational humans
+            smallHuman.representations = Invaders / 20;
 
             countdown = (maxTime - timeRan);
 

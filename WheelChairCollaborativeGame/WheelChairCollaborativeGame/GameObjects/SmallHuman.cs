@@ -20,7 +20,7 @@ namespace WheelChairCollaborativeGame.GameObjects
             : base(game, tag)
         {
             Position = new Vector2(1100, 680);
-            representations = 15;
+            representations = 0;
         }
 
         protected override void LoadContent()
@@ -35,7 +35,7 @@ namespace WheelChairCollaborativeGame.GameObjects
         public override void Draw(GameTime gameTime)
         {
             Position = POSITION;
-            base.Draw(gameTime);
+            //base.Draw(gameTime);
 
             for (int x = 0; x < representations; x++)
             {
