@@ -57,7 +57,7 @@ namespace WheelChairCollaborativeGame
                 Sprite.ActiveSpriteAnimation.nextState();
         }
 
-        protected override void die()
+        public override void die()
         {
             Game.Components.Add(new BigExplosionGameObject(new Vector2(PositionCenterX, this.PositionCenterY), Game, 10));
         }

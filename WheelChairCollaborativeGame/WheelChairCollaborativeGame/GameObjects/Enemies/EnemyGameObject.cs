@@ -26,7 +26,7 @@ namespace WheelChairCollaborativeGame
     {
         private static readonly int REAMINING_Y_TO_LEAVE = 250;
 
-        private SoundEffect explosionSound;
+        public SoundEffect explosionSound;
 
         protected bool isLeaving = false;
 
@@ -105,7 +105,7 @@ namespace WheelChairCollaborativeGame
             }
         }
 
-        protected abstract void die();
+        public abstract void die();
 
     }
 }

@@ -49,6 +49,7 @@ namespace WheelChairCollaborativeGame
 
         private float energy;
 
+        private bool isGoingAway = false;
 
         private double time = 0;
 
@@ -94,6 +95,8 @@ namespace WheelChairCollaborativeGame
 
             //Position.Y += 0.0001f;
 
+            if (isGoingAway)
+                return;
 
             if (Math.Abs(Velocity.Y) > MAX_VELOCITY.Y)
             {
@@ -124,6 +127,12 @@ namespace WheelChairCollaborativeGame
                 fireSoundEffect.Play();
                 energy -= SHOT_COST;
             }
+        }
+
+        public void goAway()
+        {
+            isGoingAway = true;
+            Acceleration = new Vector2((Velocity.X > 0 ? 0.6f : -0.6f), -0.3f);
         }
 
 

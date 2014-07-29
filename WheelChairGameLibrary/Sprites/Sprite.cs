@@ -25,7 +25,7 @@ namespace WheelChairGameLibrary.Sprites
 
 
         public float scale { get; set; }          // the scale size of the sprite
-
+        public float Alpha { get; set; }
 
         private SpriteAnimation activeSpriteAnimation;
         public SpriteAnimation ActiveSpriteAnimation
@@ -44,6 +44,7 @@ namespace WheelChairGameLibrary.Sprites
             this.gameObject = gameObject;
             this.texture = newTexture;
             this.scale = newScale;
+            this.Alpha = 1;
 
             gameObject.Size = new Vector2(texture.Width * scale, texture.Height * scale);
 
@@ -89,7 +90,7 @@ namespace WheelChairGameLibrary.Sprites
                         (int)GameObject.Position.X + (int)(offsetX * scale),
                         (int)GameObject.Position.Y + (int)(spriteAnimationData.offsetY * scale), (int)(spriteAnimationData.sourceRectangle.Width * scale), (int)(spriteAnimationData.sourceRectangle.Height * scale)),
                     spriteAnimationData.sourceRectangle,
-                    Color.White, 0.0f, new Vector2(), spriteEffect, 0.0f);
+                    Color.White * Alpha, 0.0f, new Vector2(), spriteEffect, 0.0f);
 
 
                 if (gameObject.Game.IsDebugMode)
@@ -107,7 +108,7 @@ namespace WheelChairGameLibrary.Sprites
                     new Rectangle(
                         (int)GameObject.Position.X,
                         (int)GameObject.Position.Y, (int)(GameObject.Size.X), (int)(GameObject.Size.Y)),
-                        Color.White);
+                        Color.White * Alpha);
                 spriteBatch.End();
             }
         }

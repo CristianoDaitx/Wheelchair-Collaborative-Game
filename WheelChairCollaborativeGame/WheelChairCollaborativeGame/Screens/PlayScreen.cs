@@ -20,7 +20,15 @@ namespace WheelChairCollaborativeGame
         private int lastSecond = -1;
         private TimeSpan countdown;
         public int Score;
-        public int Invaders; 
+        public int Invaders;
+
+        private bool timeExpired = false;
+        private TimeSpan timeRanInExpiredTime = new TimeSpan();
+        private TimeSpan maxTimeInExpiredTime = TimeSpan.FromSeconds(5);
+        private TimeSpan explodeTimeInExpiredTime = TimeSpan.FromSeconds(3);
+        private bool exploded = false;
+
+        TankGameObject playerTank;
 
         public PlayScreen(GameEnhanced game, string tag)
             : base(game, tag)
@@ -34,7 +42,7 @@ namespace WheelChairCollaborativeGame
             base.Initialize();
             MediaPlayer.Play(backgroundSong);
             MediaPlayer.IsRepeating = true;
-            
+
         }
 
         protected override void LoadContent()
@@ -44,14 +52,14 @@ namespace WheelChairCollaborativeGame
 
             Game.Components.Add(new Planet(Game, "Planet"));
 
-            TankGameObject playerTank = new TankGameObject(Game, "playerTank");
+            playerTank = new TankGameObject(Game, "playerTank");
             Game.Components.Add(playerTank);
 
             KinectInput kinectInput = new KinectInput(Game, "kinectInput");
-            Game.Components.Add(kinectInput);       
+            Game.Components.Add(kinectInput);
 
-            
-            
+
+
 
             backgroundSong = Game.Content.Load<Song>("AsteroidDance");
             base.LoadContent();
@@ -72,7 +80,7 @@ namespace WheelChairCollaborativeGame
                        "Score", new Vector2(0, 600), 1.5f);
             SharedSpriteBatch.End();
             base.Draw(gameTime);
-            
+
 
         }
 
@@ -83,20 +91,50 @@ namespace WheelChairCollaborativeGame
 
             PlayerIndex playerIndex;
 
-            
 
-            
+
+
             countdown = (maxTime - timeRan);
 
             //session time
 
-            if (timeRan > maxTime)
+            if (!timeExpired && timeRan > maxTime)
             {
-                Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
-                return;
+                timeExpired = true;
+                Game.Components.Add(new Shield(Game, "shield"));
+                playerTank.goAway();
             }
 
-            addEnemies(gameTime);
+
+
+            if (!timeExpired)
+                addEnemies(gameTime);
+            else
+            {
+                timeRanInExpiredTime += gameTime.ElapsedGameTime;
+                if (!exploded && timeRanInExpiredTime > explodeTimeInExpiredTime)
+                {
+                    //Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+                    exploded = true;
+
+
+                    //this approach is necessary because when and enemy dies, it creates the explosion, and it causes the component list to change.
+                    //a copy is made just to call the execution of the explosion
+                    foreach (GameComponent component in Game.Components.Where(x => typeof(EnemyGameObject).IsAssignableFrom(x.GetType())).ToArray())
+                    {
+                        ((EnemyGameObject)component).die();
+                    }
+                    //here the actual components are marked to be removed, and a trick is used to play the explosion sound
+                    foreach (GameComponent component in Game.Components.Where(x => typeof(EnemyGameObject).IsAssignableFrom(x.GetType())))
+                    {
+                        ((EnemyGameObject)component).ToBeRemoved = true;
+                        ((EnemyGameObject)component).explosionSound.Play();
+                    }
+                }
+                if (timeRanInExpiredTime > maxTimeInExpiredTime)
+                    Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+
+            }
 
 
             if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
@@ -112,11 +150,12 @@ namespace WheelChairCollaborativeGame
         private void addEnemies(GameTime gameTime)
         {
             timeRan += gameTime.ElapsedGameTime;
-            
+
             if (timeRan.Seconds != lastSecond) // the second has changed
             {
                 if (timeRan.Seconds == 0)
                 {
+
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
                 }
 
@@ -127,6 +166,7 @@ namespace WheelChairCollaborativeGame
 
                 if (timeRan.Seconds == 2)
                 {
+
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
                     Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
                 }
@@ -156,7 +196,7 @@ namespace WheelChairCollaborativeGame
 
                 if (timeRan.Seconds == 30)
                 {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));                    
+                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
                 }
 
                 if (timeRan.Seconds == 31)
@@ -186,6 +226,7 @@ namespace WheelChairCollaborativeGame
                 if (timeRan.Seconds == 39)
                 {
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                    Game.Components.Add(new HumanCharacter("Keep going!", Game, "HumanCharacter"));
                 }
                 if (timeRan.Seconds == 40)
                 {
@@ -196,11 +237,12 @@ namespace WheelChairCollaborativeGame
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
                 }
 
-                if (timeRan.Seconds == 50)
+                if (timeRan.Seconds == 53)
                 {
                     Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
                 }
-                
+
+
                 lastSecond = timeRan.Seconds;
 
             }

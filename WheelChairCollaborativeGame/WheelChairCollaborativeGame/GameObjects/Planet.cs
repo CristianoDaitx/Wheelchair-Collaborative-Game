@@ -16,6 +16,7 @@ namespace WheelChairCollaborativeGame.GameObjects
         {
             Position = new Vector2(0, 600);
             Velocity = new Vector2(0, 0.01f);
+            DrawOrder--;
         }
 
         protected override void LoadContent()
@@ -24,7 +25,7 @@ namespace WheelChairCollaborativeGame.GameObjects
 
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("planet"), 1);
 
-           
+
         }
     }
 }
