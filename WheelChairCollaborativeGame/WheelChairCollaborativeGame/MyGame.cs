@@ -48,8 +48,8 @@ namespace WheelChairCollaborativeGame
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
 
             //ActiveScreen = new SplashScreen(this, "SplashScreen");
-            ActiveScreen = new PlayScreen(this, "PlayScreen");
-            //ActiveScreen = new MainMenuScreen(this, "MainMenuScreen");
+            //ActiveScreen = new PlayScreen(this, "PlayScreen");
+            ActiveScreen = new MainMenuScreen(this, "MainMenuScreen");
         }
 
         /// <summary>

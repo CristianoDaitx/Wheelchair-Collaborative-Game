@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameObjects\AlienCharacter.cs" />
+    <Compile Include="GameObjects\SmallHuman.cs" />
     <Compile Include="GameObjects\Shield.cs" />
     <Compile Include="GameObjects\Enemies\MenuEnemy.cs" />
     <Compile Include="GameObjects\MainMenuAlien.cs" />

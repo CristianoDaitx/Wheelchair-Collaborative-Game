@@ -79,7 +79,8 @@ namespace WheelChairCollaborativeGame
                 PositionBottomY < 0)
             {
                 PlayScreen playScreen = (PlayScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(PlayScreen));
-                playScreen.Invaders += this.HUMANS;
+                if (playScreen!= null)
+                    playScreen.Invaders += this.HUMANS;
                 this.ToBeRemoved = true;
             }
 

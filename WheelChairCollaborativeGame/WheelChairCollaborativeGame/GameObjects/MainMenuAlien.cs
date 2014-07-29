@@ -21,9 +21,9 @@ namespace WheelChairCollaborativeGame.GameObjects
         {
             base.LoadContent();
 
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("characters"), 3);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("alien"), 1);
 
-            Sprite.ActiveSpriteAnimation = new SpriteAnimation(new SpriteAnimationData[] { new SpriteAnimationData(376, 251, 125, 125, 0, 0) });
+            //Sprite.ActiveSpriteAnimation = new SpriteAnimation(new SpriteAnimationData[] { new SpriteAnimationData(376, 251, 125, 125, 0, 0) });
         }
 
         public override void Draw(GameTime gameTime)

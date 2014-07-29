@@ -59,7 +59,7 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(kinectInput);
 
 
-
+            Game.Components.Add(new SmallHuman(Game, "smallHuman"));
 
             backgroundSong = Game.Content.Load<Song>("AsteroidDance");
             base.LoadContent();
