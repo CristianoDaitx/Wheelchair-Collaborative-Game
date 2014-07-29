@@ -36,6 +36,8 @@ namespace WheelChairCollaborativeGame
         {
             this.life = 1;
 
+            this.HUMANS = 5;
+
             this.type = type;
 
             if (type == Type.Right)                        
