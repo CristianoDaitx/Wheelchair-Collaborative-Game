@@ -14,7 +14,8 @@ namespace WheelChairCollaborativeGame.GameObjects
         public Planet(GameEnhanced game, string tag)
             : base(game, tag)
         {
-            Position = new Vector2(0, 650);
+            Position = new Vector2(0, 600);
+            Velocity = new Vector2(0, 0.01f);
         }
 
         protected override void LoadContent()

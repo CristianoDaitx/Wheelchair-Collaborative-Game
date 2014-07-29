@@ -23,26 +23,32 @@ namespace WheelChairCollaborativeGame
 {
     class TankGameObject : GameObject2D
     {
-        
 
-        private readonly int ATTACK_STANCE_Y = 330;
-        private readonly int DEFENCE_STANCE_Y = 350;
+        private readonly Vector2 MAX_VELOCITY = new Vector2(1, 0.5f);
+        private readonly float ACCELERATION_X = 0.015f;
 
-        private bool isAttackStance = false;
+        private readonly int WIDTH_POSITION_CONSTANT_SPEED = 125;
+        private float MaxLeft
+        {
+            get { return Config.resolution.X / 2 - WIDTH_POSITION_CONSTANT_SPEED; }
+        }
+        private float MaxRight
+        {
+            get { return Config.resolution.X / 2 + WIDTH_POSITION_CONSTANT_SPEED; }
+        }
 
         private double time = 0;
 
         public TankGameObject(GameEnhanced game, String tag)
             : base( game, tag)
         {
-            
-            
+            Velocity = MAX_VELOCITY;
+            Acceleration = new Vector2(0, -0.005f);
         }
 
         protected override void LoadContent()
         {
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("PlayerA"),
-                      0.5f);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("PlayerA"), 0.5f);
             Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, Config.resolution.Y - 120);
 
             
@@ -61,36 +67,26 @@ namespace WheelChairCollaborativeGame
             //Position.Y += 0.0001f;
 
 
-            if (TimeSpan.FromMilliseconds(time).TotalSeconds > 2) //more than two seconds
+            if (Math.Abs(Velocity.Y) >MAX_VELOCITY.Y)
             {
-                //if (Sprite.position.Y > 160)
-                setDefenceStance();
-                time = 0;
+                Acceleration = new Vector2(Acceleration.X, -Acceleration.Y);
+            }
+
+            if (Math.Abs(Velocity.X) > MAX_VELOCITY.X)
+            {
+                Acceleration = new Vector2(0, Acceleration.Y);
+            }
+
+            if (PositionCenterX < MaxLeft)
+            {
+                Acceleration = new Vector2(ACCELERATION_X, Acceleration.Y);
+            }
+            if (PositionCenterX > MaxRight)
+            {
+                Acceleration = new Vector2(-ACCELERATION_X, Acceleration.Y);
             }
         }
 
-        public void setAttackStance()
-        {
-            //TODO Sprite.position.Y = ATTACK_STANCE_Y; 
-
-            isAttackStance = true;
-        }
-
-        public void setDefenceStance()
-        {
-            //TODO Sprite.position.Y = DEFENCE_STANCE_Y;
-            isAttackStance = false;
-        }
-
-        public void slideToRight()
-        {
-            //this.Position.X = new Vector2(this.Position.X +3, this.Position.Y); 
-        }
-
-        public void slideToLeft()
-        {
-            //this.Position.X -= 3;
-        }
 
 
     }
