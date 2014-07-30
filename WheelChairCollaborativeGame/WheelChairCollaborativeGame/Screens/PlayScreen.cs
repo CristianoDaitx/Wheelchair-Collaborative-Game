@@ -74,7 +74,7 @@ namespace WheelChairCollaborativeGame
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30), 1.5f);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       Invaders.ToString(), new Vector2(Config.resolution.X - 60, 650), 1.5f);
+                       Invaders.ToString(), new Vector2(Config.resolution.X - 100, 650), 1.5f);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                        "Invaders", new Vector2(Config.resolution.X - 150, 600), 1.5f);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
