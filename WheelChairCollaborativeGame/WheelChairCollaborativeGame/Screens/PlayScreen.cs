@@ -73,14 +73,14 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       Invaders.ToString(), new Vector2(Config.resolution.X - 100, 650), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       "Invaders", new Vector2(Config.resolution.X - 150, 600), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                     Score.ToString(), new Vector2(60, 650), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       "Score", new Vector2(0, 600), 1.5f);
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                       Invaders.ToString(), new Vector2(Config.resolution.X - 100, 650));
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                       "Invaders", new Vector2(Config.resolution.X - 150, 600));
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                     Score.ToString(), new Vector2(60, 650));
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                       "Score", new Vector2(0, 600));
             SharedSpriteBatch.End();
             base.Draw(gameTime);
 
@@ -139,14 +139,26 @@ namespace WheelChairCollaborativeGame
                     }
                 }
                 if (timeRanInExpiredTime > maxTimeInExpiredTime)
+                {
                     Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+                    GameOverScreen gameOverScreen = (GameOverScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameOverScreen));
+                    if (gameOverScreen != null)
+                        gameOverScreen.Score = Score;
+                }
+                   
 
             }
 
 
             if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
             {
-                Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+                {
+                    Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+                    GameOverScreen gameOverScreen = (GameOverScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameOverScreen));
+                    if (gameOverScreen != null)
+                        gameOverScreen.Score = Score;
+                }
+                   
 
             }
         }

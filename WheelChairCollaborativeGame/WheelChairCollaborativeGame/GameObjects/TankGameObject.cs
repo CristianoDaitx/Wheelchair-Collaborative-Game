@@ -32,8 +32,8 @@ namespace WheelChairCollaborativeGame
         private readonly int SHOT_COST = 10;
         private readonly float ENERGY_RECHARGE = 0.15f;
 
-        private readonly Vector2 MAX_VELOCITY = new Vector2(1, 0.5f);
-        private readonly float ACCELERATION_X = 0.015f;
+        private readonly Vector2 MAX_VELOCITY = new Vector2(2, 0.5f);
+        private readonly float ACCELERATION_X = 0.020f;
 
         private readonly int WIDTH_POSITION_CONSTANT_SPEED = 125;
         private float MaxLeft
