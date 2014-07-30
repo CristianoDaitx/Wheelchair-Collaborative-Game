@@ -15,16 +15,19 @@ namespace WheelChairGameLibrary
         /// </summary>
         private List<Collider> colliders = new List<Collider>();
 
-
+        /// <summary>
+        /// Used to mark if an collider has been removed inside the collision detection loop
+        /// </summary>
+        private bool isRemoved = false;
 
         public CollisionManager(Game game)
-            :base(game)
+            : base(game)
         {
         }
 
         #region Update and Draw
 
-        public override void  Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             //isInUpdateLoop = true;
 
@@ -41,6 +44,7 @@ namespace WheelChairGameLibrary
 
         private void calculateCollisions(GameTime gameTime)
         {
+            isRemoved = false;
             for (int x = 0; x < colliders.Count; x++)
             {
                 for (int y = x; y < colliders.Count; y++)
@@ -52,7 +56,10 @@ namespace WheelChairGameLibrary
                     {
                         //Debug.WriteLine("hit");
                         colliders[x].GameObject.collisionEntered(colliders[y]);
-                        colliders[y].GameObject.collisionEntered(colliders[x]);
+
+                        // the first call to collision may cause the other object to be removed. (Wierd timing)
+                        if (!isRemoved)
+                            colliders[y].GameObject.collisionEntered(colliders[x]);
                     }
 
                     //if (sprites[x].activeSpriteAnimation.getAnimationData().isStrike)
@@ -87,7 +94,7 @@ namespace WheelChairGameLibrary
 
         public void removeCollider(Collider collider)
         {
-
+            isRemoved = true;
             colliders.Remove(collider);
 
         }

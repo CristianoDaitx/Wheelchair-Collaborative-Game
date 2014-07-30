@@ -406,6 +406,11 @@ namespace WheelChairCollaborativeGame
             }*/
 
 
+            //tutorial printings:
+            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, movementFrontTank.State.ToString(), new Vector2(30,30));
+
+
+
             //draw GUI text
             if (Game.IsDebugMode)
             {

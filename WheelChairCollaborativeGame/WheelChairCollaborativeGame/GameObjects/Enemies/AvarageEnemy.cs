@@ -61,6 +61,7 @@ namespace WheelChairCollaborativeGame
 
         public override void die()
         {
+            base.die();
             Game.Components.Add(new BigExplosionGameObject(new Vector2(PositionCenterX, this.PositionCenterY), Game, 3));
         }
     }

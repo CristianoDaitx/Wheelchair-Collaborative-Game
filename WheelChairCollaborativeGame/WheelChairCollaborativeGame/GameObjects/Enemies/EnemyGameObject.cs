@@ -24,6 +24,10 @@ namespace WheelChairCollaborativeGame
 {
     abstract class EnemyGameObject : GameObject2D
     {
+
+        public delegate void DiedEventHandler(object sender, EnemyGameObjectEventArgs e);
+        public event DiedEventHandler DiedCompleted;
+
         private static readonly int REAMINING_Y_TO_LEAVE = 250;
 
         public SoundEffect explosionSound;
@@ -65,7 +69,7 @@ namespace WheelChairCollaborativeGame
 
                 if (this.PositionCenterX > Config.resolution.X / 2)
                     Acceleration = new Vector2(0.2f, 0);
-                
+
 
                 else
                     Acceleration = new Vector2(-0.2f, 0);
@@ -79,8 +83,17 @@ namespace WheelChairCollaborativeGame
                 PositionBottomY < 0)
             {
                 PlayScreen playScreen = (PlayScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(PlayScreen));
-                if (playScreen!= null)
+                if (playScreen != null)
                     playScreen.Invaders += this.HUMANS;
+
+                // only call event once
+                if (!this.ToBeRemoved)
+                {
+                    if (DiedCompleted != null)
+                        DiedCompleted(this, new EnemyGameObjectEventArgs(false));
+                }
+                //if (DiedCompleted != null)
+                //    DiedCompleted(this, EventArgs.Empty);
                 this.ToBeRemoved = true;
             }
 
@@ -96,17 +109,32 @@ namespace WheelChairCollaborativeGame
                 {
                     ToBeRemoved = true;
                     PlayScreen playScreen = (PlayScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(PlayScreen));
-                    playScreen.Score += this.HUMANS;
+                    if (playScreen != null)
+                        playScreen.Score += this.HUMANS;
 
                     die();
-                    
+
                     explosionSound.Play();
                 }
-                
+
             }
         }
 
-        public abstract void die();
+        public virtual void die()
+        {
+            if (DiedCompleted != null)
+                DiedCompleted(this, new EnemyGameObjectEventArgs(true));
+        }
+
+
+        public class EnemyGameObjectEventArgs : EventArgs
+        {
+            public EnemyGameObjectEventArgs(bool wasShot)
+            {
+                this.wasShot = wasShot;
+            }
+            public bool wasShot { get; set; }
+        }
 
     }
 }

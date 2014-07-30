@@ -34,6 +34,7 @@ namespace WheelChairGameLibrary
         public bool ToBeRemoved
         {
             set { toBeRemoved = value; }
+            get { return toBeRemoved; }
         }
 
         /// <summary>

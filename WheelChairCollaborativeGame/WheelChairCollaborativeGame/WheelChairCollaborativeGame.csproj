@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameObjects\AlienCharacter.cs" />
+    <Compile Include="GameObjects\FrontMovementSprite.cs" />
     <Compile Include="GameObjects\SmallHuman.cs" />
     <Compile Include="GameObjects\Shield.cs" />
     <Compile Include="GameObjects\Enemies\MenuEnemy.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="GameObjects\BallGameObject.cs" />
     <Compile Include="GameObjects\Explosions\BigExplosionGameObject.cs" />
     <Compile Include="GameObjects\HumanCharacter.cs" />
+    <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\IntroScreen.cs" />
