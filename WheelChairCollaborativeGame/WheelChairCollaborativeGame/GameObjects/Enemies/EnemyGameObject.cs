@@ -110,7 +110,7 @@ namespace WheelChairCollaborativeGame
                     ToBeRemoved = true;
                     PlayScreen playScreen = (PlayScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(PlayScreen));
                     if (playScreen != null)
-                        playScreen.Score += this.HUMANS;
+                        playScreen.Score += 2 * this.HUMANS;
 
                     die();
 

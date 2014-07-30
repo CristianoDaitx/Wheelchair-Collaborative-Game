@@ -19,6 +19,7 @@ namespace WheelChairCollaborativeGame
         private TimeSpan maxTime = TimeSpan.FromSeconds(120);
         private int lastSecond = -1;
         private int lastSecond2 = -1;
+        private Random rnd= new Random();
         private TimeSpan countdown;
         public int Score;
         public int Invaders;
@@ -72,14 +73,14 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       Invaders.ToString(), new Vector2(Config.resolution.X - 60, 650), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       "Invaders", new Vector2(Config.resolution.X - 150, 600), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                     Score.ToString(), new Vector2(60, 650), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       "Score", new Vector2(0, 600), 1.5f);
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                       Invaders.ToString(), new Vector2(Config.resolution.X - 100, 650));
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                       "Invaders", new Vector2(Config.resolution.X - 150, 600));
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                     Score.ToString(), new Vector2(60, 650));
+            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
+                       "Score", new Vector2(0, 600));
             SharedSpriteBatch.End();
             base.Draw(gameTime);
 
@@ -138,14 +139,26 @@ namespace WheelChairCollaborativeGame
                     }
                 }
                 if (timeRanInExpiredTime > maxTimeInExpiredTime)
+                {
                     Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+                    GameOverScreen gameOverScreen = (GameOverScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameOverScreen));
+                    if (gameOverScreen != null)
+                        gameOverScreen.Score = Score;
+                }
+                   
 
             }
 
 
             if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
             {
-                Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+                {
+                    Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
+                    GameOverScreen gameOverScreen = (GameOverScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameOverScreen));
+                    if (gameOverScreen != null)
+                        gameOverScreen.Score = Score;
+                }
+                   
 
             }
         }
@@ -261,85 +274,44 @@ namespace WheelChairCollaborativeGame
             if (timeRan.Seconds != lastSecond2) // the second has changed
             {
 
-                if (timeRan.Seconds == 20)
+                if (timeRan.Seconds % 20 == 0)
                 {
-                    if(Invaders > 50)
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(550,650), Game, 2));
+                    
+                    if (Invaders > 50)
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400,600),rnd.Next(650,750)), Game, 2));
                 }
-                
-                if (timeRan.Seconds == 35)
+
+
+
+                if (timeRan.Seconds % 10 == 0)
                 {
-                    if(Invaders > 100){
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(500,680), Game, 2));
-                    }
+                    
+                    if(Invaders > 150)
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
                 }
-                if (timeRan.Seconds == 38)
+
+                if (timeRan.Seconds % 5 == 0)
                 {
-                    if (Invaders > 100)
+                    
+                    if (Invaders > 250)
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
+                }
+
+                if (timeRan.Seconds % 2 == 0)
+                {
+                   
+                    if (Invaders > 350)
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
+                }
+
+                if (timeRan.Seconds % 2 == 0)
+                {
+                    if (Invaders > 500)
                     {
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(500, 680), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
                     }
                 }
-               
-                if (timeRan.Seconds == 55)
-                {
-                    if (Invaders > 150)
-                    {
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(550, 660), Game, 2));
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(500, 680), Game, 2));
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(600, 675), Game, 2));
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(450, 680), Game, 2));
-                    }
-                }
-                /*
-               if (timeRan.Seconds == 30)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
-               }
-
-               if (timeRan.Seconds == 31)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
-               }
-
-               if (timeRan.Seconds == 35)
-               {
-                   Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
-               }
-
-               if (timeRan.Seconds == 36)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-               }
-
-               if (timeRan.Seconds == 37)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-               }
-               if (timeRan.Seconds == 38)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-               }
-
-               if (timeRan.Seconds == 39)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-                   Game.Components.Add(new HumanCharacter("Keep going!", Game, "HumanCharacter"));
-               }
-               if (timeRan.Seconds == 40)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-               }
-               if (timeRan.Seconds == 41)
-               {
-                   Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-               }
-
-               if (timeRan.Seconds == 53)
-               {
-                   Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
-               }
-              */
 
                 lastSecond2 = timeRan.Seconds;
 

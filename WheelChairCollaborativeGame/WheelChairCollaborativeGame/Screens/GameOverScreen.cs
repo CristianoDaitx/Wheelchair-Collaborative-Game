@@ -13,6 +13,7 @@ namespace WheelChairCollaborativeGame
     class GameOverScreen : Screen
     {
 
+        public int Score;
         public GameOverScreen(GameEnhanced game, string tag)
             : base(game, tag)
         {
@@ -28,9 +29,11 @@ namespace WheelChairCollaborativeGame
         {
             base.Draw(gameTime);
             SharedSpriteBatch.Begin();
+            
+            
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         "        Fellow aliens!\nWe have successfully defended"+
-            "\nour civilization and have caugth X humans"+
+            "\nour civilization and have caugth " +Score.ToString()+" humans"+
             "\nthaks to your support.", new Vector2(450, 300));
             SharedSpriteBatch.End();
         }
