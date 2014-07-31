@@ -71,16 +71,16 @@ namespace WheelChairCollaborativeGame
         public override void Draw(GameTime gameTime)
         {
             SharedSpriteBatch.Begin();
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        string.Format("{0:mm\\:ss}", countdown), new Vector2(600, 30), 1.5f);
-            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
-                       Invaders.ToString(), new Vector2(Config.resolution.X - 100, 650));
-            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
-                       "Invaders", new Vector2(Config.resolution.X - 150, 600));
-            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
-                     Score.ToString(), new Vector2(60, 650));
-            GUImessage.GUIMessageDraw(SharedSpriteBatch, Game.Content,
-                       "Score", new Vector2(0, 600));
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content,
+                        string.Format("{0:mm\\:ss}", countdown), new Rectangle(600, 30, 100, 20), GUImessage.Alignment.Center, Color.White);
+            
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content,Invaders.ToString(), new Rectangle((int)Config.resolution.X - 200, 600, 300, 18), GUImessage.Alignment.Left, Color.White);
+           
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Invaders", new Rectangle((int)Config.resolution.X - 200, 570, 300, 18), GUImessage.Alignment.Left, Color.White);
+
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content, Score.ToString(), new Rectangle(0, 600, 200, 18), GUImessage.Alignment.Right, Color.White);
+            
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Score", new Rectangle(0, 570, 200, 18), GUImessage.Alignment.Right, Color.White);
             SharedSpriteBatch.End();
             base.Draw(gameTime);
 

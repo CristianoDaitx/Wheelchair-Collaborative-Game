@@ -423,10 +423,10 @@ namespace WheelChairCollaborativeGame
             }
             if (skeletonPlayerTank == null && controlSelect != ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Player One not tracked!", PLAYER1_TRACKING_POSITION);
+                    "Player One not tracked!",1 , PLAYER1_TRACKING_POSITION);
             if (skeletonPlayerSoldier == null && controlSelect != ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Player Two not tracked!", PLAYER2_TRACKING_POSITION);
+                    "Player Two not tracked!",1 , PLAYER2_TRACKING_POSITION);
 
             if (controlSelect == ControlSelect.Side && Game.IsDebugMode)
             {
