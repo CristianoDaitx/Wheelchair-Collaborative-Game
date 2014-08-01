@@ -278,7 +278,7 @@ namespace WheelChairCollaborativeGame
                 {
                     
                     if (Invaders > 50)
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400,600),rnd.Next(650,750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400,800),rnd.Next(650,750)), Game, 2));
                 }
 
 
@@ -287,29 +287,29 @@ namespace WheelChairCollaborativeGame
                 {
                     
                     if(Invaders > 150)
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 800), rnd.Next(650, 750)), Game, 2));
                 }
 
                 if (timeRan.Seconds % 5 == 0)
                 {
                     
                     if (Invaders > 250)
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 800), rnd.Next(650, 750)), Game, 2));
                 }
 
                 if (timeRan.Seconds % 2 == 0)
                 {
                    
                     if (Invaders > 350)
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 800), rnd.Next(650, 750)), Game, 2));
                 }
 
                 if (timeRan.Seconds % 2 == 0)
                 {
                     if (Invaders > 500)
                     {
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 600), rnd.Next(650, 750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 750), rnd.Next(650, 750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 750), rnd.Next(650, 750)), Game, 2));
                     }
                 }
 
