@@ -64,13 +64,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HardEnemyA.png">
-      <Name>HardEnemyA</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="WeakEnemy.png">
       <Name>WeakEnemy</Name>
       <Importer>TextureImporter</Importer>
