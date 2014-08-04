@@ -17,6 +17,22 @@ namespace WheelChairCollaborativeGame
 
         public static Vector2 cameraResolution = new Vector2(480, 640); //480, 640
 
+
+        public enum ControlSelect
+        {
+            Joystick = 0,
+            Front,
+            Side,
+            FrontAssyncronous
+        }
+
+        private static ControlSelect controlSelect = ControlSelect.Side;
+        public static ControlSelect ControlSelected
+        {
+            get { return controlSelect; }
+            set { controlSelect = value; }
+        }
+
     }
 
 

@@ -42,20 +42,11 @@ namespace WheelChairCollaborativeGame
         private readonly Vector2 JOINT_TWO_VELOCITY_POSITION = new Vector2(30, 380);
 
 
-        private enum ControlSelect
-        {
-            Joystick = 0,
-            Front,
-            Side,
-            FrontAssyncronous
-        }
-
-
         private Skeleton skeletonPlayerTank;
         private Skeleton skeletonPlayerSoldier;
         private TankGameObject tankGameObject;
 
-        private ControlSelect controlSelect = ControlSelect.Side;
+        
         private double timePressed1 = 0;
         private double timePressed2 = 0;
         private double timePressedSync = 0;
@@ -134,7 +125,7 @@ namespace WheelChairCollaborativeGame
                 actionCount1++;
                 //count and add ball if other action is also active
 
-                if (movementFrontSoldier.isOn() || controlSelect == ControlSelect.FrontAssyncronous)
+                if (movementFrontSoldier.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
                     actionCountSync++;
                     tankGameObject.fire();
@@ -146,7 +137,7 @@ namespace WheelChairCollaborativeGame
             {
                 actionCount2++;
                 //count and add ball if other action is also active
-                if (movementFrontTank.isOn() || controlSelect == ControlSelect.FrontAssyncronous)
+                if (movementFrontTank.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
                     actionCountSync++;
                     tankGameObject.fire();
@@ -185,18 +176,18 @@ namespace WheelChairCollaborativeGame
 
             //changes control type
             if (inputState.IsKeyPressed(Keys.Z, playerIndex1, out playerIndex1))
-                controlSelect--;
+                Config.ControlSelected--;
             if (inputState.IsKeyPressed(Keys.X, playerIndex1, out playerIndex1))
-                controlSelect++;
+                Config.ControlSelected++;
 
             //check borders of control tipe
-            if ((int)controlSelect == 4)
+            if ((int)Config.ControlSelected == 4)
             {
-                controlSelect = ControlSelect.FrontAssyncronous;
+                Config.ControlSelected = Config.ControlSelect.FrontAssyncronous;
             }
-            if ((int)controlSelect < 0)
+            if ((int)Config.ControlSelected < 0)
             {
-                controlSelect = ControlSelect.Joystick;
+                Config.ControlSelected = Config.ControlSelect.Joystick;
             }
 
 
@@ -217,9 +208,9 @@ namespace WheelChairCollaborativeGame
 
 
             //set correct input for graph and activate/deactivate movements
-            switch (controlSelect)
+            switch (Config.ControlSelected)
             {
-                case ControlSelect.Joystick:
+                case Config.ControlSelect.Joystick:
                     graph1.IOnOff = controllerOneOnOff;
                     graph2.IOnOff = controllerTwoOnOff;
                     graphSync.IOnOff = controllerBothOnOff;
@@ -233,7 +224,7 @@ namespace WheelChairCollaborativeGame
                     movementDouble.Visible = false;
 
                     break;
-                case ControlSelect.Front:
+                case Config.ControlSelect.Front:
                     graph1.IOnOff = movementFrontTank;
                     graph2.IOnOff = movementFrontSoldier;
                     graphSync.IOnOff = new OnOffDouble(movementFrontSoldier, movementFrontTank);
@@ -250,7 +241,7 @@ namespace WheelChairCollaborativeGame
                     movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
 
                     break;
-                case ControlSelect.Side:
+                case Config.ControlSelect.Side:
                     graph1.IOnOff = movementSideTank;
                     graph2.IOnOff = movementSideSoldier;
                     graphSync.IOnOff = movementDouble;
@@ -277,7 +268,7 @@ namespace WheelChairCollaborativeGame
                         }
 
                     break;
-                case ControlSelect.FrontAssyncronous:
+                case Config.ControlSelect.FrontAssyncronous:
                     graph1.IOnOff = movementFrontTank;
                     graph2.IOnOff = movementFrontSoldier;
                     graphSync.IOnOff = new OnOffDouble(movementFrontSoldier, movementFrontTank);
@@ -298,9 +289,9 @@ namespace WheelChairCollaborativeGame
 
 
             //timing counting and joystick input
-            switch (controlSelect)
+            switch (Config.ControlSelected)
             {
-                case ControlSelect.Joystick:
+                case Config.ControlSelect.Joystick:
                     {//check button pressing
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex1, out playerIndex1))
                         {
@@ -338,7 +329,7 @@ namespace WheelChairCollaborativeGame
                         timePressedSync = 0;
                     break;
 
-                case ControlSelect.Front:
+                case Config.ControlSelect.Front:
                     if (movementFrontTank.State == KinectMovement.MovementState.Activated)
                         timePressed1 += gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -352,7 +343,7 @@ namespace WheelChairCollaborativeGame
 
                     break;
 
-                case ControlSelect.Side:
+                case Config.ControlSelect.Side:
                     if (movementDouble.State == KinectMovement.MovementState.Activated)
                         timePressedSync += gameTime.ElapsedGameTime.TotalMilliseconds;
                     else
@@ -419,16 +410,16 @@ namespace WheelChairCollaborativeGame
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                             "Bullet Size:" + TimeSpan.FromMilliseconds(timePressedSync).Seconds.ToString(), ACTION_TIME_POSITION);
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                            "Input method: " + controlSelect.ToString(), INPUT_METHOD_POSITION);
+                            "Input method: " + Config.ControlSelected.ToString(), INPUT_METHOD_POSITION);
             }
-            if (skeletonPlayerTank == null && controlSelect != ControlSelect.Joystick)
+            if (skeletonPlayerTank == null && Config.ControlSelected != Config.ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                     "Player One not tracked!", PLAYER1_TRACKING_POSITION);
-            if (skeletonPlayerSoldier == null && controlSelect != ControlSelect.Joystick)
+            if (skeletonPlayerSoldier == null && Config.ControlSelected != Config.ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                     "Player Two not tracked!", PLAYER2_TRACKING_POSITION);
 
-            if (controlSelect == ControlSelect.Side && Game.IsDebugMode)
+            if (Config.ControlSelected == Config.ControlSelect.Side && Game.IsDebugMode)
             {
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                     "Joint One Velocity (m/s): " + triggerDouble.JointOneVelocity, JOINT_ONE_VELOCITY_POSITION);
