@@ -11,7 +11,7 @@ namespace WheelChairCollaborativeGame.GameObjects
 {
     class SmallHuman : GameObject2D
     {
-        private readonly Vector2 POSITION = new Vector2(1100, 680);
+        private readonly Vector2 POSITION = new Vector2(1240, 665);
         private readonly Vector2 POSITION_DIFERENCE = new Vector2(-25, 0);
 
         public int representations { get; set; }
@@ -19,7 +19,7 @@ namespace WheelChairCollaborativeGame.GameObjects
         public SmallHuman(GameEnhanced game, string tag)
             : base(game, tag)
         {
-            Position = new Vector2(1100, 680);
+            Position = new Vector2(1240, 665);
             representations = 0;
         }
 

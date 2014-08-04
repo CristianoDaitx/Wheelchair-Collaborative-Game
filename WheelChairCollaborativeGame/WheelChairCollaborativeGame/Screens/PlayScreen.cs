@@ -76,11 +76,11 @@ namespace WheelChairCollaborativeGame
             
             GUImessage.DrawString(SharedSpriteBatch, Game.Content,Invaders.ToString(), new Rectangle((int)Config.resolution.X - 200, 600, 300, 18), GUImessage.Alignment.Left, Color.White);
            
-            GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Invaders", new Rectangle((int)Config.resolution.X - 200, 570, 300, 18), GUImessage.Alignment.Left, Color.White);
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Invaders", new Rectangle((int)Config.resolution.X - 200, 560, 300, 18), GUImessage.Alignment.Left, Color.White);
 
             GUImessage.DrawString(SharedSpriteBatch, Game.Content, Score.ToString(), new Rectangle(0, 600, 200, 18), GUImessage.Alignment.Right, Color.White);
             
-            GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Score", new Rectangle(0, 570, 200, 18), GUImessage.Alignment.Right, Color.White);
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Score", new Rectangle(0, 560, 200, 18), GUImessage.Alignment.Right, Color.White);
             SharedSpriteBatch.End();
             base.Draw(gameTime);
 
@@ -96,7 +96,7 @@ namespace WheelChairCollaborativeGame
 
 
             //adjust representational humans
-            smallHuman.representations = Invaders / 20;
+            smallHuman.representations = Invaders / 40;
 
             countdown = (maxTime - timeRan);
 

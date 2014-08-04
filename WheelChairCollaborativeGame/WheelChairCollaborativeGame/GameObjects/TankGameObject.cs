@@ -23,8 +23,8 @@ namespace WheelChairCollaborativeGame
     class TankGameObject : GameObject2D
     {
         private readonly int POSITION_ENERGY_X = 30;
-        private readonly int POSITION_ENERGY_Y = 690;
-        private readonly int HEIGHT_ENERGY_X = 20;
+        private readonly int POSITION_ENERGY_Y = 650;
+        private readonly int HEIGHT_ENERGY_X = 30;
         private readonly int WIDTH_ENERGY_X = 250;
 
         private readonly int MAX_ENERGY = 100;
@@ -88,7 +88,7 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.Begin();
             
             PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, WIDTH_ENERGY_X, HEIGHT_ENERGY_X), Color.Black, true);
-            PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.CornflowerBlue, true);
+            PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.LimeGreen, true);
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Energy", new Vector2(POSITION_ENERGY_X, POSITION_ENERGY_Y));
             SharedSpriteBatch.End();
         }
