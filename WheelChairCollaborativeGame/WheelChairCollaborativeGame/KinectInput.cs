@@ -36,8 +36,8 @@ namespace WheelChairCollaborativeGame
         private readonly Vector2 ACTION_COUNT_POSITION = new Vector2(30, 170);
         private readonly Vector2 ACTION_TIME_POSITION = new Vector2(30, 200);
         private readonly Vector2 INPUT_METHOD_POSITION = new Vector2(30, 230);
-        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(30, 500);
-        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(1000, 500);
+        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(180, 370);
+        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(870, 370);
         private readonly Vector2 JOINT_ONE_VELOCITY_POSITION = new Vector2(30, 350);
         private readonly Vector2 JOINT_TWO_VELOCITY_POSITION = new Vector2(30, 380);
 
@@ -174,21 +174,7 @@ namespace WheelChairCollaborativeGame
 
             InputState inputState = this.InputState;
 
-            //changes control type
-            if (inputState.IsKeyPressed(Keys.Z, playerIndex1, out playerIndex1))
-                Config.ControlSelected--;
-            if (inputState.IsKeyPressed(Keys.X, playerIndex1, out playerIndex1))
-                Config.ControlSelected++;
-
-            //check borders of control tipe
-            if ((int)Config.ControlSelected == 4)
-            {
-                Config.ControlSelected = Config.ControlSelect.FrontAssyncronous;
-            }
-            if ((int)Config.ControlSelected < 0)
-            {
-                Config.ControlSelected = Config.ControlSelect.Joystick;
-            }
+            
 
 
             //allow to shot with spacebar if in debug mode
@@ -414,7 +400,7 @@ namespace WheelChairCollaborativeGame
             }
             if (skeletonPlayerTank == null && Config.ControlSelected != Config.ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Player One not tracked!", PLAYER1_TRACKING_POSITION);
+                    "Player One not tracked!", 1,  PLAYER1_TRACKING_POSITION);
             if (skeletonPlayerSoldier == null && Config.ControlSelected != Config.ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                     "Player Two not tracked!",1 , PLAYER2_TRACKING_POSITION);

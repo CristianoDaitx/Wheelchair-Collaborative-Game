@@ -131,6 +131,7 @@
     <Compile Include="GameObjects\BallGameObject.cs" />
     <Compile Include="GameObjects\Explosions\BigExplosionGameObject.cs" />
     <Compile Include="GameObjects\HumanCharacter.cs" />
+    <Compile Include="Screens\ConfigScreen.cs" />
     <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />

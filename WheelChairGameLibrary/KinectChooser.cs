@@ -118,6 +118,9 @@ namespace WheelChairGameLibrary
         /// <param name="gameTime">The elapsed game time.</param>
         public override void Draw(GameTime gameTime)
         {
+            //skip rendering for now
+            return;
+
             // If the spritebatch is null, call initialize
             if (this.spriteBatch == null)
             {

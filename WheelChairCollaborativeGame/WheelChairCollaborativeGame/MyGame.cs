@@ -75,6 +75,22 @@ namespace WheelChairCollaborativeGame
             {
                 IsDebugMode = !IsDebugMode;
             }
+
+            //changes control type
+            if (inputState.IsKeyPressed(Keys.Z, null, out playerIndex))
+                Config.ControlSelected--;
+            if (inputState.IsKeyPressed(Keys.X, null, out playerIndex))
+                Config.ControlSelected++;
+
+            //check borders of control tipe
+            if ((int)Config.ControlSelected == 4)
+            {
+                Config.ControlSelected = Config.ControlSelect.FrontAssyncronous;
+            }
+            if ((int)Config.ControlSelected < 0)
+            {
+                Config.ControlSelected = Config.ControlSelect.Joystick;
+            }
         }       
 
     }

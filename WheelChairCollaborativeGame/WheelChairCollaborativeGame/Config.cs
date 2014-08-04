@@ -26,12 +26,14 @@ namespace WheelChairCollaborativeGame
             FrontAssyncronous
         }
 
-        private static ControlSelect controlSelect = ControlSelect.Side;
+        private static ControlSelect controlSelect = ControlSelect.Joystick;
         public static ControlSelect ControlSelected
         {
             get { return controlSelect; }
             set { controlSelect = value; }
         }
+
+
 
     }
 

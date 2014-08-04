@@ -73,6 +73,9 @@ namespace WheelChairCollaborativeGame
                     case 1:
                         Game.ActiveScreen = new TutorialScreen(Game, "TutorialScreen");
                         break;
+                    case 2:
+                        Game.ActiveScreen = new ConfigScreen(Game, "ConfigScreen");
+                        break;
                     case 3:
                         Game.Exit();
                         break;
