@@ -25,6 +25,7 @@ namespace WheelChairGameLibrary.Sprites
         public int ActualState
         {
             get { return actualState; }
+            set { actualState = value; }
         }
         public bool AutoChangeState {get;set;}
 

@@ -22,6 +22,7 @@ namespace WheelChairCollaborativeGame.GameObjects
             base.LoadContent();
 
             Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("characters"), 1);
+             
 
             Sprite.ActiveSpriteAnimation = new SpriteAnimation(new SpriteAnimationData[] { new SpriteAnimationData(251, 0, 125, 125, 0, 0) });
         }

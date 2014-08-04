@@ -33,8 +33,8 @@ namespace WheelChairCollaborativeGame
             
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
                         "        Fellow aliens!\nWe have successfully defended"+
-            "\nour civilization and have caugth " +Score.ToString()+" humans"+
-            "\nthaks to your support.", new Vector2(450, 300));
+            "\nour civilization and have caugth " +"\n"+Score.ToString()+" humans, "+
+            "thanks to your support.", new Vector2(450, 300));
             SharedSpriteBatch.End();
         }
 

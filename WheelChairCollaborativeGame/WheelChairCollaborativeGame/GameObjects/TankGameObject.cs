@@ -18,7 +18,6 @@ using KinectForWheelchair.Listeners;
 using Microsoft.Kinect;
 
 #endregion
-
 namespace WheelChairCollaborativeGame
 {
     class TankGameObject : GameObject2D
@@ -63,7 +62,19 @@ namespace WheelChairCollaborativeGame
 
         protected override void LoadContent()
         {
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("PlayerA"), 0.5f);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Player"), 2f);
+            // (49, 0), (23, 30), (116, 30)
+            SpriteAnimation spriteAnimation = new SpriteAnimation(49,
+                    new SpriteAnimationData[] {
+                        new SpriteAnimationData(1, 0, 23, 30, 0, 0),
+                        new SpriteAnimationData(24, 0, 23, 30, 0, 0),
+                        new SpriteAnimationData(47, 0, 23, 30, 0, 0),
+                        new SpriteAnimationData(70, 0, 23, 30, 0, 0),
+                        new SpriteAnimationData(93, 0, 23, 30, 0, 0)});
+            
+            spriteAnimation.AutoChangeState = false;
+            Sprite.ActiveSpriteAnimation = spriteAnimation;
+            Sprite.ActiveSpriteAnimation.ActualState = 4;
             Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, Config.resolution.Y - 120);
 
             fireSoundEffect = Game.Content.Load<SoundEffect>("shoot");
@@ -105,16 +116,32 @@ namespace WheelChairCollaborativeGame
 
             if (Math.Abs(Velocity.X) > MAX_VELOCITY.X)
             {
+
                 Acceleration = new Vector2(0, Acceleration.Y);
+                if(Velocity.X > MAX_VELOCITY.X)
+                    Sprite.ActiveSpriteAnimation.ActualState = 4;
+                else
+                    Sprite.ActiveSpriteAnimation.ActualState = 0;
+                    
             }
 
             if (PositionCenterX < MaxLeft)
             {
                 Acceleration = new Vector2(ACCELERATION_X, Acceleration.Y);
+                Sprite.ActiveSpriteAnimation.ActualState = 1;
+                if( Velocity.X > -0.5f)
+                    Sprite.ActiveSpriteAnimation.ActualState = 2;
+                if( Velocity.X > 0.5f)
+                    Sprite.ActiveSpriteAnimation.ActualState = 3;
             }
             if (PositionCenterX > MaxRight)
             {
                 Acceleration = new Vector2(-ACCELERATION_X, Acceleration.Y);
+                Sprite.ActiveSpriteAnimation.ActualState = 3;
+                if (Velocity.X < 0.5f)
+                    Sprite.ActiveSpriteAnimation.ActualState = 2;
+                if (Velocity.X < -0.5f)
+                    Sprite.ActiveSpriteAnimation.ActualState = 1;
             }
         }
 
