@@ -32,7 +32,7 @@ namespace WheelChairCollaborativeGame
             this.life = 10;
             this.HUMANS = 50;
             
-            Velocity = new Vector2(0, 0.7f);            
+            Velocity = new Vector2(0, 0.5f);            
         }
 
         protected override void LoadContent()

@@ -180,7 +180,11 @@ namespace WheelChairCollaborativeGame
 
                 if (timeRan.Seconds == 1)
                 {
-                    Game.Components.Add(new HumanCharacter("Look!\nBaby aliens!", Game, "HumanCharacter"));
+                    if(timeRan.Minutes == 0)
+                        Game.Components.Add(new HumanCharacter("Look!\nBaby, aliens!", Game, "HumanCharacter"));
+                    else
+                        Game.Components.Add(new HumanCharacter("Look!\nThey have gold!", Game, "HumanCharacter"));
+
                 }
 
                 if (timeRan.Seconds == 2)
@@ -193,13 +197,19 @@ namespace WheelChairCollaborativeGame
                 if (timeRan.Seconds == 5)
                 {
                     Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
-                    Game.Components.Add(new AlienCharacter("Lets defend\nwhile the shields is\nnot fixed!", Game, "AlienCharacter"));
+                    if (timeRan.Minutes == 0)
+                        Game.Components.Add(new AlienCharacter("Lets defend\nwhile the shields is\nnot fixed!", Game, "AlienCharacter"));
+                    else
+                        Game.Components.Add(new AlienCharacter("The shield is \nalmost fixed, \nhang in there!", Game, "AlienCharacter"));
                 }
 
                 if (timeRan.Seconds == 20)
                 {
                     Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
-                    Game.Components.Add(new HumanCharacter("We will study\nyour planet!", Game, "HumanCharacter"));
+                    if (timeRan.Minutes == 0)
+                        Game.Components.Add(new HumanCharacter("We will study\nyour planet!", Game, "HumanCharacter"));
+                    else
+                        Game.Components.Add(new HumanCharacter("So much to explore!", Game, "HumanCharacter"));
                 }
 
                 if (timeRan.Seconds == 28)
@@ -210,7 +220,10 @@ namespace WheelChairCollaborativeGame
 
                 if (timeRan.Seconds == 29)
                 {
+                    if (timeRan.Minutes == 0)
                     Game.Components.Add(new AlienCharacter("Shields will be\nup in 1:30!", Game, "AlienCharacter"));
+                    else
+                        Game.Components.Add(new AlienCharacter("Shields will be\nup in 30 seconds!", Game, "AlienCharacter"));
                 }
 
                 if (timeRan.Seconds == 30)
