@@ -13,7 +13,7 @@ namespace WheelChairCollaborativeGame.GameObjects
     {
         public HumanCharacter(String message, GameEnhanced game, string tag)
             : base(message, game, tag)
-        {            
+        {
             Position = new Vector2(Config.resolution.X - 50 - 125, 50);
         }
 
@@ -21,10 +21,7 @@ namespace WheelChairCollaborativeGame.GameObjects
         {
             base.LoadContent();
 
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("characters"), 1);
-             
-
-            Sprite.ActiveSpriteAnimation = new SpriteAnimation(new SpriteAnimationData[] { new SpriteAnimationData(251, 0, 125, 125, 0, 0) });
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("CharHuman"), 1);
         }
 
         public override void Draw(GameTime gameTime)
