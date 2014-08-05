@@ -88,7 +88,15 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.Begin();
             
             PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, WIDTH_ENERGY_X, HEIGHT_ENERGY_X), Color.Black, true);
-            PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.LimeGreen, true);
+            if (energy > (MAX_ENERGY / 2))
+            {
+                PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, ((int)(energy / MAX_ENERGY * WIDTH_ENERGY_X)), HEIGHT_ENERGY_X), Color.LimeGreen, true);
+            }
+            else
+            {
+                PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.Red, true);
+            }
+            
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Energy", new Vector2(POSITION_ENERGY_X, POSITION_ENERGY_Y));
             SharedSpriteBatch.End();
         }
