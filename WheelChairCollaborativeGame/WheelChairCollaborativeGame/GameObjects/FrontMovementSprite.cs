@@ -62,6 +62,17 @@ namespace WheelChairCollaborativeGame.GameObjects
         {
             if (Config.ControlSelected == Config.ControlSelect.Joystick)
                 return;
+            SharedSpriteBatch.Begin();
+            if (Config.ControlSelected == Config.ControlSelect.Front || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
+            {
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Make a front movement\n with your right hand", new Vector2(950, 370));
+            }
+            if (Config.ControlSelected == Config.ControlSelect.Side)
+            {
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "\"Highfive\" with your friend.", new Vector2(100, 370));
+               
+            }
+            SharedSpriteBatch.End();
             base.Draw(gameTime);
         }
 

@@ -36,8 +36,8 @@ namespace WheelChairCollaborativeGame
         private readonly Vector2 ACTION_COUNT_POSITION = new Vector2(30, 170);
         private readonly Vector2 ACTION_TIME_POSITION = new Vector2(30, 200);
         private readonly Vector2 INPUT_METHOD_POSITION = new Vector2(30, 230);
-        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(180, 370);
-        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(870, 370);
+        private readonly Vector2 PLAYER1_TRACKING_POSITION = new Vector2(180, 470);
+        private readonly Vector2 PLAYER2_TRACKING_POSITION = new Vector2(870, 470);
         private readonly Vector2 JOINT_ONE_VELOCITY_POSITION = new Vector2(30, 350);
         private readonly Vector2 JOINT_TWO_VELOCITY_POSITION = new Vector2(30, 380);
 
@@ -381,10 +381,6 @@ namespace WheelChairCollaborativeGame
             {
                 DrawSkeleton(skeletonPlayerSoldier.Skeleton, Color.Red);
             }*/
-
-
-            //tutorial printings:
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, movementFrontTank.State.ToString(), new Vector2(30,30));
 
 
 

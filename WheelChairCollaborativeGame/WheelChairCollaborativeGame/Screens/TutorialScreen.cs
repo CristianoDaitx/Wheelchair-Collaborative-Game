@@ -15,31 +15,25 @@ namespace WheelChairCollaborativeGame
     {
         private Song backgroundSong;
 
+        private bool isTutorialStarted = false;
+        private bool isTutorialEnded = false;
+
         private int maxEnemies = 5;
         WeakEnemy weakEnemy;
+        FrontMovementSprite movementSprite;
 
         private TimeSpan timeRan;
-        private TimeSpan maxTime = TimeSpan.FromSeconds(120);
-        private int lastSecond = -1;
-        private int lastSecond2 = -1;
-        private TimeSpan countdown;
-        public int Score;
-        public int Invaders;
-
-        private bool timeExpired = false;
-        private TimeSpan timeRanInExpiredTime = new TimeSpan();
-        private TimeSpan maxTimeInExpiredTime = TimeSpan.FromSeconds(5);
-        private TimeSpan explodeTimeInExpiredTime = TimeSpan.FromSeconds(3);
-        private bool exploded = false;
+        private TimeSpan timeRanEnded;
+        private TimeSpan maxTime = TimeSpan.FromSeconds(6);
 
         TankGameObject playerTank;
-        SmallHuman smallHuman;
 
         public TutorialScreen(GameEnhanced game, string tag)
             : base(game, tag)
         {
             DrawOrder++;
             timeRan = new TimeSpan();
+            timeRanEnded = new TimeSpan();
         }
 
         public override void Initialize()
@@ -49,7 +43,7 @@ namespace WheelChairCollaborativeGame
             MediaPlayer.IsRepeating = true;
 
 
-            
+
 
         }
 
@@ -66,33 +60,36 @@ namespace WheelChairCollaborativeGame
             KinectInput kinectInput = new KinectInput(Game, "kinectInput");
             Game.Components.Add(kinectInput);
 
-            //smallHuman = new SmallHuman(Game, "smallHuman");
-            //Game.Components.Add(smallHuman);
 
             backgroundSong = Game.Content.Load<Song>("AsteroidDance");
 
-
-            Game.Components.Add(new FrontMovementSprite(Game, "FrontMovementSprite"));
+            movementSprite = new FrontMovementSprite(Game, "FrontMovementSprite");
 
             weakEnemy = new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right);
             weakEnemy.DiedCompleted += new EnemyGameObject.DiedEventHandler(weakEnemy_DiedCompleted);
-            Game.Components.Add(weakEnemy);
+
             base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)
         {
             SharedSpriteBatch.Begin();
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        maxEnemies.ToString(), new Vector2(600, 30), 1.5f);
-            /*GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       Invaders.ToString(), new Vector2(Config.resolution.X - 60, 650), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       "Invaders", new Vector2(Config.resolution.X - 150, 600), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                     Score.ToString(), new Vector2(60, 650), 1.5f);
-            GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                       "Score", new Vector2(0, 600), 1.5f);*/
+            if (isTutorialEnded)
+            {
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                            "Great!, You are now prepared to\n     stop the human invasion!", new Vector2(450, 300));
+            }
+            else if (isTutorialStarted)
+            {
+                GUImessage.DrawString(SharedSpriteBatch, Game.Content,
+                            "Enemies: " + maxEnemies.ToString(), new Rectangle(600, 30, 100, 20), GUImessage.Alignment.Center, Color.White);
+            }
+            else
+            {
+                GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
+                           "Shoot the humans to prevent them\n    from invading your planet!\n\n"+
+                           " Do not forget to keep an eye in\n         your energy bar!", new Vector2(450, 300));
+            }
             SharedSpriteBatch.End();
             base.Draw(gameTime);
 
@@ -102,24 +99,49 @@ namespace WheelChairCollaborativeGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
+
             InputState inputState = (InputState)Game.Services.GetService(typeof(InputState));
 
             PlayerIndex playerIndex;
 
+            //capability to add enemies:
+            if (inputState.IsKeyPressed(Keys.A, null, out playerIndex))
+                maxEnemies++;
+
+            if (!isTutorialEnded)
+            {
+                timeRan += gameTime.ElapsedGameTime;
 
 
-            countdown = (maxTime - timeRan);
+                if (!isTutorialStarted && timeRan.Seconds >= maxTime.Seconds)
+                {
+                    isTutorialStarted = true;
+                    Game.Components.Add(weakEnemy);
+                    Game.Components.Add(movementSprite);
+                }
 
-            //session time
 
-            
-
+                if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
+                {
+                    timeRan += maxTime;
+                }
+            }
+            else
+            {
+                timeRanEnded += gameTime.ElapsedGameTime;
+                if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
+                {
+                    Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
+                }
+                if (timeRanEnded.Seconds >= maxTime.Seconds)
+                {
+                    Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
+                }
+            }
 
             if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
             {
-                Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
-
+                Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
             }
         }
 
@@ -135,114 +157,11 @@ namespace WheelChairCollaborativeGame
                 Game.Components.Add(weakEnemy);
             }
             else
-                Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
-        }
-
-        /// <summary>
-        /// scripted add of enemies
-        /// </summary>
-        private void addEnemies(GameTime gameTime)
-        {
-            timeRan += gameTime.ElapsedGameTime;
-
-            if (timeRan.Seconds != lastSecond) // the second has changed
             {
-                if (timeRan.Seconds == 0)
-                {
-
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 1)
-                {
-                    Game.Components.Add(new HumanCharacter("Look!\nBaby aliens!", Game, "HumanCharacter"));
-                }
-
-                if (timeRan.Seconds == 2)
-                {
-
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
-                    Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
-                }
-
-                if (timeRan.Seconds == 5)
-                {
-                    Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
-                    Game.Components.Add(new AlienCharacter("Lets defend\nwhile the shields is\nnot fixed!", Game, "AlienCharacter"));
-                }
-
-                if (timeRan.Seconds == 20)
-                {
-                    Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
-                    Game.Components.Add(new HumanCharacter("We will study\nyour planet!", Game, "HumanCharacter"));
-                }
-
-                if (timeRan.Seconds == 28)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
-                    Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
-                }
-
-                if (timeRan.Seconds == 29)
-                {
-                    Game.Components.Add(new AlienCharacter("Shields will be\nup in 1:30!", Game, "AlienCharacter"));
-                }
-
-                if (timeRan.Seconds == 30)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 31)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 35)
-                {
-                    Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
-                }
-
-                if (timeRan.Seconds == 36)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 37)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-                if (timeRan.Seconds == 38)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 39)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-                    Game.Components.Add(new HumanCharacter("Keep going!", Game, "HumanCharacter"));
-                }
-                if (timeRan.Seconds == 40)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-                }
-                if (timeRan.Seconds == 41)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 53)
-                {
-                    Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
-                }
-
-
-                lastSecond = timeRan.Seconds;
-
+                isTutorialEnded = true;
+                Game.Components.Remove(movementSprite);
             }
         }
-
-        
 
         public override void ExitScreen()
         {
