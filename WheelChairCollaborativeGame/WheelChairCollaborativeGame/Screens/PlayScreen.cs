@@ -171,10 +171,13 @@ namespace WheelChairCollaborativeGame
             timeRan += gameTime.ElapsedGameTime;
 
             if (timeRan.Seconds != lastSecond) // the second has changed
-            {
-                if (timeRan.Seconds == 0)
-                {
+            {   
+                if (timeRan.Minutes == 1)
+                    if (timeRan.Seconds == 3)
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
 
+                if (timeRan.Seconds == 0 && timeRan.Minutes == 0)
+                {
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
                 }
 
@@ -187,7 +190,7 @@ namespace WheelChairCollaborativeGame
 
                 }
 
-                if (timeRan.Seconds == 2)
+                if (timeRan.Seconds == 2 && timeRan.Minutes == 0)
                 {
 
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
@@ -212,13 +215,13 @@ namespace WheelChairCollaborativeGame
                         Game.Components.Add(new HumanCharacter("So much to explore!", Game, "HumanCharacter"));
                 }
 
-                if (timeRan.Seconds == 28)
+                if (timeRan.Seconds == 30)
                 {
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
                     Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
                 }
 
-                if (timeRan.Seconds == 29)
+                if (timeRan.Seconds == 30)
                 {
                     if (timeRan.Minutes == 0)
                     Game.Components.Add(new AlienCharacter("Shields will be\nup in 1:30!", Game, "AlienCharacter"));
@@ -226,12 +229,12 @@ namespace WheelChairCollaborativeGame
                         Game.Components.Add(new AlienCharacter("Shields will be\nup in 30 seconds!", Game, "AlienCharacter"));
                 }
 
-                if (timeRan.Seconds == 30)
+                if (timeRan.Seconds == 32)
                 {
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
                 }
 
-                if (timeRan.Seconds == 31)
+                if (timeRan.Seconds == 33)
                 {
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
                 }
@@ -269,7 +272,7 @@ namespace WheelChairCollaborativeGame
                     Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
                 }
 
-                if (timeRan.Seconds == 53)
+                if (timeRan.Seconds == 54)
                 {
                     Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
                 }
