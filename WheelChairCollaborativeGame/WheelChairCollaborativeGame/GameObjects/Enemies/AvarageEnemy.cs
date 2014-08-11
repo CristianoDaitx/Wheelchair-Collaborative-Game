@@ -26,7 +26,7 @@ namespace WheelChairCollaborativeGame
             : base(game, tag)
         {
             
-            this.life = 2;
+            this.life = 1;
             this.HUMANS = 10;
             Velocity = new Vector2(0, 0.5f);
             
