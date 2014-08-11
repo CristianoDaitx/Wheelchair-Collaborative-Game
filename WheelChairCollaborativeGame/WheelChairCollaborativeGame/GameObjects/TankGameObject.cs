@@ -96,6 +96,11 @@ namespace WheelChairCollaborativeGame
             {
                 PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.Red, true);
             }
+
+            if (energy < 10)
+            {
+                // blinking bar
+            }
             
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Energy", new Vector2(POSITION_ENERGY_X, POSITION_ENERGY_Y));
             SharedSpriteBatch.End();

@@ -65,7 +65,7 @@ namespace WheelChairCollaborativeGame
 
             movementSprite = new FrontMovementSprite(Game, "FrontMovementSprite");
 
-            weakEnemy = new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right);
+            weakEnemy = new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left);
             weakEnemy.DiedCompleted += new EnemyGameObject.DiedEventHandler(weakEnemy_DiedCompleted);
 
             base.LoadContent();
@@ -152,7 +152,7 @@ namespace WheelChairCollaborativeGame
 
             if (maxEnemies > -0)
             {
-                WeakEnemy weakEnemy = new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right);
+                WeakEnemy weakEnemy = new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left);
                 weakEnemy.DiedCompleted += new EnemyGameObject.DiedEventHandler(weakEnemy_DiedCompleted);
                 Game.Components.Add(weakEnemy);
             }
