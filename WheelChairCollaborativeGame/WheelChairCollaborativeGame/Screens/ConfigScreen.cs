@@ -67,9 +67,9 @@ namespace WheelChairCollaborativeGame
             }
 
             //changes control type
-            if (inputState.IsKeyPressed(Keys.Left, null, out playerIndex))
+            if (inputState.IsKeyPressed(Keys.Up, null, out playerIndex))
                 Config.ControlSelected--;
-            if (inputState.IsKeyPressed(Keys.Right, null, out playerIndex))
+            if (inputState.IsKeyPressed(Keys.Down, null, out playerIndex))
                 Config.ControlSelected++;
 
             //check borders of control tipe
