@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using WheelChairCollaborativeGame.GameObjects;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,7 +17,7 @@ namespace WheelChairCollaborativeGame
 
         private readonly Vector2 MENU_START_POSTION = new Vector2(500, 450);
         private readonly Vector2 MENU_SPACING = new Vector2(0, 40);
-
+        private Song backgroundSong;
         private int menuSelected = 0;
 
         private TimeSpan timeRan;
@@ -29,6 +30,13 @@ namespace WheelChairCollaborativeGame
             : base(game, tag)
         {
         }
+        public override void Initialize()
+        {
+            base.Initialize();
+            MediaPlayer.Play(backgroundSong);
+            MediaPlayer.IsRepeating = true;
+
+        }
 
         protected override void LoadContent()
         {
@@ -39,6 +47,8 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
             spriteFont = Game.Content.Load<SpriteFont>(@"SpriteFont2");
             spriteFont2 = Game.Content.Load<SpriteFont>(@"SpriteFont3");
+            backgroundSong = Game.Content.Load<Song>("Tyrian - 05 - Camanise");
+            base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)

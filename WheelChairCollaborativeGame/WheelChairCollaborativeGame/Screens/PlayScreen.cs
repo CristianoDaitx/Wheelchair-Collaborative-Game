@@ -44,7 +44,7 @@ namespace WheelChairCollaborativeGame
         {
             base.Initialize();
             MediaPlayer.Play(backgroundSong);
-            MediaPlayer.IsRepeating = true;
+            MediaPlayer.IsRepeating = false;
 
         }
 
@@ -64,7 +64,7 @@ namespace WheelChairCollaborativeGame
             smallHuman = new SmallHuman(Game, "smallHuman");
             Game.Components.Add(smallHuman);
 
-            backgroundSong = Game.Content.Load<Song>("AsteroidDance");
+            backgroundSong = Game.Content.Load<Song>("Tyrian - 02 - Asteroid Dance Part 1");
             base.LoadContent();
         }
 
