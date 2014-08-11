@@ -18,7 +18,7 @@ namespace WheelChairCollaborativeGame
 {
     class BallGameObject : GameObject2D
     {
-        private readonly int MAX_Y_TO_SURVIVE = 100;
+        private readonly int MAX_Y_TO_SURVIVE = 50;
 
         SoundEffect hit;
 
@@ -29,7 +29,7 @@ namespace WheelChairCollaborativeGame
             //this.Size = new Vector2(8, 8);
             Collider = new Collider(this);
 
-            Velocity = new Vector2(0, -3);
+            Velocity = new Vector2(0, -9);
 
             Position = new Vector2(Position.X - 6, Position.Y - 10);
         }

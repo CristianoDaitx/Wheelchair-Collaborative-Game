@@ -22,14 +22,23 @@ namespace WheelChairCollaborativeGame
 {
     class AvarageEnemy : EnemyGameObject
     {
-        public AvarageEnemy(GameEnhanced game, String tag)
+        private Vector2 TurnAcceleration = new Vector2(0.02f, 0);
+        private bool startedRun = false;
+
+        public enum Type
+        {
+            Left,
+            Right
+        }
+        private Type type;
+
+        public AvarageEnemy(GameEnhanced game, String tag, Type type)
             : base(game, tag)
         {
-            
             this.life = 2;
             this.HUMANS = 10;
-            Velocity = new Vector2(0, 0.5f);
-            
+            Velocity = new Vector2(0, 0.7f);
+            this.type = type;
         }
 
         protected override void LoadContent()
@@ -43,19 +52,35 @@ namespace WheelChairCollaborativeGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            
 
-            if (Position.Y == 0.10 * Config.resolution.Y)
+            if (!startedRun && Position.Y >= 0.02 * Config.resolution.Y)
             {
-                Velocity = new Vector2(-1f, 0.5f);
+                //Velocity = new Vector2(-1f, 0.5f);
+                if (type == Type.Right)
+                    Acceleration = TurnAcceleration;
+                else
+                    Acceleration = -TurnAcceleration;
+                startedRun = true;
             }
 
             if (!isLeaving)
             {
                 if (Position.X < 500)
-                    Velocity = new Vector2(1f, 0.5f);
-                if (Position.X > 700 && Position.Y < Config.resolution.Y - 250)
-                    Velocity = new Vector2(-1f, 0.5f);
+                {
+                    Acceleration = TurnAcceleration;
+                    //Velocity = new Vector2(1f, 0.5f);
+                }
+                else if (Position.X > 700)
+                {
+                    //Velocity = new Vector2(-1f, 0.5f);
+                    Acceleration = -TurnAcceleration;
+                }
+                else if (Math.Abs(Velocity.X) > 1)
+                    Acceleration = new Vector2(0, 0);
             }
+
+            
 
         }
 

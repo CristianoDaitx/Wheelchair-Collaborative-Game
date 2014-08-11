@@ -29,7 +29,7 @@ namespace WheelChairCollaborativeGame
         {
             this.life = 2;
             this.HUMANS = 20;
-            this.Velocity = new Vector2(2, 0.5f);
+            this.Velocity = new Vector2(2, 0.7f);
             this.Acceleration = new Vector2(0.02f, 0);
 
         }

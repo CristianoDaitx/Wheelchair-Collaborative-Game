@@ -37,6 +37,8 @@ namespace WheelChairCollaborativeGame
         protected int life = 1;
         protected int HUMANS = 5;
 
+        private static Random random = new Random();
+
         public EnemyGameObject(Vector2 position, GameEnhanced game, String tag)
             : base(position, game, tag)
         {
@@ -67,12 +69,12 @@ namespace WheelChairCollaborativeGame
                 isLeaving = true;
 
 
-                if (this.PositionCenterX > Config.resolution.X / 2)
+                if (this.Velocity.X > 0)
                     Acceleration = new Vector2(0.2f, 0);
-
-
-                else
+                else if (this.Velocity.X < 0)
                     Acceleration = new Vector2(-0.2f, 0);
+                else
+                    Acceleration = (random.Next(0, 1) == 0 ? new Vector2(0.2f, 0) : new Vector2(-0.2f, 0));
             }
 
 

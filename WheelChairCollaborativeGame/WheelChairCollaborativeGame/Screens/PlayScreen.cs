@@ -15,11 +15,11 @@ namespace WheelChairCollaborativeGame
     {
         private Song backgroundSong;
 
-        private TimeSpan timeRan;
+        private TimeSpan timeRan = new TimeSpan();//TimeSpan.FromSeconds(90);
         private TimeSpan maxTime = TimeSpan.FromSeconds(120);
         private int lastSecond = -1;
         private int lastSecond2 = -1;
-        private Random rnd= new Random();
+        private Random rnd = new Random();
         private TimeSpan countdown;
         public int Score;
         public int Invaders;
@@ -37,7 +37,6 @@ namespace WheelChairCollaborativeGame
             : base(game, tag)
         {
             DrawOrder++;
-            timeRan = new TimeSpan();
         }
 
         public override void Initialize()
@@ -73,13 +72,13 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.Begin();
             GUImessage.DrawString(SharedSpriteBatch, Game.Content,
                         string.Format("{0:mm\\:ss}", countdown), new Rectangle(600, 30, 100, 20), GUImessage.Alignment.Center, Color.White);
-            
-            GUImessage.DrawString(SharedSpriteBatch, Game.Content,Invaders.ToString(), new Rectangle((int)Config.resolution.X - 200, 600, 300, 18), GUImessage.Alignment.Left, Color.White);
-           
+
+            GUImessage.DrawString(SharedSpriteBatch, Game.Content, Invaders.ToString(), new Rectangle((int)Config.resolution.X - 200, 600, 300, 18), GUImessage.Alignment.Left, Color.White);
+
             GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Invaders", new Rectangle((int)Config.resolution.X - 200, 560, 300, 18), GUImessage.Alignment.Left, Color.White);
 
             GUImessage.DrawString(SharedSpriteBatch, Game.Content, Score.ToString(), new Rectangle(0, 600, 200, 18), GUImessage.Alignment.Right, Color.White);
-            
+
             GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Score", new Rectangle(0, 560, 200, 18), GUImessage.Alignment.Right, Color.White);
             SharedSpriteBatch.End();
             base.Draw(gameTime);
@@ -145,7 +144,7 @@ namespace WheelChairCollaborativeGame
                     if (gameOverScreen != null)
                         gameOverScreen.Score = Score;
                 }
-                   
+
 
             }
 
@@ -158,7 +157,7 @@ namespace WheelChairCollaborativeGame
                     if (gameOverScreen != null)
                         gameOverScreen.Score = Score;
                 }
-                   
+
 
             }
         }
@@ -170,152 +169,186 @@ namespace WheelChairCollaborativeGame
         {
             timeRan += gameTime.ElapsedGameTime;
 
-            if (timeRan.Seconds != lastSecond) // the second has changed
-            {   
-                if (timeRan.Minutes == 1)
-                    if (timeRan.Seconds == 3)
+            if ((int)timeRan.TotalSeconds != lastSecond) // the second has changed
+            {
+                switch ((int)timeRan.TotalSeconds)
+                {
+                    case 0:
                         Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-
-                if (timeRan.Seconds == 0 && timeRan.Minutes == 0)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 1)
-                {
-                    if(timeRan.Minutes == 0)
+                        break;
+                    case 1:
                         Game.Components.Add(new HumanCharacter("Look!\nBaby, aliens!", Game, "HumanCharacter"));
-                    else
-                        Game.Components.Add(new HumanCharacter("Look!\nThey have gold!", Game, "HumanCharacter"));
-
-                }
-
-                if (timeRan.Seconds == 2 && timeRan.Minutes == 0)
-                {
-
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
-                    Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
-                }
-
-                if (timeRan.Seconds == 5)
-                {
-                    Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
-                    if (timeRan.Minutes == 0)
+                        break;
+                    case 5:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Left));
                         Game.Components.Add(new AlienCharacter("Lets defend\nwhile the shields is\nnot fixed!", Game, "AlienCharacter"));
-                    else
-                        Game.Components.Add(new AlienCharacter("The shield is \nalmost fixed, \nhang in there!", Game, "AlienCharacter"));
-                }
-
-                if (timeRan.Seconds == 20)
-                {
-                    Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
-                    if (timeRan.Minutes == 0)
+                        break;
+                    case 9:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
+                        break;
+                    case 14:
+                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
+                        break;
+                    case 20:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
                         Game.Components.Add(new HumanCharacter("We will study\nyour planet!", Game, "HumanCharacter"));
-                    else
+                        break;
+                    case 24:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
+                        break;
+                    case 25:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
+                        break;
+                    case 28:
+                        Game.Components.Add(new AlienCharacter("Shields will be\nup in 1:30!", Game, "AlienCharacter"));
+                        break;
+                    case 30:
+                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));                        
+                        break;
+                    case 34:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
+                        break;
+                    case 37:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Left));
+                        break;
+                    case 39:
                         Game.Components.Add(new HumanCharacter("So much to explore!", Game, "HumanCharacter"));
-                }
-
-                if (timeRan.Seconds == 30)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
-                    Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
-                }
-
-                if (timeRan.Seconds == 30)
-                {
-                    if (timeRan.Minutes == 0)
-                    Game.Components.Add(new AlienCharacter("Shields will be\nup in 1:30!", Game, "AlienCharacter"));
-                    else
+                        break;
+                    case 40:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
+                    case 41:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;                    
+                    case 45:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 46:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 51:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Left));
+                        break;
+                    case 53:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Right));
+                        break;
+                    case 56:
+                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
+                        break;
+                    case 60:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
+                    case 61:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
+                    case 62:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
+                    case 63:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
+                    case 65:
+                        Game.Components.Add(new HumanCharacter("Look!\nThey have gold!", Game, "HumanCharacter"));
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Left));
+                        break;
+                    case 68:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 69:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 70:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 71:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 75:
+                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
+                        break;
+                    case 80:
+                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
+                        break;
+                    case 84:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Right));
+                        break;
+                    case 86:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Left));
+                        break;
+                    case 89:
                         Game.Components.Add(new AlienCharacter("Shields will be\nup in 30 seconds!", Game, "AlienCharacter"));
+                        break;
+                    case 90:
+                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
+                        break;
+                    case 93:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 94:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 97:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Left));
+                        break;
+                    case 99:
+                        Game.Components.Add(new AlienCharacter("The shield is \nalmost fixed, \nhang in there!", Game, "AlienCharacter"));
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
+                    case 101:
+                        Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy", AvarageEnemy.Type.Right));
+                        break;
+                    case 104:
+                        Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
+                        Game.Components.Add(new HumanCharacter("Keep going!", Game, "HumanCharacter"));
+                        break;
+                    case 115:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
+                        break;
+                    case 116:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
+                    case 117:
+                        Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
+                        break;
                 }
-
-                if (timeRan.Seconds == 32)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 33)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 35)
-                {
-                    Game.Components.Add(new AvarageEnemy(Game, "avarageEnemy"));
-                }
-
-                if (timeRan.Seconds == 36)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 37)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-                if (timeRan.Seconds == 38)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                }
-
-                if (timeRan.Seconds == 39)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-                    Game.Components.Add(new HumanCharacter("Keep going!", Game, "HumanCharacter"));
-                }
-                if (timeRan.Seconds == 40)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-                }
-                if (timeRan.Seconds == 41)
-                {
-                    Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
-                }
-
-                if (timeRan.Seconds == 54)
-                {
-                    Game.Components.Add(new HardEnemy(Game, "hardEnemy"));
-                }
-
-
-                lastSecond = timeRan.Seconds;
+                lastSecond = (int)timeRan.TotalSeconds;
 
             }
         }
 
         private void addExplosion(GameTime gameTime)
         {
-            
+
 
             if (timeRan.Seconds != lastSecond2) // the second has changed
             {
 
                 if (timeRan.Seconds % 20 == 0)
                 {
-                    
+
                     if (Invaders > 50)
-                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400,800),rnd.Next(650,750)), Game, 2));
+                        Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 800), rnd.Next(650, 750)), Game, 2));
                 }
 
 
 
                 if (timeRan.Seconds % 10 == 0)
                 {
-                    
-                    if(Invaders > 150)
+
+                    if (Invaders > 150)
                         Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 800), rnd.Next(650, 750)), Game, 2));
                 }
 
                 if (timeRan.Seconds % 5 == 0)
                 {
-                    
+
                     if (Invaders > 250)
                         Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 800), rnd.Next(650, 750)), Game, 2));
                 }
 
                 if (timeRan.Seconds % 2 == 0)
                 {
-                   
+
                     if (Invaders > 350)
                         Game.Components.Add(new BigExplosionGameObject(new Vector2(rnd.Next(400, 800), rnd.Next(650, 750)), Game, 2));
                 }
