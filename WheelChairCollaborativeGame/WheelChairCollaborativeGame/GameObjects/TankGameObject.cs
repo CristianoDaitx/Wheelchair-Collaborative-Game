@@ -62,15 +62,15 @@ namespace WheelChairCollaborativeGame
 
         protected override void LoadContent()
         {
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Player"), 2f);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, this.Game.Content.Load<Texture2D>("Player"), 1);
             // (49, 0), (23, 30), (116, 30)
             SpriteAnimation spriteAnimation = new SpriteAnimation(49,
                     new SpriteAnimationData[] {
-                        new SpriteAnimationData(1, 0, 23, 30, 0, 0),
-                        new SpriteAnimationData(24, 0, 23, 30, 0, 0),
-                        new SpriteAnimationData(47, 0, 23, 30, 0, 0),
-                        new SpriteAnimationData(70, 0, 23, 30, 0, 0),
-                        new SpriteAnimationData(93, 0, 23, 30, 0, 0)});
+                        new SpriteAnimationData(2, 0, 46, 60, 0, 0),
+                        new SpriteAnimationData(48, 0, 46, 60, 0, 0),
+                        new SpriteAnimationData(94, 0, 46, 60, 0, 0),
+                        new SpriteAnimationData(140, 0, 46, 60, 0, 0),
+                        new SpriteAnimationData(186, 0, 46, 60, 0, 0)});
             
             spriteAnimation.AutoChangeState = false;
             Sprite.ActiveSpriteAnimation = spriteAnimation;

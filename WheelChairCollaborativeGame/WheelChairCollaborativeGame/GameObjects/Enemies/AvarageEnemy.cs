@@ -35,7 +35,7 @@ namespace WheelChairCollaborativeGame
         protected override void LoadContent()
         {
             base.LoadContent();
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("AvarageEnemy"), 0.5f);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("AvarageEnemy"), 1);
             Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, -Size.Y);
         }
 

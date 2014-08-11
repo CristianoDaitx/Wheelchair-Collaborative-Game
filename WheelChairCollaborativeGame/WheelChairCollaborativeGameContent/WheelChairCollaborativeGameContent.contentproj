@@ -249,6 +249,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="medium.png">
+      <Name>medium</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Tyrian - 05 - Camanise.mp3">
       <Name>Tyrian - 05 - Camanise</Name>
       <Importer>Mp3Importer</Importer>

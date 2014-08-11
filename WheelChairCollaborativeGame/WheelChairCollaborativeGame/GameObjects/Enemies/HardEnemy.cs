@@ -38,11 +38,11 @@ namespace WheelChairCollaborativeGame
         protected override void LoadContent()
         {
             base.LoadContent();
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("hardEnemy"),2f);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("hardEnemy"),1);
             SpriteAnimation spriteAnimation  = new SpriteAnimation(160,
                     new SpriteAnimationData[] {
-                        new SpriteAnimationData(0, 0, 118, 138, 0, 0),
-                        new SpriteAnimationData(120, 0, 118, 138, 0, 0)});
+                        new SpriteAnimationData(0, 0, 239, 276, 0, 0),
+                        new SpriteAnimationData(240, 0, 239, 276, 0, 0)});
             spriteAnimation.AutoChangeState = false;
             Sprite.ActiveSpriteAnimation = spriteAnimation;
 
