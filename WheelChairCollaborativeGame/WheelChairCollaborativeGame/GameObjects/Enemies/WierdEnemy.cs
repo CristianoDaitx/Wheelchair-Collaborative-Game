@@ -38,7 +38,7 @@ namespace WheelChairCollaborativeGame
         {
             base.LoadContent();
 
-            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("mediumEnemy"), 0.5f);
+            Sprite = new WheelChairGameLibrary.Sprites.Sprite(this, Game.Content.Load<Texture2D>("medium"), 1.0f);
             Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, -Size.Y);
         }
 
