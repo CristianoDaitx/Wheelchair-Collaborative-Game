@@ -26,6 +26,10 @@ namespace WheelChairCollaborativeGame
         private readonly int POSITION_ENERGY_Y = 650;
         private readonly int HEIGHT_ENERGY_X = 30;
         private readonly int WIDTH_ENERGY_X = 250;
+        private int transparencyVal;
+        private int r = 0;
+        private int g = 0;
+        private int b = 0;
 
         private readonly int MAX_ENERGY = 100;
         private readonly int SHOT_COST = 10;
@@ -33,7 +37,7 @@ namespace WheelChairCollaborativeGame
 
         private readonly Vector2 MAX_VELOCITY = new Vector2(2, 0.5f);
         private readonly float ACCELERATION_X = 0.020f;
-
+       
         private readonly int WIDTH_POSITION_CONSTANT_SPEED = 125;
         private float MaxLeft
         {
@@ -95,12 +99,16 @@ namespace WheelChairCollaborativeGame
             else
             {
                 PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.Red, true);
+                if (energy < 10)
+                {
+
+                    PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, WIDTH_ENERGY_X, HEIGHT_ENERGY_X), new Color(r,g,b,transparencyVal), true);
+                    PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), new Color(237, 28, 36, transparencyVal), true);
+                    
+                }
             }
 
-            if (energy < 10)
-            {
-                // blinking bar
-            }
+            
             
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Energy", new Vector2(POSITION_ENERGY_X, POSITION_ENERGY_Y));
             SharedSpriteBatch.End();
@@ -155,6 +163,16 @@ namespace WheelChairCollaborativeGame
                     Sprite.ActiveSpriteAnimation.ActualState = 2;
                 if (Velocity.X < -0.5f)
                     Sprite.ActiveSpriteAnimation.ActualState = 1;
+            }
+            if (transparencyVal < 255)
+            {
+                transparencyVal += 55;
+                r = b = g = 100;
+            }
+            else
+            {
+                transparencyVal = 15;
+                r = b = g = 0;
             }
         }
 
