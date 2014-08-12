@@ -29,7 +29,7 @@ namespace WheelChairCollaborativeGame
         public HardEnemy(GameEnhanced game, String tag)
             : base( game, tag)
         {
-            this.life = 4;
+            this.life = 6;
             this.HUMANS = 50;
             
             Velocity = new Vector2(0, 0.5f);            

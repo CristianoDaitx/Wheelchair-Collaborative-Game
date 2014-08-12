@@ -24,7 +24,7 @@ namespace WheelChairCollaborativeGame
 
         private TimeSpan timeRan;
         private TimeSpan timeRanEnded;
-        private TimeSpan maxTime = TimeSpan.FromSeconds(6);
+        private TimeSpan maxTime = TimeSpan.FromSeconds(8);
 
         TankGameObject playerTank;
 
