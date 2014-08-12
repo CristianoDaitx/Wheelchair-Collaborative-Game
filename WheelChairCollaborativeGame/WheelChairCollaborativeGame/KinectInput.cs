@@ -60,10 +60,10 @@ namespace WheelChairCollaborativeGame
         private GeometricPrimitive currentPrimitive;
 
         //movements
-        private KinectMovement movementSideTank;
-        private KinectMovement movementFrontTank;
-        private KinectMovement movementSideSoldier;
-        private KinectMovement movementFrontSoldier;
+        private KinectMovement movementFrontTankRight;
+        private KinectMovement movementFrontTankLeft;
+        private KinectMovement movementFrontSoldierRight;
+        private KinectMovement movementFrontSoldierLeft;
         private KinectMovement movementDouble;
         private KinectTriggerDouble triggerDouble;
 
@@ -79,7 +79,7 @@ namespace WheelChairCollaborativeGame
         //controller input handling
         OnOffController controllerOneOnOff;
         OnOffController controllerTwoOnOff;
-        OnOffDouble controllerBothOnOff;
+        OnOffDoubleAND controllerBothOnOff;
 
         public KinectInput(GameEnhanced game, String tag)
             : base(game, tag)
@@ -87,7 +87,7 @@ namespace WheelChairCollaborativeGame
             // controller input instantiaton
             controllerOneOnOff = new OnOffController(game);
             controllerTwoOnOff = new OnOffController(game);
-            controllerBothOnOff = new OnOffDouble(controllerOneOnOff, controllerTwoOnOff);
+            controllerBothOnOff = new OnOffDoubleAND(controllerOneOnOff, controllerTwoOnOff);
 
             Game.Components.Add(controllerOneOnOff);
             Game.Components.Add(controllerTwoOnOff);
@@ -120,12 +120,12 @@ namespace WheelChairCollaborativeGame
         void movementSingle_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
             //count action for both movements of tank
-            if (sender.Equals(movementFrontTank))
+            if (sender.Equals(movementFrontTankRight) || sender.Equals(movementFrontTankLeft))
             {
                 actionCount1++;
                 //count and add ball if other action is also active
 
-                if (movementFrontSoldier.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
+                if (movementFrontSoldierRight.isOn() || movementFrontSoldierLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
                     actionCountSync++;
                     tankGameObject.fire();
@@ -133,11 +133,11 @@ namespace WheelChairCollaborativeGame
             }
 
             //count action for both movements of soldier
-            if (sender.Equals(movementFrontSoldier))
+            if (sender.Equals(movementFrontSoldierRight) || sender.Equals(movementFrontSoldierLeft))
             {
                 actionCount2++;
                 //count and add ball if other action is also active
-                if (movementFrontTank.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
+                if (movementFrontTankRight.isOn() || movementFrontTankLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
                     actionCountSync++;
                     tankGameObject.fire();
@@ -149,13 +149,13 @@ namespace WheelChairCollaborativeGame
         {
             if (skeletonPlayerTank != null)
                 //reset time for both movements of tank
-                if (sender.Equals(movementFrontTank) || sender.Equals(movementSideTank))
+                if (sender.Equals(movementFrontTankRight))
                 {
                     timePressed1 = 0;
                 }
             if (skeletonPlayerSoldier != null)
                 //reset time for both movements of soldier
-                if (sender.Equals(movementFrontSoldier) || sender.Equals(movementSideSoldier))
+                if (sender.Equals(movementFrontSoldierRight))
                 {
                     timePressed2 = 0;
                 }
@@ -194,6 +194,8 @@ namespace WheelChairCollaborativeGame
 
 
             //set correct input for graph and activate/deactivate movements
+            IOnOff frontOnOffTank;
+            IOnOff frontOnOffSoldier;
             switch (Config.ControlSelected)
             {
                 case Config.ControlSelect.Joystick:
@@ -202,41 +204,57 @@ namespace WheelChairCollaborativeGame
                     graphSync.IOnOff = controllerBothOnOff;
 
                     //set to draw or not
-                    movementFrontTank.Enabled = false;
-                    movementFrontTank.Visible = false;
-                    movementFrontSoldier.Enabled = false;
-                    movementFrontSoldier.Visible = false;
+                    movementFrontTankRight.Enabled = false;
+                    movementFrontTankRight.Visible = false;
+                    movementFrontTankLeft.Enabled = false;
+                    movementFrontTankLeft.Visible = false;
+                    movementFrontSoldierRight.Enabled = false;
+                    movementFrontSoldierRight.Visible = false;
+                    movementFrontSoldierLeft.Enabled = false;
+                    movementFrontSoldierLeft.Visible = false;
                     movementDouble.Enabled = false;
                     movementDouble.Visible = false;
 
                     break;
                 case Config.ControlSelect.Front:
-                    graph1.IOnOff = movementFrontTank;
-                    graph2.IOnOff = movementFrontSoldier;
-                    graphSync.IOnOff = new OnOffDouble(movementFrontSoldier, movementFrontTank);
+                    frontOnOffTank = new OnOffDoubleOR(movementFrontTankRight, movementFrontTankLeft);
+                    frontOnOffSoldier = new OnOffDoubleOR(movementFrontSoldierRight, movementFrontSoldierLeft);
+                    graph1.IOnOff = frontOnOffTank;
+                    graph2.IOnOff = frontOnOffSoldier;
+                    graphSync.IOnOff = new OnOffDoubleAND(frontOnOffTank, frontOnOffSoldier);
 
                     //set to draw or not
-                    movementFrontTank.Enabled = true;
-                    movementFrontTank.Visible = true;
-                    movementFrontSoldier.Enabled = true;
-                    movementFrontSoldier.Visible = true;
+                    movementFrontTankRight.Enabled = true;
+                    movementFrontTankRight.Visible = true;
+                    movementFrontTankLeft.Enabled = true;
+                    movementFrontTankLeft.Visible = true;
+                    movementFrontSoldierRight.Enabled = true;
+                    movementFrontSoldierRight.Visible = true;
+                    movementFrontSoldierLeft.Enabled = true;
+                    movementFrontSoldierLeft.Visible = true;
                     movementDouble.Enabled = false;
                     movementDouble.Visible = false;
 
-                    movementFrontTank.setTriggersTrackingSkeleton(skeletonPlayerTank);
-                    movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
+                    movementFrontTankRight.setTriggersTrackingSkeleton(skeletonPlayerTank);
+                    movementFrontTankLeft.setTriggersTrackingSkeleton(skeletonPlayerTank);
+                    movementFrontSoldierRight.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
+                    movementFrontSoldierLeft.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
 
                     break;
                 case Config.ControlSelect.Side:
-                    graph1.IOnOff = movementSideTank;
-                    graph2.IOnOff = movementSideSoldier;
+                    graph1.IOnOff = movementDouble;
+                    graph2.IOnOff = movementDouble;
                     graphSync.IOnOff = movementDouble;
 
                     //set to draw or not
-                    movementFrontTank.Enabled = false;
-                    movementFrontTank.Visible = false;
-                    movementFrontSoldier.Enabled = false;
-                    movementFrontSoldier.Visible = false;
+                    movementFrontTankRight.Enabled = false;
+                    movementFrontTankRight.Visible = false;
+                    movementFrontTankLeft.Enabled = false;
+                    movementFrontTankLeft.Visible = false;
+                    movementFrontSoldierRight.Enabled = false;
+                    movementFrontSoldierRight.Visible = false;
+                    movementFrontSoldierLeft.Enabled = false;
+                    movementFrontSoldierLeft.Visible = false;
                     movementDouble.Enabled = true;
                     movementDouble.Visible = true;
 
@@ -255,20 +273,28 @@ namespace WheelChairCollaborativeGame
 
                     break;
                 case Config.ControlSelect.FrontAssyncronous:
-                    graph1.IOnOff = movementFrontTank;
-                    graph2.IOnOff = movementFrontSoldier;
-                    graphSync.IOnOff = new OnOffDouble(movementFrontSoldier, movementFrontTank);
+                    frontOnOffTank = new OnOffDoubleOR(movementFrontTankRight, movementFrontTankLeft);
+                    frontOnOffSoldier = new OnOffDoubleOR(movementFrontSoldierRight, movementFrontSoldierLeft);
+                    graph1.IOnOff = frontOnOffTank;
+                    graph2.IOnOff = frontOnOffSoldier;
+                    graphSync.IOnOff = new OnOffDoubleOR(frontOnOffTank, frontOnOffSoldier);
 
                     //set to draw or not
-                    movementFrontTank.Enabled = true;
-                    movementFrontTank.Visible = true;
-                    movementFrontSoldier.Enabled = true;
-                    movementFrontSoldier.Visible = true;
+                    movementFrontTankRight.Enabled = true;
+                    movementFrontTankRight.Visible = true;
+                    movementFrontTankLeft.Enabled = true;
+                    movementFrontTankLeft.Visible = true;
+                    movementFrontSoldierRight.Enabled = true;
+                    movementFrontSoldierRight.Visible = true;
+                    movementFrontSoldierLeft.Enabled = true;
+                    movementFrontSoldierLeft.Visible = true;
                     movementDouble.Enabled = false;
                     movementDouble.Visible = false;
 
-                    movementFrontTank.setTriggersTrackingSkeleton(skeletonPlayerTank);
-                    movementFrontSoldier.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
+                    movementFrontTankRight.setTriggersTrackingSkeleton(skeletonPlayerTank);
+                    movementFrontTankLeft.setTriggersTrackingSkeleton(skeletonPlayerTank);
+                    movementFrontSoldierRight.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
+                    movementFrontSoldierLeft.setTriggersTrackingSkeleton(skeletonPlayerSoldier);
 
                     break;
             }
@@ -316,13 +342,14 @@ namespace WheelChairCollaborativeGame
                     break;
 
                 case Config.ControlSelect.Front:
-                    if (movementFrontTank.State == KinectMovement.MovementState.Activated)
+                    if (movementFrontTankRight.State == KinectMovement.MovementState.Activated || movementFrontTankLeft.State == KinectMovement.MovementState.Activated)
                         timePressed1 += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                    if (movementFrontSoldier.State == KinectMovement.MovementState.Activated)
+                    if (movementFrontSoldierRight.State == KinectMovement.MovementState.Activated || movementFrontSoldierLeft.State == KinectMovement.MovementState.Activated)
                         timePressed2 += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                    if (movementFrontTank.State == KinectMovement.MovementState.Activated && movementFrontSoldier.State == KinectMovement.MovementState.Activated)
+                    if ((movementFrontTankRight.State == KinectMovement.MovementState.Activated || movementFrontTankLeft.State == KinectMovement.MovementState.Activated)
+                        && (movementFrontSoldierRight.State == KinectMovement.MovementState.Activated || movementFrontSoldierLeft.State == KinectMovement.MovementState.Activated))
                         timePressedSync += gameTime.ElapsedGameTime.TotalMilliseconds;
                     else
                         timePressedSync = 0;
@@ -529,60 +556,58 @@ namespace WheelChairCollaborativeGame
             currentPrimitive = new SpherePrimitive(Game.GraphicsDevice, KinectTriggerSingle.JOINT_DEFAULT_RADIUS, 8);
 
             // Movement tank
+            
+            Vector3 differenceFrontRight1 = new Vector3(0.25f, -0.15f, -0.25f);
+            Vector3 differenceFrontRight2 = new Vector3(0.30f, 0.10f, -0.57f);
+            Vector3 differenceFrontLeft1 = differenceFrontRight1 * new Vector3(-1, 1, 1);
+            Vector3 differenceFrontLeft2 = differenceFrontRight2 * new Vector3(-1, 1, 1);
 
-            // Movement front
-            Vector3 differenceFront1 = new Vector3(0.25f, -0.15f, -0.25f);
-            //Vector3 differenceFront2 = new Vector3(0.30f, -0.10f, -0.20f);
-            Vector3 differenceFront3 = new Vector3(0.30f, 0.10f, -0.57f);
-
-            movementFrontTank = new KinectMovement(Game,
-                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront1, 0.20f, 0.02f, Game.GraphicsDevice),
-                //new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront3, 0.27f, 0.02f, Game.GraphicsDevice)
+            // Movement front right
+            movementFrontTankRight = new KinectMovement(Game,
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFrontRight1, 0.19f, 0.04f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFrontRight2, 0.27f, 0.02f, Game.GraphicsDevice)
                 );
-            movementFrontTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
-            movementFrontTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
-            movementFrontTank.MaxActiveTimeMiliseconds = 150;
-            Game.Components.Add(movementFrontTank);
+            movementFrontTankRight.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementFrontTankRight.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontTankRight.MaxActiveTimeMiliseconds = 150;
+            Game.Components.Add(movementFrontTankRight);
 
-            // Movement side
-            Vector3 differenceSide1 = new Vector3(0.35f, -0.25f, -0.10f);
-            Vector3 differenceSide2 = new Vector3(0.55f, -0.15f, -0.10f);
-            Vector3 differenceSide3 = new Vector3(0.75f, -0.12f, -0.10f);
-
-            movementSideTank = new KinectMovement(Game,
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide1, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide2, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.Head, differenceSide3, 0.25f, 0.02f, Game.GraphicsDevice)
+            // Movement front left
+            movementFrontTankLeft = new KinectMovement(Game,
+                new KinectTriggerSingle(JointType.HandLeft, JointType.ShoulderCenter, differenceFrontLeft1, 0.19f, 0.04f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandLeft, JointType.ShoulderCenter, differenceFrontLeft2, 0.27f, 0.02f, Game.GraphicsDevice)
                 );
-            movementSideTank.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
-            movementSideTank.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
-            movementSideTank.MaxActiveTimeMiliseconds = 1000;
-            Game.Components.Add(movementSideTank);
+            movementFrontTankLeft.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementFrontTankLeft.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontTankLeft.MaxActiveTimeMiliseconds = 150;
+            Game.Components.Add(movementFrontTankLeft);
 
-            // Movement soldier
-            movementFrontSoldier = new KinectMovement(Game,
-                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront1, 0.15f, 0.02f, Game.GraphicsDevice),
-                //new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront2, 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFront3, 0.25f, 0.02f, Game.GraphicsDevice)
-                );
-            movementFrontSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
-            movementFrontSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
-            movementFrontSoldier.MaxActiveTimeMiliseconds = 150;
-            Game.Components.Add(movementFrontSoldier);
 
-            movementSideSoldier = new KinectMovement(Game,
-                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide1 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide2 * new Vector3(-1, 1, 1), 0.15f, 0.02f, Game.GraphicsDevice),
-                new KinectTriggerSingle(JointType.HandLeft, JointType.Head, differenceSide3 * new Vector3(-1, 1, 1), 0.25f, 0.02f, Game.GraphicsDevice)
+            // Movement soldier right
+            movementFrontSoldierRight = new KinectMovement(Game,
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFrontRight1, 0.19f, 0.04f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandRight, JointType.ShoulderCenter, differenceFrontRight2, 0.25f, 0.02f, Game.GraphicsDevice)
                 );
-            movementSideSoldier.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
-            movementSideSoldier.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
-            movementSideSoldier.MaxActiveTimeMiliseconds = 1000;
-            Game.Components.Add(movementSideSoldier);
+            movementFrontSoldierRight.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementFrontSoldierRight.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontSoldierRight.MaxActiveTimeMiliseconds = 150;
+            Game.Components.Add(movementFrontSoldierRight);
+
+            // Movement soldier left
+            movementFrontSoldierLeft = new KinectMovement(Game,
+                new KinectTriggerSingle(JointType.HandLeft, JointType.ShoulderCenter, differenceFrontLeft1, 0.19f, 0.04f, Game.GraphicsDevice),
+                new KinectTriggerSingle(JointType.HandLeft, JointType.ShoulderCenter, differenceFrontLeft2, 0.25f, 0.02f, Game.GraphicsDevice)
+                );
+            movementFrontSoldierLeft.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
+            movementFrontSoldierLeft.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontSoldierLeft.MaxActiveTimeMiliseconds = 150;
+            Game.Components.Add(movementFrontSoldierLeft);
+
+
+
+
 
             //movement to check for side high five
-
             triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.HandRight, JointType.HandLeft, JointType.HandLeft, 0.1f, 0.02f, Game.GraphicsDevice);
             movementDouble = new KinectMovement(Game, triggerDouble);
             movementDouble.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementDouble_MovementQuit);

@@ -131,6 +131,7 @@
     <Compile Include="GameObjects\BallGameObject.cs" />
     <Compile Include="GameObjects\Explosions\BigExplosionGameObject.cs" />
     <Compile Include="GameObjects\HumanCharacter.cs" />
+    <Compile Include="IOnOff\OnOffDoubleOR.cs" />
     <Compile Include="Screens\ConfigScreen.cs" />
     <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
@@ -139,7 +140,7 @@
     <Compile Include="Screens\PlayScreen.cs" />
     <Compile Include="GameObjects\Explosions\ExplosionGameObject.cs" />
     <Compile Include="IOnOff\OnOffController.cs" />
-    <Compile Include="IOnOff\OnOffDouble.cs" />
+    <Compile Include="IOnOff\OnOffDoubleAND.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="GameObjects\Enemies\EnemyGameObject.cs" />
     <Compile Include="GeometricPrimitives\BezierPrimitive.cs" />
