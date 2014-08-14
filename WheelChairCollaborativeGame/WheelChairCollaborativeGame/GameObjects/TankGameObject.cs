@@ -34,6 +34,7 @@ namespace WheelChairCollaborativeGame
         private readonly int MAX_ENERGY = 100;
         private readonly int SHOT_COST = 10;
         private readonly float ENERGY_RECHARGE = 0.15f;
+        private bool lowEnergy = false;
 
         private readonly Vector2 MAX_VELOCITY = new Vector2(2, 0.5f);
         private readonly float ACCELERATION_X = 0.020f;
@@ -104,7 +105,10 @@ namespace WheelChairCollaborativeGame
 
                     PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, WIDTH_ENERGY_X, HEIGHT_ENERGY_X), new Color(r,g,b,transparencyVal), true);
                     PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), new Color(237, 28, 36, transparencyVal), true);
-                    
+                }
+                if (lowEnergy == true)
+                {
+                    GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "LOW ENERGY!!", new Vector2((Config.resolution.X / 2)-40, Config.resolution.Y / 2), 1f);
                 }
             }
 
@@ -124,7 +128,8 @@ namespace WheelChairCollaborativeGame
             energy += ENERGY_RECHARGE;
             if (energy > MAX_ENERGY)
                 energy = MAX_ENERGY;
-
+            if (energy > SHOT_COST)
+                lowEnergy = false;
             //Position.Y += 0.0001f;
 
             if (isGoingAway)
@@ -179,12 +184,19 @@ namespace WheelChairCollaborativeGame
 
         public void fire()
         {
+            
             if (energy >= SHOT_COST)
             {
                 Game.Components.Add(new BallGameObject(Position + new Vector2(Size.X / 2, 0), Game, "ball"));
                 fireSoundEffect.Play();
                 energy -= SHOT_COST;
             }
+            if (energy < SHOT_COST)
+            {
+                lowEnergy = true;
+            }
+            
+         
         }
 
         public void goAway()
