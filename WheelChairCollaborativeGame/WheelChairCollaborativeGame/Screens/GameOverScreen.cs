@@ -6,23 +6,33 @@ using Microsoft.Xna.Framework;
 using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using WheelChairCollaborativeGame.GameObjects;
 
 namespace WheelChairCollaborativeGame
 {
     class GameOverScreen : Screen
     {
-
+        private Song backgroundSong;
         public int Score;
         public GameOverScreen(GameEnhanced game, string tag)
             : base(game, tag)
         {
         }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            MediaPlayer.Play(backgroundSong);
+            MediaPlayer.IsRepeating = false;
+
+        }
+
         protected override void LoadContent()
         {
             base.LoadContent();
             Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
+            backgroundSong = Game.Content.Load<Song>("Tyrian - 10 - End Of Level");
         }
 
         public override void Draw(GameTime gameTime)
