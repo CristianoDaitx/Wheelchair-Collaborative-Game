@@ -270,6 +270,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tyrian - 10 - End Of Level.mp3">
+      <Name>Tyrian - 10 - End Of Level</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="menu.wav">
       <Name>menu</Name>
       <Importer>WavImporter</Importer>

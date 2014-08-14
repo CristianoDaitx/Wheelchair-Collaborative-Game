@@ -27,6 +27,7 @@ namespace WheelChairCollaborativeGame
         {
             base.LoadContent();
             spriteFont2 = Game.Content.Load<SpriteFont>(@"SpriteFont3");
+           Game.Components.Add(new Background(Game, 50));
 
         }
 
