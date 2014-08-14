@@ -33,6 +33,12 @@ namespace WheelChairCollaborativeGame
             base.LoadContent();
             Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
             backgroundSong = Game.Content.Load<Song>("Tyrian - 10 - End Of Level");
+            Background background = new Background(Game, 100);
+            Game.Components.Add(background);
+
+            Game.Components.Add(new Planet(Game, "Planet"));
+            Game.Components.Add(new Shield(Game, "shield"));
+
         }
 
         public override void Draw(GameTime gameTime)
