@@ -38,7 +38,10 @@ namespace WheelChairCollaborativeGame
 
         private readonly Vector2 MAX_VELOCITY = new Vector2(2, 0.5f);
         private readonly float ACCELERATION_X = 0.020f;
-       
+        private readonly Vector2 START_ACCELERATION = new Vector2(0, -0.005f);
+
+        private bool hasStarted = false;
+
         private readonly int WIDTH_POSITION_CONSTANT_SPEED = 125;
         private float MaxLeft
         {
@@ -60,8 +63,6 @@ namespace WheelChairCollaborativeGame
         public TankGameObject(GameEnhanced game, String tag)
             : base(game, tag)
         {
-            Velocity = MAX_VELOCITY;
-            Acceleration = new Vector2(0, -0.005f);
             energy = 100;
         }
 
@@ -79,7 +80,7 @@ namespace WheelChairCollaborativeGame
             
             spriteAnimation.AutoChangeState = false;
             Sprite.ActiveSpriteAnimation = spriteAnimation;
-            Sprite.ActiveSpriteAnimation.ActualState = 4;
+            Sprite.ActiveSpriteAnimation.ActualState = 2;
             Position = new Vector2(Config.resolution.X / 2 - Size.X / 2, Config.resolution.Y - 120);
 
             fireSoundEffect = Game.Content.Load<SoundEffect>("shoot");
@@ -132,7 +133,7 @@ namespace WheelChairCollaborativeGame
                 lowEnergy = false;
             //Position.Y += 0.0001f;
 
-            if (isGoingAway)
+            if (isGoingAway || !hasStarted)
                 return;
 
             if (Math.Abs(Velocity.Y) > MAX_VELOCITY.Y)
@@ -169,6 +170,8 @@ namespace WheelChairCollaborativeGame
                 if (Velocity.X < -0.5f)
                     Sprite.ActiveSpriteAnimation.ActualState = 1;
             }
+
+
             if (transparencyVal < 255)
             {
                 transparencyVal += 55;
@@ -181,13 +184,19 @@ namespace WheelChairCollaborativeGame
             }
         }
 
+        public void start()
+        {
+            Sprite.ActiveSpriteAnimation.ActualState = 4;
+            hasStarted = true;
+            base.Velocity = MAX_VELOCITY;
+            base.Acceleration = START_ACCELERATION;
+        }
 
         public void fire()
         {
-            if (energy < SHOT_COST)
-            {
+            if (energy < SHOT_COST)            
                 lowEnergy = true;
-            }
+            
             if (energy >= SHOT_COST)
             {
                 Game.Components.Add(new BallGameObject(Position + new Vector2(Size.X / 2, 0), Game, "ball"));

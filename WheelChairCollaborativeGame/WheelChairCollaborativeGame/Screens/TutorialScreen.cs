@@ -55,7 +55,9 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(new Planet(Game, "Planet"));
 
             playerTank = new TankGameObject(Game, "playerTank");
+            
             Game.Components.Add(playerTank);
+            
 
             KinectInput kinectInput = new KinectInput(Game, "kinectInput");
             Game.Components.Add(kinectInput);
@@ -116,6 +118,7 @@ namespace WheelChairCollaborativeGame
                 if (!isTutorialStarted && timeRan.Seconds >= maxTime.Seconds)
                 {
                     isTutorialStarted = true;
+                    playerTank.start();
                     Game.Components.Add(weakEnemy);
                     Game.Components.Add(movementSprite);
                 }

@@ -11,12 +11,20 @@ namespace WheelChairCollaborativeGame.GameObjects
 {
     class Planet : GameObject2D
     {
+        private readonly Vector2 MOVING_VELOCITY = new Vector2(0, 0.01f);
         public Planet(GameEnhanced game, string tag)
             : base(game, tag)
         {
             Position = new Vector2(0, 600);
-            Velocity = new Vector2(0, 0.01f);
             DrawOrder--;
+        }
+
+        public void startMoving(){
+            Velocity = MOVING_VELOCITY;
+        }
+
+        public void stopMoving(){
+            Velocity = Vector2.Zero;
         }
 
         protected override void LoadContent()

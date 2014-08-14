@@ -24,7 +24,7 @@ namespace WheelChairCollaborativeGame
     class KinectInput : GameObject
     {
 
-        
+
 
         // Position constants
         private readonly int GRAPH1_PRESSED_Y = 700;
@@ -46,7 +46,7 @@ namespace WheelChairCollaborativeGame
         private Skeleton skeletonPlayerSoldier;
         private TankGameObject tankGameObject;
 
-        
+
         private double timePressed1 = 0;
         private double timePressed2 = 0;
         private double timePressedSync = 0;
@@ -70,6 +70,8 @@ namespace WheelChairCollaborativeGame
         GraphGameObject graph1;
         GraphGameObject graph2;
         GraphGameObject graphSync;
+
+        private bool isAlreadyShot = false;
 
         /// <summary>
         /// The last frame skeleton data.
@@ -105,17 +107,13 @@ namespace WheelChairCollaborativeGame
 
         void movementDouble_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
-            actionCountSync++;
-            tankGameObject.fire();
-
-
+            playerShot();
         }
 
         void movementDouble_MovementQuit(object sender, KinectMovementEventArgs e)
         {
             //graphSinc.IsPressed = false;
         }
-
 
         void movementSingle_MovementCompleted(object sender, KinectMovementEventArgs e)
         {
@@ -127,8 +125,7 @@ namespace WheelChairCollaborativeGame
 
                 if (movementFrontSoldierRight.isOn() || movementFrontSoldierLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
-                    actionCountSync++;
-                    tankGameObject.fire();
+                    playerShot();
                 }
             }
 
@@ -139,8 +136,7 @@ namespace WheelChairCollaborativeGame
                 //count and add ball if other action is also active
                 if (movementFrontTankRight.isOn() || movementFrontTankLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
-                    actionCountSync++;
-                    tankGameObject.fire();
+                    playerShot();
                 }
             }
         }
@@ -162,26 +158,48 @@ namespace WheelChairCollaborativeGame
 
         }
 
+        private void playerShot()
+        {
+            PlayScreen playScreen = (PlayScreen)Game.GetGameObject("PlayScreen");
+            if (playScreen != null)
+            {
+                if (isAlreadyShot)
+                {
+                    actionCountSync++;
+                    tankGameObject.fire();
+                }
+                else
+                {
+                    isAlreadyShot = true;
+                    tankGameObject.start();
+                    playScreen.playerShot();
+                }
+            }
+            else
+            {
+                actionCountSync++;
+                tankGameObject.fire();
+            }
 
-
+        }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
+
             PlayerIndex playerIndex1 = PlayerIndex.One;
             PlayerIndex playerIndex2 = PlayerIndex.Two;
 
             InputState inputState = this.InputState;
 
-            
+
 
 
             //allow to shot with spacebar if in debug mode
             //if (Game.IsDebugMode)
             if (inputState.IsKeyPressed(Keys.Space, playerIndex1, out playerIndex1))
-            {                
-                tankGameObject.fire();
+            {
+                playerShot();
             }
 
 
@@ -311,9 +329,7 @@ namespace WheelChairCollaborativeGame
                             controllerOneOnOff.IsOn = true;
                             if (controllerTwoOnOff.IsOn == true)
                             {
-                                actionCountSync++;
-                                //add ball
-                                tankGameObject.fire();
+                                playerShot();
                             }
                         }
 
@@ -326,9 +342,7 @@ namespace WheelChairCollaborativeGame
                             controllerTwoOnOff.IsOn = true;
                             if (controllerOneOnOff.IsOn == true)
                             {
-                                actionCountSync++;
-                                //add ball
-                                tankGameObject.fire();
+                                playerShot();
                             }
                         }
                         if (inputState.IsButtonReleased(Buttons.A, playerIndex2, out playerIndex2))
@@ -423,10 +437,10 @@ namespace WheelChairCollaborativeGame
             }
             if (skeletonPlayerTank == null && Config.ControlSelected != Config.ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Player One not tracked!", 1,  PLAYER1_TRACKING_POSITION);
+                    "Player One not tracked!", 1, PLAYER1_TRACKING_POSITION);
             if (skeletonPlayerSoldier == null && Config.ControlSelected != Config.ControlSelect.Joystick)
                 GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                    "Player Two not tracked!",1 , PLAYER2_TRACKING_POSITION);
+                    "Player Two not tracked!", 1, PLAYER2_TRACKING_POSITION);
 
             if (Config.ControlSelected == Config.ControlSelect.Side && Game.IsDebugMode)
             {
@@ -552,11 +566,11 @@ namespace WheelChairCollaborativeGame
         }
 
         protected override void LoadContent()
-        {       
+        {
             currentPrimitive = new SpherePrimitive(Game.GraphicsDevice, KinectTriggerSingle.JOINT_DEFAULT_RADIUS, 8);
 
             // Movement tank
-            
+
             Vector3 differenceFrontRight1 = new Vector3(0.25f, -0.15f, -0.25f);
             Vector3 differenceFrontRight2 = new Vector3(0.30f, 0.10f, -0.57f);
             Vector3 differenceFrontLeft1 = differenceFrontRight1 * new Vector3(-1, 1, 1);

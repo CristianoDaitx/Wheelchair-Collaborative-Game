@@ -24,6 +24,10 @@ namespace WheelChairCollaborativeGame
         public int Score;
         public int Invaders;
 
+        private bool hasStarted = false;
+        private TimeSpan timeRanInPreGame = new TimeSpan();
+        private TimeSpan maxTimeInPreGame = TimeSpan.FromSeconds(8);
+
         private bool timeExpired = false;
         private TimeSpan timeRanInExpiredTime = new TimeSpan();
         private TimeSpan maxTimeInExpiredTime = TimeSpan.FromSeconds(5);
@@ -85,6 +89,20 @@ namespace WheelChairCollaborativeGame
             GUImessage.DrawString(SharedSpriteBatch, Game.Content, Score.ToString(), new Rectangle(0, 600, 200, 18), GUImessage.Alignment.Right, Color.White);
 
             GUImessage.DrawString(SharedSpriteBatch, Game.Content, "Score", new Rectangle(0, 560, 200, 18), GUImessage.Alignment.Right, Color.White);
+
+
+
+            if (!hasStarted)
+            {
+                if (timeRanInPreGame > maxTimeInPreGame)
+                    GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "             Can't shot to start?"+
+                        "\nTry the tutorial from the main menu!", new Vector2((Config.resolution.X / 2 - 200), Config.resolution.Y / 2 - 20), 1f);
+                else
+                    GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Shot to start!", new Vector2((Config.resolution.X / 2 - 70), Config.resolution.Y / 2 - 20), 1f);
+            }
+
+
+
             SharedSpriteBatch.End();
             base.Draw(gameTime);
 
@@ -98,11 +116,13 @@ namespace WheelChairCollaborativeGame
 
             PlayerIndex playerIndex;
 
-
             //adjust representational humans
             smallHuman.representations = Invaders / 40;
 
             countdown = (maxTime - timeRan);
+
+            if (!hasStarted)
+                timeRanInPreGame += gameTime.ElapsedGameTime;
 
             //session time
 
@@ -146,6 +166,7 @@ namespace WheelChairCollaborativeGame
                 if (timeRanInExpiredTime > maxTimeInExpiredTime)
                 {
                     GameOverScreen gameOverScreen = new GameOverScreen(Game, "GameOverScreen");
+                    planet.stopMoving();
                     Game.ActiveScreen = gameOverScreen;
                     gameOverScreen.Score = Score;
                 }
@@ -159,19 +180,28 @@ namespace WheelChairCollaborativeGame
                 {
                     Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
                 }
-
-
             }
         }
+
+        public void playerShot()
+        {
+            if (hasStarted == false)
+            {
+                hasStarted = true;
+                planet.startMoving();
+            }
+        }
+
 
         /// <summary>
         /// scripted add of enemies
         /// </summary>
         private void addEnemies(GameTime gameTime)
         {
-            timeRan += gameTime.ElapsedGameTime;
+            if (hasStarted)
+                timeRan += gameTime.ElapsedGameTime;
 
-            if ((int)timeRan.TotalSeconds != lastSecond) // the second has changed
+            if (hasStarted && (int)timeRan.TotalSeconds != lastSecond) // the second has changed
             {
                 switch ((int)timeRan.TotalSeconds)
                 {
