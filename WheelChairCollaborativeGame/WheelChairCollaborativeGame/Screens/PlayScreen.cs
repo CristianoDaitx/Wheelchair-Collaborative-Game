@@ -33,6 +33,10 @@ namespace WheelChairCollaborativeGame
         TankGameObject playerTank;
         SmallHuman smallHuman;
 
+        Background background;
+        Planet planet;
+        Shield shield;
+
         public PlayScreen(GameEnhanced game, string tag)
             : base(game, tag)
         {
@@ -49,10 +53,11 @@ namespace WheelChairCollaborativeGame
 
         protected override void LoadContent()
         {
-            Background background = new Background(Game, 100);
+            background = new Background(Game, 100);
             Game.Components.Add(background);
 
-            Game.Components.Add(new Planet(Game, "Planet"));
+            planet = new Planet(Game, "Planet");
+            Game.Components.Add(planet);
 
             playerTank = new TankGameObject(Game, "playerTank");
             Game.Components.Add(playerTank);
@@ -104,7 +109,8 @@ namespace WheelChairCollaborativeGame
             if (!timeExpired && timeRan > maxTime)
             {
                 timeExpired = true;
-                Game.Components.Add(new Shield(Game, "shield"));
+                shield = new Shield(Game, "Shield");
+                Game.Components.Add(shield);
                 playerTank.goAway();
             }
 
@@ -139,10 +145,9 @@ namespace WheelChairCollaborativeGame
                 }
                 if (timeRanInExpiredTime > maxTimeInExpiredTime)
                 {
-                    Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
-                    GameOverScreen gameOverScreen = (GameOverScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameOverScreen));
-                    if (gameOverScreen != null)
-                        gameOverScreen.Score = Score;
+                    GameOverScreen gameOverScreen = new GameOverScreen(Game, "GameOverScreen");
+                    Game.ActiveScreen = gameOverScreen;
+                    gameOverScreen.Score = Score;
                 }
 
 
@@ -152,10 +157,7 @@ namespace WheelChairCollaborativeGame
             if (inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
             {
                 {
-                    Game.ActiveScreen = new GameOverScreen(Game, "GameOverScreen");
-                    GameOverScreen gameOverScreen = (GameOverScreen)Game.Components.FirstOrDefault(x => x.GetType() == typeof(GameOverScreen));
-                    if (gameOverScreen != null)
-                        gameOverScreen.Score = Score;
+                    Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
                 }
 
 
@@ -203,7 +205,7 @@ namespace WheelChairCollaborativeGame
                         Game.Components.Add(new AlienCharacter("Shields will be\nup in 1:30!", Game, "AlienCharacter"));
                         break;
                     case 30:
-                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));                        
+                        Game.Components.Add(new WierdEnemy(Game, "wierdEnemy"));
                         break;
                     case 34:
                         Game.Components.Add(new WeakEnemy(Game, "weakEnemy2", WeakEnemy.Type.Left));
@@ -219,7 +221,7 @@ namespace WheelChairCollaborativeGame
                         break;
                     case 41:
                         Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Right));
-                        break;                    
+                        break;
                     case 45:
                         Game.Components.Add(new WeakEnemy(Game, "weakEnemy", WeakEnemy.Type.Left));
                         break;
@@ -369,7 +371,11 @@ namespace WheelChairCollaborativeGame
 
         public override void ExitScreen()
         {
-            Game.RemoveAllButEssentialComponents();
+            //if terminated normaly
+            if (timeRanInExpiredTime > maxTimeInExpiredTime)
+                Game.RemoveAllButEssentialComponents(new List<IGameComponent>() { planet, shield, background });
+            else
+                Game.RemoveAllButEssentialComponents();
             MediaPlayer.Stop();
         }
     }
