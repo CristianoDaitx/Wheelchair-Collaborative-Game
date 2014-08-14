@@ -207,9 +207,32 @@ namespace WheelChairGameLibrary
             IEnumerable<IGameComponent> components = Components.Where(x => !typeof(CollisionManager).IsAssignableFrom(x.GetType()) && !typeof(KinectChooser).IsAssignableFrom(x.GetType()) && !typeof(InputState).IsAssignableFrom(x.GetType()));
             while (components.Count() > 0)
             {
-                Components.Remove(components.ElementAt(0));
+                if ( typeof(IDisposable).IsAssignableFrom( components.ElementAt(0).GetType())){
+                    ((IDisposable)components.ElementAt(0)).Dispose();
+                } else
+                    Components.Remove(components.ElementAt(0));
 
             }            
+        }
+
+        public void RemoveAllButEssentialComponents(IEnumerable<IGameComponent> keepComponents)
+        {
+            IEnumerable<IGameComponent> components = Components.Where(x => !typeof(CollisionManager).IsAssignableFrom(x.GetType()) && !typeof(KinectChooser).IsAssignableFrom(x.GetType()) && !typeof(InputState).IsAssignableFrom(x.GetType()));
+            components = components.Except(keepComponents);
+            while (components.Count() > 0)
+            {
+                if (typeof(IDisposable).IsAssignableFrom(components.ElementAt(0).GetType()))
+                {
+                    ((IDisposable)components.ElementAt(0)).Dispose();
+                }
+                else
+                    Components.Remove(components.ElementAt(0));
+
+            }
+        }
+
+        public GameComponent GetGameObject(string tag){
+            return (GameComponent)Components.FirstOrDefault(x => typeof(GameObject).IsAssignableFrom(x.GetType()) && ((GameObject)x).Tag == tag);
         }
     }
 }

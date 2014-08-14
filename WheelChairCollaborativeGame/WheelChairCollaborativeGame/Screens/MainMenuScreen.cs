@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using WheelChairCollaborativeGame.GameObjects;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WheelChairCollaborativeGame
 {
@@ -17,7 +18,9 @@ namespace WheelChairCollaborativeGame
 
         private readonly Vector2 MENU_START_POSTION = new Vector2(500, 450);
         private readonly Vector2 MENU_SPACING = new Vector2(0, 40);
-        private Song backgroundSong;
+
+        private MenuBackgroundSound backgroundSound;
+
         private int menuSelected = 0;
 
         private TimeSpan timeRan;
@@ -33,8 +36,11 @@ namespace WheelChairCollaborativeGame
         public override void Initialize()
         {
             base.Initialize();
-            MediaPlayer.Play(backgroundSong);
-            MediaPlayer.IsRepeating = true;
+
+            //SoundEffectInstance sad = new SoundEffectInstance();
+            //sad.
+            //MediaPlayer.Play(backgroundSong);
+            //MediaPlayer.IsRepeating = true;
 
         }
 
@@ -47,7 +53,13 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
             spriteFont = Game.Content.Load<SpriteFont>(@"SpriteFont2");
             spriteFont2 = Game.Content.Load<SpriteFont>(@"SpriteFont3");
-            backgroundSong = Game.Content.Load<Song>("Tyrian - 05 - Camanise");
+
+            backgroundSound = (MenuBackgroundSound)Game.GetGameObject("MenuBackgroundSound");
+            if (backgroundSound == null)
+            {
+                backgroundSound = new MenuBackgroundSound(Game, "MenuBackgroundSound");
+                Game.Components.Add(backgroundSound);
+            }
             base.LoadContent();
         }
 
@@ -89,7 +101,7 @@ namespace WheelChairCollaborativeGame
                     case 3:
                         Game.Exit();
                         break;
-                }                
+                }
             }
 
             if (inputState.IsKeyPressed(Keys.Up, null, out playerIndex))
@@ -107,8 +119,11 @@ namespace WheelChairCollaborativeGame
 
         public override void ExitScreen()
         {
-            Game.RemoveAllButEssentialComponents();
-
+            //if menu config is selected, does not stop music
+            if (menuSelected == 2)
+                Game.RemoveAllButEssentialComponents(new List<IGameComponent>() { backgroundSound });
+            else
+                Game.RemoveAllButEssentialComponents();
         }
 
 
