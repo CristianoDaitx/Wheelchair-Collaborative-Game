@@ -20,6 +20,7 @@ namespace WheelChairCollaborativeGame
         private readonly Vector2 MENU_SPACING = new Vector2(0, 40);
 
         private MenuBackgroundSound backgroundSound;
+        private Background background;
 
         private int menuSelected = 0;
 
@@ -48,7 +49,12 @@ namespace WheelChairCollaborativeGame
         {
             base.LoadContent();
 
-            Game.Components.Add(new Background(Game, 50));
+            background = (Background)Game.GetGameObject("background");
+            if (background == null)
+            {
+                background = new Background(Game, 50);
+                Game.Components.Add(background);
+            }
 
             Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
             spriteFont = Game.Content.Load<SpriteFont>(@"SpriteFont2");
@@ -121,7 +127,7 @@ namespace WheelChairCollaborativeGame
         {
             //if menu config is selected, does not stop music
             if (menuSelected == 2)
-                Game.RemoveAllButEssentialComponents(new List<IGameComponent>() { backgroundSound });
+                Game.RemoveAllButEssentialComponents(new List<IGameComponent>() { backgroundSound, background });
             else
                 Game.RemoveAllButEssentialComponents();
         }

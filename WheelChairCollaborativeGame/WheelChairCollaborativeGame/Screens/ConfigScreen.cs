@@ -27,7 +27,6 @@ namespace WheelChairCollaborativeGame
         {
             base.LoadContent();
             spriteFont2 = Game.Content.Load<SpriteFont>(@"SpriteFont3");
-           Game.Components.Add(new Background(Game, 50));
 
         }
 
@@ -38,7 +37,7 @@ namespace WheelChairCollaborativeGame
 
             if (!Chooser.IsAvailable)
             {
-                SharedSpriteBatch.DrawString(spriteFont2, "Connect a Microsoft Kinect device\n"+
+                SharedSpriteBatch.DrawString(spriteFont2, "Connect a Microsoft Kinect device\n" +
                 "to use more input modes.", new Vector2(240, 200), Color.White);
             }
 
