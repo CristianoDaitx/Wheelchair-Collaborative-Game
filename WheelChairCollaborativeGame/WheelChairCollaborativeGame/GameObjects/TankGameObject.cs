@@ -184,17 +184,17 @@ namespace WheelChairCollaborativeGame
 
         public void fire()
         {
-            
+            if (energy < SHOT_COST)
+            {
+                lowEnergy = true;
+            }
             if (energy >= SHOT_COST)
             {
                 Game.Components.Add(new BallGameObject(Position + new Vector2(Size.X / 2, 0), Game, "ball"));
                 fireSoundEffect.Play();
                 energy -= SHOT_COST;
             }
-            if (energy < SHOT_COST)
-            {
-                lowEnergy = true;
-            }
+            
             
          
         }
