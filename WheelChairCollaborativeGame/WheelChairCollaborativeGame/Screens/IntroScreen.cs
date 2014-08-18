@@ -13,6 +13,9 @@ namespace WheelChairCollaborativeGame
     class IntroScreen : Screen
     {
 
+        TimeSpan timeRan = new TimeSpan();
+        TimeSpan maxTime = TimeSpan.FromSeconds(4);
+
         public IntroScreen(GameEnhanced game, string tag)
             : base(game, tag)
         {
@@ -45,6 +48,11 @@ namespace WheelChairCollaborativeGame
             InputState inputState = (InputState)Game.Services.GetService(typeof(InputState));
 
             PlayerIndex playerIndex;
+            timeRan += gameTime.ElapsedGameTime;
+
+            if (timeRan >= maxTime)
+                Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
+
 
             if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
             {

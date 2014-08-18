@@ -63,7 +63,7 @@ namespace WheelChairCollaborativeGame
             Game.Components.Add(kinectInput);
 
 
-            backgroundSong = Game.Content.Load<Song>("AsteroidDance");
+            backgroundSong = Game.Content.Load<Song>("Tyrian - 02 - Asteroid Dance Part 1");
 
             movementSprite = new FrontMovementSprite(Game, "FrontMovementSprite");
 

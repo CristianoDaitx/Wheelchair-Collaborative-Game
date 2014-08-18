@@ -12,6 +12,8 @@ namespace WheelChairCollaborativeGame
 {
     class SplashScreen : Screen
     {
+        TimeSpan timeRan = new TimeSpan();
+        TimeSpan maxTime = TimeSpan.FromSeconds(4);
 
         public SplashScreen(GameEnhanced game, string tag)
             : base(game, tag)
@@ -21,7 +23,7 @@ namespace WheelChairCollaborativeGame
         protected override void LoadContent()
         {
             base.LoadContent();
-            Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
+            //Game.Components.Add(new MainMenuAlien(Game, "MainMenuAlien"));
         }
 
         public override void Draw(GameTime gameTime)
@@ -29,7 +31,9 @@ namespace WheelChairCollaborativeGame
             base.Draw(gameTime);
             SharedSpriteBatch.Begin();
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
-                        "A game produced by somebody!", new Vector2(450, 300));
+            "           A game produced by:\n"+
+            "Cristiano Daitx & Gianei L. Sebastiany\n"+
+            "       Directed by Kathrin Gerling", new Vector2(430, 300));
             SharedSpriteBatch.End();
         }
 
@@ -39,6 +43,14 @@ namespace WheelChairCollaborativeGame
             InputState inputState = (InputState)Game.Services.GetService(typeof(InputState));
 
             PlayerIndex playerIndex;
+
+
+            timeRan += gameTime.ElapsedGameTime;
+
+            if (timeRan >= maxTime)
+                Game.ActiveScreen = new IntroScreen(Game, "IntroScreen");
+
+
 
             if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex))
             {
