@@ -91,6 +91,16 @@ namespace WheelChairGameLibrary
             get { return defaultFont; }
         }
 
+        private Logger log;
+        /// <summary>
+        /// Gets the class that takes care of logging stuff
+        /// </summary>
+        public Logger Log
+        {
+            get { return log; }
+        }
+
+
         /// <summary>
         /// A content to load stuff from content inside library
         /// </summary>
@@ -110,6 +120,9 @@ namespace WheelChairGameLibrary
             Content.RootDirectory = "Content";
             //Starts content for use inside library
             LibContent = new ResourceContentManager(this.Services, ResourceFile.ResourceManager);
+
+            this.log = new Logger(this);
+            this.Components.Add(log);
 
             //TODO: check this settings
             this.IsFixedTimeStep = false;
@@ -217,7 +230,11 @@ namespace WheelChairGameLibrary
 
         public void RemoveAllButEssentialComponents(IEnumerable<IGameComponent> keepComponents)
         {
-            IEnumerable<IGameComponent> components = Components.Where(x => !typeof(CollisionManager).IsAssignableFrom(x.GetType()) && !typeof(KinectChooser).IsAssignableFrom(x.GetType()) && !typeof(InputState).IsAssignableFrom(x.GetType()));
+            IEnumerable<IGameComponent> components = Components.Where(x =>
+                !typeof(CollisionManager).IsAssignableFrom(x.GetType()) &&
+                !typeof(KinectChooser).IsAssignableFrom(x.GetType()) &&
+                !typeof(InputState).IsAssignableFrom(x.GetType()) &&
+                !typeof(Logger).IsAssignableFrom(x.GetType()));
             components = components.Except(keepComponents);
             while (components.Count() > 0)
             {

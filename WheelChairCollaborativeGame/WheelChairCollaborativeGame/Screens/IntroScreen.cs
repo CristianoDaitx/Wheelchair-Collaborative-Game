@@ -14,7 +14,7 @@ namespace WheelChairCollaborativeGame
     {
 
         TimeSpan timeRan = new TimeSpan();
-        TimeSpan maxTime = TimeSpan.FromSeconds(4);
+        TimeSpan maxTime = TimeSpan.FromSeconds(14);
 
         public IntroScreen(GameEnhanced game, string tag)
             : base(game, tag)
