@@ -34,7 +34,8 @@ namespace WheelChairCollaborativeGame
             GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
 
                         "Fellow aliens!"+
-                        "\nHumans have wrecked their planet and are now coming for us!"+
+                        "\nHumans have wrecked their planet and are" +
+                        "\nnow coming for us!"+
                         "\nWe must keep them from landing on our planet,"+
                         "\nbut security shields are down" +
                         "\nYou have armed space-ships,"+

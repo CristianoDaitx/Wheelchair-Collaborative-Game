@@ -28,6 +28,21 @@ namespace WheelChairGameLibrary
             get { return CountTank + CountSoldier; }
         }
 
+        public int ShotsFired
+        {
+            get { return ShotsFired; }
+            set { ShotsFired = value; }
+        }
+
+        public int ShotsMissed
+        {
+            get { return ShotsMissed; }
+            set { ShotsMissed = value; }
+        }
+
+
+        
+
 
         public Logger(GameEnhanced game)
             : base(game)
@@ -37,7 +52,7 @@ namespace WheelChairGameLibrary
 
 
         /// <summary>
-        /// Writes file to an .txt file
+        /// Writes file to an .csv file
         /// </summary>
         public void saveLog(){
             //TODO open file and append log
@@ -48,6 +63,8 @@ namespace WheelChairGameLibrary
             //TODO reset all values
             countTank = 0;
             countSoldier = 0;
+            ShotsFired = 0;
+            ShotsMissed = 0;
         }
     }
 }

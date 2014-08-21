@@ -29,7 +29,7 @@ namespace WheelChairCollaborativeGame
         }
 
         private int BORDER_STARTING_POSITION_X = 500;
-        private Type type;
+        //private Type type;
 
         public MenuEnemy(GameEnhanced game, String tag)
             : base(game, tag)

@@ -42,10 +42,10 @@ namespace WheelChairCollaborativeGame
             }
 
             //GUImessage.MessageDraw(SharedSpriteBatch, Game.Content, "Joystick", 1, startingPosition);
-            SharedSpriteBatch.DrawString(spriteFont2, "Joystick", getMenuTextPosition(Config.ControlSelect.Joystick), getMenuColor(Config.ControlSelect.Joystick));
-            SharedSpriteBatch.DrawString(spriteFont2, "Front movement", getMenuTextPosition(Config.ControlSelect.Front), getMenuColor(Config.ControlSelect.Front));
-            SharedSpriteBatch.DrawString(spriteFont2, "Highfive Movement", getMenuTextPosition(Config.ControlSelect.Side), getMenuColor(Config.ControlSelect.Side));
-            SharedSpriteBatch.DrawString(spriteFont2, "Front movement assyncronous", getMenuTextPosition(Config.ControlSelect.FrontAssyncronous), getMenuColor(Config.ControlSelect.FrontAssyncronous));
+            SharedSpriteBatch.DrawString(spriteFont2, "A", getMenuTextPosition(Config.ControlSelect.Joystick), getMenuColor(Config.ControlSelect.Joystick));//Joystick
+            SharedSpriteBatch.DrawString(spriteFont2, "B", getMenuTextPosition(Config.ControlSelect.Front), getMenuColor(Config.ControlSelect.Front));//Front movement
+            SharedSpriteBatch.DrawString(spriteFont2, "C", getMenuTextPosition(Config.ControlSelect.Side), getMenuColor(Config.ControlSelect.Side));//Highfive Movement
+            SharedSpriteBatch.DrawString(spriteFont2, "D", getMenuTextPosition(Config.ControlSelect.FrontAssyncronous), getMenuColor(Config.ControlSelect.FrontAssyncronous));//Front movement assyncronous
 
             SharedSpriteBatch.DrawString(spriteFont2, "Input mode:", new Vector2(240, 350), Color.Yellow);
             //GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
