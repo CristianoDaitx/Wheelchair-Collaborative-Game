@@ -198,6 +198,7 @@ namespace WheelChairCollaborativeGame
             {
                 lowEnergy = true;
                 Game.Log.lowEnergyFail++;
+               
             }
             
             if (energy >= SHOT_COST)

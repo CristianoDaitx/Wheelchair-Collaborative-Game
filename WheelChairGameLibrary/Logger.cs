@@ -70,6 +70,8 @@ namespace WheelChairGameLibrary
             set { invaders = value; }
         }
 
+
+
         
 
 
@@ -85,6 +87,7 @@ namespace WheelChairGameLibrary
         /// </summary>
         public void saveLog(){
             //TODO open file and append log
+            
         }
 
         public void resetLog()
@@ -96,6 +99,8 @@ namespace WheelChairGameLibrary
             shotsMissed = 0;
             shotsHit = 0;
             lowEnergyFail = 0;
+            score = 0;
+            invaders = 0;
         }
     }
 }

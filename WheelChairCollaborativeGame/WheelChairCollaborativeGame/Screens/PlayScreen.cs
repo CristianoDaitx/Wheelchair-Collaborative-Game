@@ -171,6 +171,8 @@ namespace WheelChairCollaborativeGame
                     gameOverScreen.Score = Score;
                     Game.Log.score = Score;
                     Game.Log.invaders = Invaders;
+                    Console.Write(Game.Log.score);
+                    Console.Write(Game.Log.invaders);
                 }
 
 

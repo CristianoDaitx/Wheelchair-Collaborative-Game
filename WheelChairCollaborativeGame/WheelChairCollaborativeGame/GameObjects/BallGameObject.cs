@@ -19,6 +19,7 @@ namespace WheelChairCollaborativeGame
     class BallGameObject : GameObject2D
     {
         private readonly int MAX_Y_TO_SURVIVE = 50;
+        private bool validMiss = false;
 
         SoundEffect hit;
 
@@ -32,6 +33,8 @@ namespace WheelChairCollaborativeGame
             Velocity = new Vector2(0, -9);
 
             Position = new Vector2(Position.X - 6, Position.Y - 10);
+
+            validMiss = true;
         }
 
         protected override void LoadContent()
@@ -47,11 +50,16 @@ namespace WheelChairCollaborativeGame
 
             if (Position.Y < MAX_Y_TO_SURVIVE)
             {
-                Game.Log.shotsMissed++;
-                
+                if (validMiss == true)
+                {
+                    Game.Log.shotsMissed++;
+                    
+                    validMiss = false;
+                }
                 //Game.Components.Remove(this);
                 ToBeRemoved = true;
                 //GameObjectManager.removeGameObject(this);
+        
             }
 
 
