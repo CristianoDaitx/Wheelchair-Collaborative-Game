@@ -47,7 +47,7 @@ namespace WheelChairCollaborativeGame
 
             if (Position.Y < MAX_Y_TO_SURVIVE)
             {
-                //Game.Log.ShotsMissed++;
+                Game.Log.shotsMissed++;
                 
                 //Game.Components.Remove(this);
                 ToBeRemoved = true;

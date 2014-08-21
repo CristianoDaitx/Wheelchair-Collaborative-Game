@@ -25,6 +25,7 @@ namespace WheelChairCollaborativeGame
             base.Initialize();
             MediaPlayer.Play(backgroundSong);
             MediaPlayer.IsRepeating = false;
+            Game.Log.saveLog();
 
         }
 

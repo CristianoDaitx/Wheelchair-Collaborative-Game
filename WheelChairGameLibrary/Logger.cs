@@ -28,18 +28,47 @@ namespace WheelChairGameLibrary
             get { return CountTank + CountSoldier; }
         }
 
+        public int shotsFired;
         public int ShotsFired
         {
-            get { return ShotsFired; }
-            set { ShotsFired = value; }
+            get { return shotsFired; }
+            set { shotsFired = value; }
         }
 
+        public int shotsMissed;
         public int ShotsMissed
         {
-            get { return ShotsMissed; }
-            set { ShotsMissed = value; }
+            get { return shotsMissed; }
+            set { shotsMissed = value; }
         }
 
+        public int shotsHit;
+        public int ShotsHit
+        {
+            get { return shotsHit; }
+            set { shotsHit = value; }
+        }
+
+        public int lowEnergyFail;
+        public int LowEnergyFail
+        {
+            get { return lowEnergyFail; }
+            set { lowEnergyFail = value; }
+        }
+
+        public int score;
+        public int Score
+        {
+            get { return score; }
+            set { score = value; }
+        }
+
+        public int invaders;
+        public int Invaders 
+        {
+            get { return invaders; }
+            set { invaders = value; }
+        }
 
         
 
@@ -63,8 +92,10 @@ namespace WheelChairGameLibrary
             //TODO reset all values
             countTank = 0;
             countSoldier = 0;
-            ShotsFired = 0;
-            ShotsMissed = 0;
+            shotsFired = 0;
+            shotsMissed = 0;
+            shotsHit = 0;
+            lowEnergyFail = 0;
         }
     }
 }
