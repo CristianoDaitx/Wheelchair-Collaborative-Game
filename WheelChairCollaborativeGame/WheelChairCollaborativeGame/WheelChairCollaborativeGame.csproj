@@ -120,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logging\CsvPatternLayout .cs" />
     <Compile Include="GameObjects\AlienCharacter.cs" />
     <Compile Include="GameObjects\FrontMovementSprite.cs" />
     <Compile Include="GameObjects\MenuBackgroundSound.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="GameObjects\Explosions\BigExplosionGameObject.cs" />
     <Compile Include="GameObjects\HumanCharacter.cs" />
     <Compile Include="IOnOff\OnOffDoubleOR.cs" />
+    <Compile Include="Logging\MyEvent.cs" />
     <Compile Include="Screens\ConfigScreen.cs" />
     <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />

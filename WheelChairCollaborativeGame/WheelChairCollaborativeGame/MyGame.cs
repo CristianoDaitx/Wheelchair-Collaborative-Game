@@ -17,6 +17,7 @@ using Microsoft.Kinect;
 using log4net.Config;
 using log4net;
 using System.Reflection;
+using WheelChairCollaborativeGame.Logging;
 
 //[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 //[assembly: log4net.Config.XmlConfigurator(Watch = true)]
@@ -50,17 +51,24 @@ namespace WheelChairCollaborativeGame
     {
 
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog log2 = LogManager.GetLogger("MyAwesomeLogger");
 
         public MyGame()
         {
 
 
-            log.Debug("this is the first log message");
-            this.log.Debug("Debug message");
-            this.log.Info("Info message");
-            this.log.Warn("Warning message");
-            this.log.Error("Error message");
-            this.log.Fatal("Fatal message");
+            this.log2.Debug("Debug message");
+            this.log2.Info("Info message");
+            this.log2.Warn("Warning message");
+            this.log2.Error("Error message");
+            this.log2.Fatal("Fatal message");
+
+            log.Info(new MyEvent
+            {
+                UserId = "foo",
+                EventCode = "xyz",
+                Details = "Some event"
+            });
 
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
