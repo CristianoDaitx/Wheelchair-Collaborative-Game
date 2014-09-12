@@ -169,8 +169,8 @@ namespace WheelChairCollaborativeGame
                     planet.stopMoving();
                     Game.ActiveScreen = gameOverScreen;
                     gameOverScreen.Score = Score;
-                    Game.Log.Score = Score;
-                    Game.Log.Invaders = Invaders;
+                    ((MyGame)Game).Logger.Score = Score;
+                    ((MyGame)Game).Logger.Invaders = Invaders;
                     
                 }
 

@@ -18,6 +18,7 @@ using log4net.Config;
 using log4net;
 using System.Reflection;
 using WheelChairCollaborativeGame.Logging;
+using System.IO;
 
 //[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 //[assembly: log4net.Config.XmlConfigurator(Watch = true)]
@@ -57,8 +58,24 @@ namespace WheelChairCollaborativeGame
 
         private readonly ILog summaryLog = LogManager.GetLogger("SummaryLogger");
 
+        private readonly Logger logger = new Logger();
+        public Logger Logger
+        {
+            get { return logger; }
+        }
+
         public MyGame()
         {
+            //loads config
+            try
+            {
+                Config.Load();
+                
+            }
+            catch (FileNotFoundException e)
+            {
+                // FileNotFoundExceptions are handled here.
+            }
 
 
             /*this.log2.Debug("Debug message");
@@ -74,7 +91,7 @@ namespace WheelChairCollaborativeGame
                 Details = "Some event"
             });*/
 
-            summaryLog.Info(this.Log);
+            summaryLog.Info(Logger);
 
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_START));
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));
@@ -126,6 +143,12 @@ namespace WheelChairCollaborativeGame
             {
                 Config.ControlSelected = Config.ControlSelect.Joystick;
             }
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            base.OnExiting(sender, args);
+            Config.Save();
         }
 
     }

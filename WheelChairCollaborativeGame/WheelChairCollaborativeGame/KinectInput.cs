@@ -16,6 +16,8 @@ using KinectForWheelchair;
 using KinectForWheelchair.Listeners;
 
 using Microsoft.Kinect;
+using log4net;
+using WheelChairCollaborativeGame.Logging;
 
 #endregion
 
@@ -24,6 +26,8 @@ namespace WheelChairCollaborativeGame
     class KinectInput : GameObject
     {
 
+
+        private readonly ILog detailedLog = LogManager.GetLogger("DetailedLogger");
 
 
         // Position constants
@@ -160,6 +164,10 @@ namespace WheelChairCollaborativeGame
 
         private void playerShot()
         {
+
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_FIRED));
+
+
             PlayScreen playScreen = (PlayScreen)Game.GetGameObject("PlayScreen");
             if (playScreen != null)
             {

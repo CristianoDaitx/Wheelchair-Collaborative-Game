@@ -24,11 +24,17 @@ namespace WheelChairCollaborativeGame.Logging
 
         public int groupId { get; set; }
 
+
+
+        public int inputId { get; set; }
+
+
         public DetailedInfo(Type type)
         {
 
             this.type = type;
-            groupId = 1;
+            groupId = Config.GroupId;
+            inputId = (int)Config.ControlSelected + 1;
         }
     }
 }

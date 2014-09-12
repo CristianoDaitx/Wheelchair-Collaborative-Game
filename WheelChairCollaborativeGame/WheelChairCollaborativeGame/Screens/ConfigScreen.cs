@@ -13,10 +13,21 @@ namespace WheelChairCollaborativeGame
 {
     class ConfigScreen : Screen
     {
-        private Vector2 startingPosition = new Vector2(500, 350);
+        private Vector2 startingPosition = new Vector2(542, 350);
         private Vector2 differencePosition = new Vector2(0, 50);
 
         private static SpriteFont spriteFont2;
+
+
+        private enum ActiveSetting
+        {
+            INPUT,
+            GROUP_ID
+        }
+
+        private ActiveSetting activeSetting = ActiveSetting.INPUT;
+
+
 
         public ConfigScreen(GameEnhanced game, string tag)
             : base(game, tag)
@@ -47,9 +58,12 @@ namespace WheelChairCollaborativeGame
             SharedSpriteBatch.DrawString(spriteFont2, "C", getMenuTextPosition(Config.ControlSelect.Side), getMenuColor(Config.ControlSelect.Side));//Highfive Movement
             SharedSpriteBatch.DrawString(spriteFont2, "D", getMenuTextPosition(Config.ControlSelect.FrontAssyncronous), getMenuColor(Config.ControlSelect.FrontAssyncronous));//Front movement assyncronous
 
-            SharedSpriteBatch.DrawString(spriteFont2, "Input mode:", new Vector2(240, 350), Color.Yellow);
+            SharedSpriteBatch.DrawString(spriteFont2, "Input mode:", new Vector2(240, 350), (activeSetting == ActiveSetting.INPUT ? Color.Yellow: Color.White));
             //GUImessage.MessageDraw(SharedSpriteBatch, Game.Content,
             //            "Input mode: " + Config.ControlSelected, new Vector2(450, 300));
+
+
+            SharedSpriteBatch.DrawString(spriteFont2, "  Group Id:" + Config.GroupId, new Vector2(240, 550), (activeSetting == ActiveSetting.GROUP_ID ? Color.Yellow : Color.White));
             SharedSpriteBatch.End();
         }
 
@@ -61,35 +75,70 @@ namespace WheelChairCollaborativeGame
             PlayerIndex playerIndex;
 
             if (inputState.IsKeyPressed(Keys.Enter, null, out playerIndex) ||
-                inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
+                    inputState.IsKeyPressed(Keys.Escape, null, out playerIndex))
             {
                 Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
             }
 
-            //changes control type
-            if (inputState.IsKeyPressed(Keys.Up, null, out playerIndex))
-                Config.ControlSelected--;
-            if (inputState.IsKeyPressed(Keys.Down, null, out playerIndex))
-                Config.ControlSelected++;
+            if (activeSetting == ActiveSetting.INPUT)
+            {
+                
 
-            //check borders of control tipe
-            if ((int)Config.ControlSelected == 4)
-            {
-                Config.ControlSelected = Config.ControlSelect.Joystick;
-            }
-            if ((int)Config.ControlSelected < 0)
-            {
-                Config.ControlSelected = Config.ControlSelect.FrontAssyncronous;
+                //changes control type
+                if (inputState.IsKeyPressed(Keys.Left, null, out playerIndex))
+                    Config.ControlSelected--;
+                if (inputState.IsKeyPressed(Keys.Right, null, out playerIndex))
+                    Config.ControlSelected++;
+
+                //check borders of control tipe
+                if ((int)Config.ControlSelected == 4)
+                {
+                    Config.ControlSelected = Config.ControlSelect.Joystick;
+                }
+                if ((int)Config.ControlSelected < 0)
+                {
+                    Config.ControlSelected = Config.ControlSelect.FrontAssyncronous;
+                }
             }
 
             if (!Chooser.IsAvailable)
                 Config.ControlSelected = Config.ControlSelect.Joystick;
+
+            if (activeSetting == ActiveSetting.GROUP_ID)
+            {
+                //changes control type
+                if (inputState.IsKeyPressed(Keys.Left, null, out playerIndex))
+                    Config.GroupId--;
+                if (inputState.IsKeyPressed(Keys.Right, null, out playerIndex))
+                    Config.GroupId++;
+                if ((int)Config.GroupId < 1)
+                {
+                    Config.GroupId = 1;
+                }
+            }
+
+
+            if (inputState.IsKeyPressed(Keys.Up, null, out playerIndex) || inputState.IsKeyPressed(Keys.Down, null, out playerIndex))
+            {
+                if (activeSetting == ActiveSetting.GROUP_ID)
+                    activeSetting = ActiveSetting.INPUT;
+                else
+                    activeSetting = ActiveSetting.GROUP_ID;
+            }
+
+            
         }
 
         private Color getMenuColor(Config.ControlSelect controlType)
         {
+
+
             if (controlType == Config.ControlSelected)
+            {
+                if (activeSetting == ActiveSetting.GROUP_ID)
+                    return Color.White;
                 return Color.Yellow;
+            }
             if (!Chooser.IsAvailable)
                 return Color.Gray;
             return Color.White;

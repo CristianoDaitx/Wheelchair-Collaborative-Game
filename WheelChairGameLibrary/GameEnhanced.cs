@@ -91,14 +91,6 @@ namespace WheelChairGameLibrary
             get { return defaultFont; }
         }
 
-        private Logger log;
-        /// <summary>
-        /// Gets the class that takes care of logging stuff
-        /// </summary>
-        public Logger Log
-        {
-            get { return log; }
-        }
 
 
         /// <summary>
@@ -120,9 +112,6 @@ namespace WheelChairGameLibrary
             Content.RootDirectory = "Content";
             //Starts content for use inside library
             LibContent = new ResourceContentManager(this.Services, ResourceFile.ResourceManager);
-
-            this.log = new Logger(this);
-            this.Components.Add(log);
 
             //TODO: check this settings
             this.IsFixedTimeStep = false;
@@ -233,8 +222,7 @@ namespace WheelChairGameLibrary
             IEnumerable<IGameComponent> components = Components.Where(x =>
                 !typeof(CollisionManager).IsAssignableFrom(x.GetType()) &&
                 !typeof(KinectChooser).IsAssignableFrom(x.GetType()) &&
-                !typeof(InputState).IsAssignableFrom(x.GetType()) &&
-                !typeof(Logger).IsAssignableFrom(x.GetType()));
+                !typeof(InputState).IsAssignableFrom(x.GetType()));
             components = components.Except(keepComponents);
             while (components.Count() > 0)
             {

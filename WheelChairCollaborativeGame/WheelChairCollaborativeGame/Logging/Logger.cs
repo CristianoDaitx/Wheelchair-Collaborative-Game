@@ -4,12 +4,23 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace WheelChairGameLibrary
+using WheelChairGameLibrary;
+using WheelChairGameLibrary.Helpers;
+
+
+namespace WheelChairCollaborativeGame
 {
-    public class Logger : GameComponent
+    public class Logger
     {
 
-        public int GroupId { get; set; }
+        public int GroupId {
+            get { return Config.GroupId; }
+        }
+
+        public int InputId
+        {
+            get { return (int)Config.ControlSelected + 1; }
+        }
 
         private int completedActionsA;
         public int CompletedActionsA
@@ -59,11 +70,6 @@ namespace WheelChairGameLibrary
 
 
 
-
-        public Logger(GameEnhanced game)
-            : base(game)
-        {
-        }
 
 
 

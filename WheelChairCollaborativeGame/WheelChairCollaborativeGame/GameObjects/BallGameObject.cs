@@ -52,7 +52,7 @@ namespace WheelChairCollaborativeGame
             {
                 if (validMiss == true)
                 {
-                    Game.Log.shotsMissed++;
+                    ((MyGame)Game).Logger.shotsMissed++;
                     
                     validMiss = false;
                 }
