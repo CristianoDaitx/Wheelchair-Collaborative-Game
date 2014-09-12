@@ -50,14 +50,16 @@ namespace WheelChairCollaborativeGame
     public class MyGame : GameEnhanced
     {
 
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly ILog log2 = LogManager.GetLogger("MyAwesomeLogger");
+        //private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private readonly ILog log2 = LogManager.GetLogger("MyAwesomeLogger");
+
+        private readonly ILog detailedLog = LogManager.GetLogger("DetailedLogger");
 
         public MyGame()
         {
 
 
-            this.log2.Debug("Debug message");
+            /*this.log2.Debug("Debug message");
             this.log2.Info("Info message");
             this.log2.Warn("Warning message");
             this.log2.Error("Error message");
@@ -68,7 +70,10 @@ namespace WheelChairCollaborativeGame
                 UserId = "foo",
                 EventCode = "xyz",
                 Details = "Some event"
-            });
+            });*/
+
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_START));
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));
 
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;
@@ -117,7 +122,7 @@ namespace WheelChairCollaborativeGame
             {
                 Config.ControlSelected = Config.ControlSelect.Joystick;
             }
-        }       
+        }
 
     }
 
