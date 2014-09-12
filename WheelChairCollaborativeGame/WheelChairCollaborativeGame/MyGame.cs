@@ -55,6 +55,8 @@ namespace WheelChairCollaborativeGame
 
         private readonly ILog detailedLog = LogManager.GetLogger("DetailedLogger");
 
+        private readonly ILog summaryLog = LogManager.GetLogger("SummaryLogger");
+
         public MyGame()
         {
 
@@ -71,6 +73,8 @@ namespace WheelChairCollaborativeGame
                 EventCode = "xyz",
                 Details = "Some event"
             });*/
+
+            summaryLog.Info(this.Log);
 
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_START));
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));

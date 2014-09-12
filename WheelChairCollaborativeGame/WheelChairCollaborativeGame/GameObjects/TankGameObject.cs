@@ -197,7 +197,7 @@ namespace WheelChairCollaborativeGame
             if (energy < SHOT_COST)
             {
                 lowEnergy = true;
-                Game.Log.lowEnergyFail++;
+                Game.Log.ShotsWithoutEnergy++;
                
             }
             
@@ -206,7 +206,7 @@ namespace WheelChairCollaborativeGame
                 Game.Components.Add(new BallGameObject(Position + new Vector2(Size.X / 2, 0), Game, "ball"));
                 fireSoundEffect.Play();
                 energy -= SHOT_COST;
-                Game.Log.shotsFired++;
+                //Game.Log.shotsFired++;
             }
             
             

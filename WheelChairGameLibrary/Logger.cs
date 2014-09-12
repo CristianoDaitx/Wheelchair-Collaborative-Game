@@ -9,30 +9,38 @@ namespace WheelChairGameLibrary
     public class Logger : GameComponent
     {
 
-        private int countTank;
-        public int CountTank
+        public int GroupId { get; set; }
+
+        private int completedActionsA;
+        public int CompletedActionsA
         {
-            get { return countTank; }
-            set { countTank = value; }
+            get { return completedActionsA; }
+            set { completedActionsA = value; }
         }
 
-        private int countSoldier;
-        public int CountSoldier
+        public int ActionsFailureA { get; set; }
+
+        private int completedActionsB;
+        public int CompletedActionsB
         {
-            get { return countSoldier; }
-            set { countSoldier = value; }
+            get { return completedActionsB; }
+            set { completedActionsB = value; }
         }
 
-        public int CountTotal
+        public int ActionsFailureB { get; set; }
+
+        public int TotalShotsFired
         {
-            get { return CountTank + CountSoldier; }
+            get { return CompletedActionsA + CompletedActionsB; }
         }
 
-        public int shotsFired;
-        public int ShotsFired
+        public int ShotsWithoutEnergy { get; set; }
+
+        public int shotsHit;
+        public int ShotsHit
         {
-            get { return shotsFired; }
-            set { shotsFired = value; }
+            get { return shotsHit; }
+            set { shotsHit = value; }
         }
 
         public int shotsMissed;
@@ -42,37 +50,14 @@ namespace WheelChairGameLibrary
             set { shotsMissed = value; }
         }
 
-        public int shotsHit;
-        public int ShotsHit
-        {
-            get { return shotsHit; }
-            set { shotsHit = value; }
-        }
+        public int Score { get; set; }
 
-        public int lowEnergyFail;
-        public int LowEnergyFail
-        {
-            get { return lowEnergyFail; }
-            set { lowEnergyFail = value; }
-        }
-
-        public int score;
-        public int Score
-        {
-            get { return score; }
-            set { score = value; }
-        }
-
-        public int invaders;
-        public int Invaders 
-        {
-            get { return invaders; }
-            set { invaders = value; }
-        }
+        public int Invaders { get; set; }
 
 
 
-        
+
+
 
 
         public Logger(GameEnhanced game)
@@ -85,22 +70,23 @@ namespace WheelChairGameLibrary
         /// <summary>
         /// Writes file to an .csv file
         /// </summary>
-        public void saveLog(){
+        public void saveLog()
+        {
             //TODO open file and append log
-            
+
         }
 
         public void resetLog()
         {
             //TODO reset all values
-            countTank = 0;
-            countSoldier = 0;
-            shotsFired = 0;
+            completedActionsA = 0;
+            completedActionsB = 0;
+            //shotsFired = 0;
             shotsMissed = 0;
             shotsHit = 0;
-            lowEnergyFail = 0;
-            score = 0;
-            invaders = 0;
+            //lowEnergyFail = 0;
+            //score = 0;
+            //invaders = 0;
         }
     }
 }

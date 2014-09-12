@@ -137,6 +137,7 @@
     <Compile Include="GameObjects\HumanCharacter.cs" />
     <Compile Include="IOnOff\OnOffDoubleOR.cs" />
     <Compile Include="Logging\DetailedInfo.cs" />
+    <Compile Include="Logging\HeaderOnceAppender.cs" />
     <Compile Include="Logging\MyEvent.cs" />
     <Compile Include="Screens\ConfigScreen.cs" />
     <Compile Include="Screens\TutorialScreen.cs" />

@@ -8,11 +8,15 @@ using WheelChairGameLibrary.Helpers;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using WheelChairCollaborativeGame.GameObjects;
+using log4net;
 
 namespace WheelChairCollaborativeGame
 {
     class GameOverScreen : Screen
     {
+        private readonly ILog summaryLog = LogManager.GetLogger("SummaryLogger");
+
+
         private Song backgroundSong;
         public int Score;
         public GameOverScreen(GameEnhanced game, string tag)
@@ -26,6 +30,8 @@ namespace WheelChairCollaborativeGame
             MediaPlayer.Play(backgroundSong);
             MediaPlayer.IsRepeating = false;
             Game.Log.saveLog();
+
+            summaryLog.Info(Game.Log);
 
         }
 
