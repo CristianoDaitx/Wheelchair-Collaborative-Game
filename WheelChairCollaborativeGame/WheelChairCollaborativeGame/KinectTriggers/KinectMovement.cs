@@ -62,7 +62,7 @@ namespace WheelChairCollaborativeGame
         /// <summary>
         /// Set a maximum active time for the movement. Zero makes it unlimited
         /// </summary>
-        public int MaxActiveTimeMiliseconds {get; set;}
+        public int MaxActiveTimeMiliseconds { get; set; }
         private double time = 0;
 
         private RasterizerState wireFrameState = new RasterizerState()
@@ -113,7 +113,7 @@ namespace WheelChairCollaborativeGame
             RasterizerState previousRasterizeState = Game.GraphicsDevice.RasterizerState;
             Game.GraphicsDevice.RasterizerState = wireFrameState;
 
-                    
+
             foreach (KinectTrigger trigger in kinectTriggers)
                 trigger.draw();
 
@@ -139,11 +139,11 @@ namespace WheelChairCollaborativeGame
             {
                 if (State == MovementState.Activated)
                 {
-                    state = MovementState.Wating;                    
+                    state = MovementState.Wating;
                     invalidatedMovement = true;
-                    lastActiveTriggerIndex = -1;
+
                     MovementQuit(this, args);
-                    MovementInterrupded(this, args);
+                    //MovementInterrupded(this, args);
                     return;
                 }
             }
@@ -154,25 +154,46 @@ namespace WheelChairCollaborativeGame
             for (int x = 0; x < kinectTriggers.Count(); x++)
                 triggerStatus[x] = kinectTriggers[x].checkIsTriggered(gameTime);
 
+            //check if trigger can be reseted
+            if (checkAllTriggersFalse(triggerStatus))
+            {
+
+                if (!invalidatedMovement && lastActiveTriggerIndex >= 0 && state != MovementState.Activated)
+                    MovementInterrupded(this, args);
+                invalidatedMovement = false;
+                lastActiveTriggerIndex = -1;
+                //return; //no more calculations needed
+            }
 
 
 
             //check if going forward on move
+            bool cancelEventCalled = false;
             for (int x = 0; x < triggerStatus.Count(); x++)
             {
                 if (triggerStatus[x])
                 {
                     //reset movement if gesture is in the beginning
-                    if (x == 0)
-                        invalidatedMovement = false;
+                    //if (x == 0)
+                    //    invalidatedMovement = false;
                     //if last active index is lower than the actual
                     if (lastActiveTriggerIndex + 1 == x)
                     {
                         lastActiveTriggerIndex++;
 
                         // if first trigger is activated and it is the starting of the movement (lastActiveTrigger == -1)
-                        if (x==0)
-                            MovementStarted(this, args);
+                        if (x == 0 && !invalidatedMovement)
+                        {
+                            if (MovementStarted != null)
+                                MovementStarted(this, args);
+                        }
+
+                        // if moving forward while in invalidated movemnt (did not got outside of all spheres)
+                        if (invalidatedMovement && !cancelEventCalled)
+                        {
+                            MovementInterrupded(this, args);
+                            cancelEventCalled = true;
+                        }
                     }
                 }
             }
@@ -186,12 +207,14 @@ namespace WheelChairCollaborativeGame
                     if (lastActiveTriggerIndex == x)
                     {
                         lastActiveTriggerIndex--;
-                        //always invalidates movement if users steps back
-                        invalidatedMovement = true;
+
 
                         //if invalidated not from an finishing position
-                        if (state != MovementState.Activated)
+                        if (state != MovementState.Activated && !invalidatedMovement) //if it's already invalidated, dont call event
                             MovementInterrupded(this, args);
+
+                        //always invalidates movement if users steps back
+                        invalidatedMovement = true;
                     }
 
                 }
@@ -223,6 +246,8 @@ namespace WheelChairCollaborativeGame
                     state = MovementState.Wating;
                     if (MovementCompleted != null)
                         MovementQuit(this, args);
+                    //else
+                    //  MovementInterrupded(this, args);
                 }
                 else
                     state = MovementState.Wating;
@@ -237,10 +262,20 @@ namespace WheelChairCollaborativeGame
         private bool checkStartEndActive(bool[] triggerStatus)
         {
             // ignore if triggers size is one
-            if (triggerStatus.Count() == 1)            
+            if (triggerStatus.Count() == 1)
                 return false;
-            
+
             return (triggerStatus[0] && triggerStatus[triggerStatus.Count() - 1]);
+        }
+
+        private bool checkAllTriggersFalse(bool[] triggerStatus)
+        {
+            for (int x = 0; x < triggerStatus.Count(); x++)
+            {
+                if (triggerStatus[x])
+                    return false;
+            }
+            return true;
         }
 
 

@@ -17,7 +17,7 @@ namespace WheelChairCollaborativeGame
             get { return activationVelocity; }
             set { activationVelocity = value; }
         }
-        private static readonly int MAX_DATAS = 10;
+        private static readonly int MAX_DATAS = 4;
 
         private Queue<PositionTime> jointOneDatas = new Queue<PositionTime>(MAX_DATAS);
         private Queue<PositionTime> jointTwoDatas = new Queue<PositionTime>(MAX_DATAS);
@@ -161,10 +161,32 @@ namespace WheelChairCollaborativeGame
             BoundingSphere sphereJoint = new BoundingSphere(skeletonPointToVector3(TrackingSkeletonOne.Joints[triggerJointOne]), JOINT_DEFAULT_RADIUS);
             BoundingSphere sphereJointTwo = new BoundingSphere(skeletonPointToVector3(TrackingSkeletonTwo.Joints[triggerJointTwo]), JOINT_DEFAULT_RADIUS);
 
+            //tests for velocity. If already inside, velocity isn't taken into account (as result of the OR)
+            if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo)
+              && ((JointOneVelocity > 1f && JointTwoVelocity > 1f) || State == TriggerState.Inside))
+            {
+                //this IF can be turned off to not allow that reaching desired speed when already inside sphere, result
+                //in an valid movement
+                //if (!flagInInvalidTrigger)
+                //{
+                    State = TriggerState.Inside;
+                    return true;
+                //}
+            }
             //tests to call events if some skelton didn't have enough speed. flagInInvalidatedTrigger is used
             //to not call event's in every update
-            if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo)
-                && ((JointOneVelocity <= 1f && JointTwoVelocity > 1f)) && State == TriggerState.Outside)
+            else if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo)
+              && ((JointOneVelocity <= 1f && JointTwoVelocity <= 1f)) && State == TriggerState.Outside)
+            {
+                if (!flagInInvalidTrigger)
+                {
+                    NoVelocityOne(this, EventArgs.Empty);
+                    NoVelocityTwo(this, EventArgs.Empty);
+                }
+                flagInInvalidTrigger = true;
+            }
+            else if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo)
+              && ((JointOneVelocity <= 1f && JointTwoVelocity > 1f)) && State == TriggerState.Outside)
             {
                 if (!flagInInvalidTrigger)
                     NoVelocityOne(this, EventArgs.Empty);
@@ -177,24 +199,9 @@ namespace WheelChairCollaborativeGame
                     NoVelocityTwo(this, EventArgs.Empty);
                 flagInInvalidTrigger = true;
             }
-            else if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo)
-              && ((JointOneVelocity <= 1f && JointTwoVelocity <= 1f)) && State == TriggerState.Outside)
-            {
-                if (!flagInInvalidTrigger)
-                {
-                    NoVelocityOne(this, EventArgs.Empty);
-                    NoVelocityTwo(this, EventArgs.Empty);
-                }
-                flagInInvalidTrigger = true;
-            }
+            
 
-            //tests for velocity. If already inside, velocity isn't taken into account (as result of the OR)
-            else if (sphereTrigger.Intersects(sphereJoint) && sphereTrigger.Intersects(sphereJointTwo)
-              && ((JointOneVelocity > 1f && JointTwoVelocity > 1f) || State == TriggerState.Inside))
-            {
-                State = TriggerState.Inside;
-                return true;
-            }
+
             else
             {
                 State = TriggerState.Outside;
