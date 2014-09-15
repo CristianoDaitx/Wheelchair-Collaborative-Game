@@ -184,6 +184,16 @@ namespace WheelChairCollaborativeGame
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_START));
         }
 
+        void triggerDouble_NoVelocityOne(object sender, EventArgs e)
+        {
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_FAILED));
+        }
+
+        void triggerDouble_NoVelocityTwo(object sender, EventArgs e)
+        {
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_FAILED));
+        }   
+
         private void playerShot()
         {
             PlayScreen playScreen = (PlayScreen)Game.GetGameObject("PlayScreen");
@@ -662,6 +672,8 @@ namespace WheelChairCollaborativeGame
 
             //movement to check for side high five
             triggerDouble = new KinectTriggerDouble(JointType.HandRight, JointType.HandRight, JointType.HandLeft, JointType.HandLeft, 0.1f, 0.02f, Game.GraphicsDevice);
+            triggerDouble.NoVelocityOne += new KinectTriggerDouble.NoVelocityOneEventHandler(triggerDouble_NoVelocityOne);
+            triggerDouble.NoVelocityTwo += new KinectTriggerDouble.NoVelocityTwoEventHandler(triggerDouble_NoVelocityTwo);
             movementDouble = new KinectMovement(Game, triggerDouble);
             movementDouble.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementDouble_MovementQuit);
             movementDouble.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementDouble_MovementCompleted);
@@ -685,6 +697,7 @@ namespace WheelChairCollaborativeGame
             base.LoadContent();
         }
 
+       
         public void determineSkeletons()
         {
             // Find and match skeletons
