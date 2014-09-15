@@ -9,13 +9,14 @@ namespace WheelChairCollaborativeGame.Logging
     {
         public enum Type
         {
-            PLAYER_A_ACTION_START,
-            PLAYER_A_ACTION_COMPLETION,
+            PLAYER_A_ACTION_STARTED,
+            PLAYER_A_ACTION_COMPLETED,
             PLAYER_A_ACTION_FAILED,
-            PLAYER_B_ACTION_START,
-            PLAYER_B_ACTION_COMPLETION,
+            PLAYER_B_ACTION_STARTED,
+            PLAYER_B_ACTION_COMPLETED,
             PLAYER_B_ACTION_FAILED,
             SHOT_FIRED,
+            SHOT_MISSED,
             SHOT_WITHOUT_ENERGY,
             SPACESHIP_HIT
         }

@@ -125,7 +125,7 @@ namespace WheelChairCollaborativeGame
             if (sender.Equals(movementFrontTankRight) || sender.Equals(movementFrontTankLeft))
             {
                 actionCount1++;
-                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETION));
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETED));
                 //count and add ball if other action is also active
 
                 if (movementFrontSoldierRight.isOn() || movementFrontSoldierLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
@@ -138,7 +138,7 @@ namespace WheelChairCollaborativeGame
             if (sender.Equals(movementFrontSoldierRight) || sender.Equals(movementFrontSoldierLeft))
             {
                 actionCount2++;
-                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETED));
                 //count and add ball if other action is also active
                 if (movementFrontTankRight.isOn() || movementFrontTankLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
@@ -166,7 +166,7 @@ namespace WheelChairCollaborativeGame
 
         void movementTank_MovementStarted(object sender, KinectMovementEventArgs e)
         {
-            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_START));
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_STARTED));
         }
 
         void movementTank_MovementInterrupded(object sender, KinectMovementEventArgs e)
@@ -181,7 +181,7 @@ namespace WheelChairCollaborativeGame
 
         void movementSoldier_MovementStarted(object sender, KinectMovementEventArgs e)
         {
-            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_START));
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_STARTED));
         }
 
         void triggerDouble_NoVelocityOne(object sender, EventArgs e)
@@ -358,7 +358,7 @@ namespace WheelChairCollaborativeGame
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex1, out playerIndex1))
                         {
                             actionCount1++;
-                            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETION));
+                            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETED));
                             controllerOneOnOff.IsOn = true;
                             if (controllerTwoOnOff.IsOn == true)
                             {
@@ -372,7 +372,7 @@ namespace WheelChairCollaborativeGame
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex2, out playerIndex2))
                         {
                             actionCount2++;
-                            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));
+                            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETED));
                             controllerTwoOnOff.IsOn = true;
                             if (controllerOneOnOff.IsOn == true)
                             {

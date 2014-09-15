@@ -11,6 +11,8 @@ using WheelChairGameLibrary;
 using WheelChairGameLibrary.Helpers;
 
 using WheelChairGameLibrary.Sprites;
+using log4net;
+using WheelChairCollaborativeGame.Logging;
 
 #endregion
 
@@ -19,7 +21,9 @@ namespace WheelChairCollaborativeGame
     class BallGameObject : GameObject2D
     {
         private readonly int MAX_Y_TO_SURVIVE = 50;
-        private bool validMiss = false;
+        private bool validMiss;
+
+        private readonly ILog detailedLog = LogManager.GetLogger("DetailedLogger");
 
         SoundEffect hit;
 
@@ -52,9 +56,9 @@ namespace WheelChairCollaborativeGame
             {
                 if (validMiss == true)
                 {
-                    ((MyGame)Game).Logger.shotsMissed++;
-                    
+                    ((MyGame)Game).Logger.shotsMissed++;                    
                     validMiss = false;
+                    detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_MISSED));
                 }
                 //Game.Components.Remove(this);
                 ToBeRemoved = true;
