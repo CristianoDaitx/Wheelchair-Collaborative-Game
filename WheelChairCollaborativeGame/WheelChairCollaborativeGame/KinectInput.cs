@@ -125,6 +125,7 @@ namespace WheelChairCollaborativeGame
             if (sender.Equals(movementFrontTankRight) || sender.Equals(movementFrontTankLeft))
             {
                 actionCount1++;
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETION));
                 //count and add ball if other action is also active
 
                 if (movementFrontSoldierRight.isOn() || movementFrontSoldierLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
@@ -137,6 +138,7 @@ namespace WheelChairCollaborativeGame
             if (sender.Equals(movementFrontSoldierRight) || sender.Equals(movementFrontSoldierLeft))
             {
                 actionCount2++;
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));
                 //count and add ball if other action is also active
                 if (movementFrontTankRight.isOn() || movementFrontTankLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
@@ -162,12 +164,28 @@ namespace WheelChairCollaborativeGame
 
         }
 
+        void movementTank_MovementStarted(object sender, KinectMovementEventArgs e)
+        {
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_START));
+        }
+
+        void movementTank_MovementInterrupded(object sender, KinectMovementEventArgs e)
+        {
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_FAILED));
+        }
+
+        void movementSoldier_MovementInterrupded(object sender, KinectMovementEventArgs e)
+        {
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_FAILED));
+        }
+
+        void movementSoldier_MovementStarted(object sender, KinectMovementEventArgs e)
+        {
+            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_START));
+        }
+
         private void playerShot()
         {
-
-            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_FIRED));
-
-
             PlayScreen playScreen = (PlayScreen)Game.GetGameObject("PlayScreen");
             if (playScreen != null)
             {
@@ -212,11 +230,7 @@ namespace WheelChairCollaborativeGame
 
 
 
-            // If the sensor is not found, not running, or not connected, stop now
-            if (!this.Chooser.IsAvailable)
-            {
-                return;
-            }
+            
 
 
             //set correct input for graph and activate/deactivate movements
@@ -334,6 +348,7 @@ namespace WheelChairCollaborativeGame
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex1, out playerIndex1))
                         {
                             actionCount1++;
+                            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETION));
                             controllerOneOnOff.IsOn = true;
                             if (controllerTwoOnOff.IsOn == true)
                             {
@@ -347,6 +362,7 @@ namespace WheelChairCollaborativeGame
                         if (inputState.IsButtonPressed(Buttons.A, playerIndex2, out playerIndex2))
                         {
                             actionCount2++;
+                            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));
                             controllerTwoOnOff.IsOn = true;
                             if (controllerOneOnOff.IsOn == true)
                             {
@@ -391,6 +407,13 @@ namespace WheelChairCollaborativeGame
 
 
 
+
+
+            // If the sensor is not found, not running, or not connected, stop now
+            if (!this.Chooser.IsAvailable)
+            {
+                return;
+            }
 
             using (var skeletonFrame = this.Chooser.Sensor.SkeletonStream.OpenNextFrame(0))
             {
@@ -591,6 +614,8 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontTankRight.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontTankRight.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontTankRight.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementTank_MovementStarted);
+            movementFrontTankRight.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementTank_MovementInterrupded);
             movementFrontTankRight.MaxActiveTimeMiliseconds = 150;
             Game.Components.Add(movementFrontTankRight);
 
@@ -601,6 +626,8 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontTankLeft.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontTankLeft.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontTankLeft.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementTank_MovementStarted);
+            movementFrontTankLeft.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementTank_MovementInterrupded);
             movementFrontTankLeft.MaxActiveTimeMiliseconds = 150;
             Game.Components.Add(movementFrontTankLeft);
 
@@ -612,6 +639,8 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontSoldierRight.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontSoldierRight.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontSoldierRight.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementSoldier_MovementStarted);
+            movementFrontSoldierRight.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementSoldier_MovementInterrupded);
             movementFrontSoldierRight.MaxActiveTimeMiliseconds = 150;
             Game.Components.Add(movementFrontSoldierRight);
 
@@ -622,6 +651,8 @@ namespace WheelChairCollaborativeGame
                 );
             movementFrontSoldierLeft.MovementCompleted += new KinectMovement.MovementCompletedEventHandler(movementSingle_MovementCompleted);
             movementFrontSoldierLeft.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
+            movementFrontSoldierLeft.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementSoldier_MovementStarted);
+            movementFrontSoldierLeft.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementSoldier_MovementInterrupded);
             movementFrontSoldierLeft.MaxActiveTimeMiliseconds = 150;
             Game.Components.Add(movementFrontSoldierLeft);
 

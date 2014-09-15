@@ -47,6 +47,12 @@ namespace WheelChairCollaborativeGame
 
         private bool invalidatedMovement = false;
 
+        public delegate void MovementInterrupdedEventHandler(object sender, KinectMovementEventArgs e);
+        public event MovementInterrupdedEventHandler MovementInterrupded;
+
+        public delegate void MovementStartedEventHandler(object sender, KinectMovementEventArgs e);
+        public event MovementStartedEventHandler MovementStarted;
+
         public delegate void MovementCompletedEventHandler(object sender, KinectMovementEventArgs e);
         public event MovementCompletedEventHandler MovementCompleted;
 
@@ -117,13 +123,13 @@ namespace WheelChairCollaborativeGame
 
         /// <summary>
         /// Checks the actual situation of the movement. Fires an event if the movement is completed, or when the final trigger is deactivated. 
-        /// Should be called in every update
         /// </summary>
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
             KinectMovementEventArgs args = new KinectMovementEventArgs();
+
             args.LastTrigger = kinectTriggers[kinectTriggers.Count() - 1];
 
 
@@ -133,10 +139,11 @@ namespace WheelChairCollaborativeGame
             {
                 if (State == MovementState.Activated)
                 {
-                    state = MovementState.Wating;
-                    MovementQuit(this, args);
+                    state = MovementState.Wating;                    
                     invalidatedMovement = true;
                     lastActiveTriggerIndex = -1;
+                    MovementQuit(this, args);
+                    MovementInterrupded(this, args);
                     return;
                 }
             }
@@ -162,8 +169,11 @@ namespace WheelChairCollaborativeGame
                     if (lastActiveTriggerIndex + 1 == x)
                     {
                         lastActiveTriggerIndex++;
-                    }
 
+                        // if first trigger is activated and it is the starting of the movement (lastActiveTrigger == -1)
+                        if (x==0)
+                            MovementStarted(this, args);
+                    }
                 }
             }
 
@@ -178,6 +188,10 @@ namespace WheelChairCollaborativeGame
                         lastActiveTriggerIndex--;
                         //always invalidates movement if users steps back
                         invalidatedMovement = true;
+
+                        //if invalidated not from an finishing position
+                        if (state != MovementState.Activated)
+                            MovementInterrupded(this, args);
                     }
 
                 }

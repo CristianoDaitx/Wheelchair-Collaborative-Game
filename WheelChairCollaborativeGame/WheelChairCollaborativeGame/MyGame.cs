@@ -91,10 +91,7 @@ namespace WheelChairCollaborativeGame
                 Details = "Some event"
             });*/
 
-            summaryLog.Info(Logger);
-
-            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_START));
-            detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETION));
+            //summaryLog.Info(Logger);
 
             this.Graphics.PreferredBackBufferWidth = (int)Config.resolution.X;
             this.Graphics.PreferredBackBufferHeight = (int)Config.resolution.Y;

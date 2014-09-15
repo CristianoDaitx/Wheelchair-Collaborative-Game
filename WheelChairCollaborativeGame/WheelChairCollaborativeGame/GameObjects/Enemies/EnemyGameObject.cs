@@ -17,6 +17,8 @@ using KinectForWheelchair;
 using KinectForWheelchair.Listeners;
 
 using Microsoft.Kinect;
+using log4net;
+using WheelChairCollaborativeGame.Logging;
 
 #endregion
 
@@ -24,6 +26,7 @@ namespace WheelChairCollaborativeGame
 {
     abstract class EnemyGameObject : GameObject2D
     {
+        private readonly ILog detailedLog = LogManager.GetLogger("DetailedLogger");
 
         public delegate void DiedEventHandler(object sender, EnemyGameObjectEventArgs e);
         public event DiedEventHandler DiedCompleted;
@@ -106,6 +109,7 @@ namespace WheelChairCollaborativeGame
         {
             if (collider.GameObject.GetType() == typeof(BallGameObject))
             {
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SPACESHIP_HIT));
                 ((MyGame)Game).Logger.shotsHit++;
                 
                 life--;

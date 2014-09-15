@@ -16,12 +16,16 @@ using KinectForWheelchair;
 using KinectForWheelchair.Listeners;
 
 using Microsoft.Kinect;
+using WheelChairCollaborativeGame.Logging;
+using log4net;
 
 #endregion
 namespace WheelChairCollaborativeGame
 {
     class TankGameObject : GameObject2D
     {
+        private readonly ILog detailedLog = LogManager.GetLogger("DetailedLogger");
+
         private readonly int POSITION_ENERGY_X = 30;
         private readonly int POSITION_ENERGY_Y = 650;
         private readonly int HEIGHT_ENERGY_X = 30;
@@ -198,6 +202,7 @@ namespace WheelChairCollaborativeGame
             {
                 lowEnergy = true;
                 ((MyGame)Game).Logger.ShotsWithoutEnergy++;
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_WITHOUT_ENERGY));
                
             }
             
@@ -206,7 +211,7 @@ namespace WheelChairCollaborativeGame
                 Game.Components.Add(new BallGameObject(Position + new Vector2(Size.X / 2, 0), Game, "ball"));
                 fireSoundEffect.Play();
                 energy -= SHOT_COST;
-                //Logger.shotsFired++;
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_FIRED));
             }
             
             
