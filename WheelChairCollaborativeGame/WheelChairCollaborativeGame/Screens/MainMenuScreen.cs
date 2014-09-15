@@ -37,12 +37,6 @@ namespace WheelChairCollaborativeGame
         public override void Initialize()
         {
             base.Initialize();
-            ((MyGame)Game).Logger.resetLog();
-            //SoundEffectInstance sad = new SoundEffectInstance();
-            //sad.
-            //MediaPlayer.Play(backgroundSong);
-            //MediaPlayer.IsRepeating = true;
-
         }
 
         protected override void LoadContent()

@@ -13,86 +13,41 @@ namespace WheelChairCollaborativeGame
     public class Logger
     {
 
-        public int GroupId {
+        public int GroupId
+        {
             get { return Config.GroupId; }
         }
-
         public int InputId
         {
             get { return (int)Config.ControlSelected + 1; }
         }
-
-        private int completedActionsA;
-        public int CompletedActionsA
-        {
-            get { return completedActionsA; }
-            set { completedActionsA = value; }
-        }
-
-        public int ActionsFailureA { get; set; }
-
-        private int completedActionsB;
-        public int CompletedActionsB
-        {
-            get { return completedActionsB; }
-            set { completedActionsB = value; }
-        }
-
-        public int ActionsFailureB { get; set; }
-
-        public int TotalShotsFired
-        {
-            get { return CompletedActionsA + CompletedActionsB; }
-        }
-
-        public int ShotsWithoutEnergy { get; set; }
-
-        public int shotsHit;
-        public int ShotsHit
-        {
-            get { return shotsHit; }
-            set { shotsHit = value; }
-        }
-
-        public int shotsMissed;
-        public int ShotsMissed
-        {
-            get { return shotsMissed; }
-            set { shotsMissed = value; }
-        }
-
+        public int PlayerAActionsStarted { get; set; }
+        public int PlayerAActionsCompleted { get; set; }
+        public int PlayerAActionsFailed { get; set; }
+        public int PlayerBActionsStarted { get; set; }
+        public int PlayerBActionsCompleted { get; set; }
+        public int PlayerBActionsFailed { get; set; }
+        public int ShotsFired { get; set; }
+        public int ShotsHit { get; set; }
+        public int ShotsMissed { get; set; }
+        public int ShotsWithoutEnergy { get; set; }        
         public int Score { get; set; }
-
         public int Invaders { get; set; }
-
-
-
-
-
-
-
-
-
-        /// <summary>
-        /// Writes file to an .csv file
-        /// </summary>
-        public void saveLog()
-        {
-            //TODO open file and append log
-
-        }
 
         public void resetLog()
         {
-            //TODO reset all values
-            completedActionsA = 0;
-            completedActionsB = 0;
-            //shotsFired = 0;
-            shotsMissed = 0;
-            shotsHit = 0;
-            //lowEnergyFail = 0;
-            //score = 0;
-            //invaders = 0;
+            PlayerAActionsStarted = 0;
+            PlayerAActionsCompleted = 0;
+            PlayerAActionsFailed = 0;
+            PlayerBActionsStarted = 0;
+            PlayerBActionsCompleted = 0;
+            PlayerBActionsFailed = 0;
+            ShotsFired = 0;
+            ShotsMissed = 0;
+            ShotsWithoutEnergy = 0;
+            ShotsHit = 0;
+            Score = 0;
+            Invaders = 0;
         }
     }
 }

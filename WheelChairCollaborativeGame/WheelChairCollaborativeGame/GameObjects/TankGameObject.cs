@@ -212,6 +212,7 @@ namespace WheelChairCollaborativeGame
                 fireSoundEffect.Play();
                 energy -= SHOT_COST;
                 detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_FIRED));
+                ((MyGame)Game).Logger.ShotsFired++;
             }
             
             

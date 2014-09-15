@@ -56,7 +56,7 @@ namespace WheelChairCollaborativeGame
             {
                 if (validMiss == true)
                 {
-                    ((MyGame)Game).Logger.shotsMissed++;                    
+                    ((MyGame)Game).Logger.ShotsMissed++;                    
                     validMiss = false;
                     detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_MISSED));
                 }

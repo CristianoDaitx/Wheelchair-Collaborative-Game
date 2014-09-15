@@ -14,8 +14,6 @@ namespace WheelChairCollaborativeGame
 {
     class GameOverScreen : Screen
     {
-        private readonly ILog summaryLog = LogManager.GetLogger("SummaryLogger");
-
 
         private Song backgroundSong;
         public int Score;
@@ -29,9 +27,8 @@ namespace WheelChairCollaborativeGame
             base.Initialize();
             MediaPlayer.Play(backgroundSong);
             MediaPlayer.IsRepeating = false;
-            ((MyGame)Game).Logger.saveLog();
 
-            summaryLog.Info(((MyGame)Game).Logger);
+            
 
         }
 

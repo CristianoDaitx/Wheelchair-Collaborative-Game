@@ -8,11 +8,14 @@ using WheelChairGameLibrary.Helpers;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using WheelChairCollaborativeGame.GameObjects;
+using log4net;
 
 namespace WheelChairCollaborativeGame
 {
     class PlayScreen : Screen
     {
+        private readonly ILog summaryLog = LogManager.GetLogger("SummaryLogger");
+
         private Song backgroundSong;
 
         private TimeSpan timeRan = new TimeSpan();//TimeSpan.FromSeconds(90);
@@ -52,6 +55,8 @@ namespace WheelChairCollaborativeGame
             base.Initialize();
             MediaPlayer.Play(backgroundSong);
             MediaPlayer.IsRepeating = false;
+
+            ((MyGame)Game).Logger.resetLog();
 
         }
 
@@ -166,15 +171,15 @@ namespace WheelChairCollaborativeGame
                 if (timeRanInExpiredTime > maxTimeInExpiredTime)
                 {
                     GameOverScreen gameOverScreen = new GameOverScreen(Game, "GameOverScreen");
-                    planet.stopMoving();
-                    Game.ActiveScreen = gameOverScreen;
+                    planet.stopMoving();                    
                     gameOverScreen.Score = Score;
+
                     ((MyGame)Game).Logger.Score = Score;
                     ((MyGame)Game).Logger.Invaders = Invaders;
-                    
+                    summaryLog.Info(((MyGame)Game).Logger);
+
+                    Game.ActiveScreen = gameOverScreen;                    
                 }
-
-
             }
 
 
@@ -182,6 +187,9 @@ namespace WheelChairCollaborativeGame
             {
                 {
                     Game.ActiveScreen = new MainMenuScreen(Game, "MainMenuScreen");
+                    ((MyGame)Game).Logger.Score = Score;
+                    ((MyGame)Game).Logger.Invaders = Invaders;
+                    summaryLog.Info(((MyGame)Game).Logger);
                 }
             }
         }

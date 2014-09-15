@@ -109,8 +109,8 @@ namespace WheelChairCollaborativeGame
         {
             if (collider.GameObject.GetType() == typeof(BallGameObject))
             {
-                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SPACESHIP_HIT));
-                ((MyGame)Game).Logger.shotsHit++;
+                detailedLog.Info(new DetailedInfo(DetailedInfo.Type.SHOT_HIT));
+                ((MyGame)Game).Logger.ShotsHit++;
                 
                 life--;
                 if (0 == life)

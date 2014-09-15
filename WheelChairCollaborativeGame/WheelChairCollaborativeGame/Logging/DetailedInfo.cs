@@ -16,9 +16,9 @@ namespace WheelChairCollaborativeGame.Logging
             PLAYER_B_ACTION_COMPLETED,
             PLAYER_B_ACTION_FAILED,
             SHOT_FIRED,
+            SHOT_HIT,
             SHOT_MISSED,
-            SHOT_WITHOUT_ENERGY,
-            SPACESHIP_HIT
+            SHOT_WITHOUT_ENERGY            
         }
 
         public Type type { get; set; }

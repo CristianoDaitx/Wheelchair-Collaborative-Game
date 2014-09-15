@@ -126,6 +126,7 @@ namespace WheelChairCollaborativeGame
             {
                 actionCount1++;
                 detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETED));
+                ((MyGame)Game).Logger.PlayerAActionsCompleted++;
                 //count and add ball if other action is also active
 
                 if (movementFrontSoldierRight.isOn() || movementFrontSoldierLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
@@ -139,6 +140,7 @@ namespace WheelChairCollaborativeGame
             {
                 actionCount2++;
                 detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETED));
+                ((MyGame)Game).Logger.PlayerBActionsCompleted++;
                 //count and add ball if other action is also active
                 if (movementFrontTankRight.isOn() || movementFrontTankLeft.isOn() || Config.ControlSelected == Config.ControlSelect.FrontAssyncronous)
                 {
@@ -167,31 +169,37 @@ namespace WheelChairCollaborativeGame
         void movementTank_MovementStarted(object sender, KinectMovementEventArgs e)
         {
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_STARTED));
+            ((MyGame)Game).Logger.PlayerAActionsStarted++;
         }
 
         void movementTank_MovementInterrupded(object sender, KinectMovementEventArgs e)
         {
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_FAILED));
+            ((MyGame)Game).Logger.PlayerBActionsStarted++;
         }
 
         void movementSoldier_MovementInterrupded(object sender, KinectMovementEventArgs e)
         {
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_FAILED));
+            ((MyGame)Game).Logger.PlayerBActionsFailed++;
         }
 
         void movementSoldier_MovementStarted(object sender, KinectMovementEventArgs e)
         {
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_STARTED));
+            ((MyGame)Game).Logger.PlayerBActionsStarted++;
         }
 
         void triggerDouble_NoVelocityOne(object sender, EventArgs e)
         {
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_FAILED));
+            ((MyGame)Game).Logger.PlayerAActionsFailed++;
         }
 
         void triggerDouble_NoVelocityTwo(object sender, EventArgs e)
         {
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_FAILED));
+            ((MyGame)Game).Logger.PlayerBActionsFailed++;
         }   
 
         private void playerShot()
@@ -359,6 +367,7 @@ namespace WheelChairCollaborativeGame
                         {
                             actionCount1++;
                             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_COMPLETED));
+                            ((MyGame)Game).Logger.PlayerAActionsCompleted++;
                             controllerOneOnOff.IsOn = true;
                             if (controllerTwoOnOff.IsOn == true)
                             {
@@ -373,6 +382,7 @@ namespace WheelChairCollaborativeGame
                         {
                             actionCount2++;
                             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_B_ACTION_COMPLETED));
+                            ((MyGame)Game).Logger.PlayerBActionsCompleted++;
                             controllerTwoOnOff.IsOn = true;
                             if (controllerOneOnOff.IsOn == true)
                             {
