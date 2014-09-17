@@ -71,6 +71,8 @@ namespace WheelChairCollaborativeGame
         private KinectMovement movementDouble;
         private KinectTriggerDouble triggerDouble;
 
+        private readonly int MOVEMENT_FRONT_MAX_TIME_MILISECONDS = 175;
+
         GraphGameObject graph1;
         GraphGameObject graph2;
         GraphGameObject graphSync;
@@ -636,7 +638,7 @@ namespace WheelChairCollaborativeGame
             movementFrontTankRight.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementFrontTankRight.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementTank_MovementStarted);
             movementFrontTankRight.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementTank_MovementInterrupded);
-            movementFrontTankRight.MaxActiveTimeMiliseconds = 150;
+            movementFrontTankRight.MaxActiveTimeMiliseconds = MOVEMENT_FRONT_MAX_TIME_MILISECONDS;
             Game.Components.Add(movementFrontTankRight);
 
             // Movement front left
@@ -648,7 +650,7 @@ namespace WheelChairCollaborativeGame
             movementFrontTankLeft.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementFrontTankLeft.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementTank_MovementStarted);
             movementFrontTankLeft.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementTank_MovementInterrupded);
-            movementFrontTankLeft.MaxActiveTimeMiliseconds = 150;
+            movementFrontTankLeft.MaxActiveTimeMiliseconds = MOVEMENT_FRONT_MAX_TIME_MILISECONDS;
             Game.Components.Add(movementFrontTankLeft);
 
 
@@ -661,7 +663,7 @@ namespace WheelChairCollaborativeGame
             movementFrontSoldierRight.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementFrontSoldierRight.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementSoldier_MovementStarted);
             movementFrontSoldierRight.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementSoldier_MovementInterrupded);
-            movementFrontSoldierRight.MaxActiveTimeMiliseconds = 150;
+            movementFrontSoldierRight.MaxActiveTimeMiliseconds = MOVEMENT_FRONT_MAX_TIME_MILISECONDS;
             Game.Components.Add(movementFrontSoldierRight);
 
             // Movement soldier left
@@ -673,7 +675,7 @@ namespace WheelChairCollaborativeGame
             movementFrontSoldierLeft.MovementQuit += new KinectMovement.MovementQuitEventHandler(movementSingle_MovementQuit);
             movementFrontSoldierLeft.MovementStarted += new KinectMovement.MovementStartedEventHandler(movementSoldier_MovementStarted);
             movementFrontSoldierLeft.MovementInterrupded += new KinectMovement.MovementInterrupdedEventHandler(movementSoldier_MovementInterrupded);
-            movementFrontSoldierLeft.MaxActiveTimeMiliseconds = 150;
+            movementFrontSoldierLeft.MaxActiveTimeMiliseconds = MOVEMENT_FRONT_MAX_TIME_MILISECONDS;
             Game.Components.Add(movementFrontSoldierLeft);
 
 
