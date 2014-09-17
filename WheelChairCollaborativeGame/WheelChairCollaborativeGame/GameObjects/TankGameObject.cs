@@ -36,7 +36,7 @@ namespace WheelChairCollaborativeGame
         private int b = 0;
 
         private readonly int MAX_ENERGY = 100;
-        private readonly int SHOT_COST = 10;
+        private readonly int SHOT_COST = 25;
         private readonly float ENERGY_RECHARGE = 0.15f;
         private bool lowEnergy = false;
 
