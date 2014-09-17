@@ -175,7 +175,7 @@ namespace WheelChairCollaborativeGame
         void movementTank_MovementInterrupded(object sender, KinectMovementEventArgs e)
         {
             detailedLog.Info(new DetailedInfo(DetailedInfo.Type.PLAYER_A_ACTION_FAILED));
-            ((MyGame)Game).Logger.PlayerBActionsStarted++;
+            ((MyGame)Game).Logger.PlayerAActionsFailed++;
         }
 
         void movementSoldier_MovementInterrupded(object sender, KinectMovementEventArgs e)
