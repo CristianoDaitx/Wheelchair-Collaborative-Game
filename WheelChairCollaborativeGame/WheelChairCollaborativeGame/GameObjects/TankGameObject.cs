@@ -36,7 +36,7 @@ namespace WheelChairCollaborativeGame
         private int b = 0;
 
         private readonly int MAX_ENERGY = 100;
-        private readonly int SHOT_COST = 25;
+        private readonly int SHOT_COST = 20;
         private readonly float ENERGY_RECHARGE = 0.15f;
         private bool lowEnergy = false;
 
@@ -105,7 +105,7 @@ namespace WheelChairCollaborativeGame
             else
             {
                 PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, (int)(energy / MAX_ENERGY * WIDTH_ENERGY_X), HEIGHT_ENERGY_X), Color.Red, true);
-                if (energy < 10)
+                if (energy < SHOT_COST)
                 {
 
                     PrimitiveDrawing.DrawRectangle(Game.WhitePixel, SharedSpriteBatch, new Rectangle(POSITION_ENERGY_X, POSITION_ENERGY_Y, WIDTH_ENERGY_X, HEIGHT_ENERGY_X), new Color(r,g,b,transparencyVal), true);

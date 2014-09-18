@@ -71,7 +71,7 @@ namespace WheelChairCollaborativeGame
         private KinectMovement movementDouble;
         private KinectTriggerDouble triggerDouble;
 
-        private readonly int MOVEMENT_FRONT_MAX_TIME_MILISECONDS = 175;
+        private readonly int MOVEMENT_FRONT_MAX_TIME_MILISECONDS = 250;
 
         GraphGameObject graph1;
         GraphGameObject graph2;
